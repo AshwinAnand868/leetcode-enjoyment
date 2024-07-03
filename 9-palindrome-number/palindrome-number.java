@@ -7,6 +7,10 @@ class Solution {
             return arrayOfX[0] == arrayOfX[1];
         }
         
+        // or if the number is less than 0
+        if(x < 0)
+            return false;
+        
         int i = 0;
         int j = arrayOfX.length - 1;
         boolean continueL = true;
@@ -24,6 +28,7 @@ class Solution {
         if(i == j) // it is a palindrome
             toReturn = true;
         
+        // if the number is even and i has crossed j with continueL being true, then it is a palindrome
         if(!toReturn && continueL && (arrayOfX.length % 2) == 0 && i > j) {
             toReturn = true;
         }
@@ -32,13 +37,25 @@ class Solution {
     }
     
     public int[] convertIntToArray(int x) {
-        String xStr = Integer.toString(x);
-        int[] toReturn = new int[xStr.length()];
+        List<Integer> toReturn = new ArrayList<>();
+        int temp =  x;
+            
+        do {
+            toReturn.add(0, temp % 10);
+            temp /= 10;
+        } while(temp > 0);
         
-        for(int i = 0; i < toReturn.length; i++) {
-            toReturn[i] = xStr.charAt(i) - '0'; // getting int value for the character number
-        }
-        
-        return toReturn;
+        return toReturn.stream().mapToInt(i -> i).toArray();
     }
+    
+//     public int[] convertIntToArray(int x) {
+//         String xStr = Integer.toString(x);
+//         int[] toReturn = new int[xStr.length()];
+        
+//         for(int i = 0; i < toReturn.length; i++) {
+//             toReturn[i] = xStr.charAt(i) - '0'; // getting int value for the character number
+//         }
+        
+//         return toReturn;
+//     }
 }
