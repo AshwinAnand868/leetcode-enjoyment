@@ -1,7 +1,7 @@
 class Solution {
     public int romanToInt(String s) {
-     
-        Map<Character, Integer> romanIntMap = new HashMap<>();
+        HashMap<Character, Integer> romanIntMap = new HashMap<>();
+        
         romanIntMap.put('I', 1);
         romanIntMap.put('V', 5);
         romanIntMap.put('X', 10);
@@ -10,76 +10,19 @@ class Solution {
         romanIntMap.put('D', 500);
         romanIntMap.put('M', 1000);
         
-        
-        
-        int maxIndex = s.length() - 1;
-
         int result = 0;
+        int len = s.length();
         
-        for(int i = 0; i < s.length(); i++) {
-            
-            char x = s.charAt(i);
-            
-            if(x == 'I') {
-                
-                if(i == maxIndex) {
-                    result += romanIntMap.get(x);
-                } else {
-                    char nextChar = s.charAt(i + 1);
-                
-                    if(nextChar == 'V') {
-                        result += 4;
-                        i++;
-                    } else if(nextChar == 'X') {
-                        result += 9;
-                        i++;
-                    } else {
-                        result += romanIntMap.get(x);
-                    }
-                }
-                
-                
-            } else if(x == 'X') {
-                
-                if(i == maxIndex) {
-                    result += romanIntMap.get(x);
-                } else {
-                    char nextChar = s.charAt(i + 1);
-                
-                    if(nextChar == 'L') {
-                        result += 40;
-                        i++;
-                    } else if(nextChar == 'C') {
-                        result += 90;
-                        i++;
-                    } else {
-                        result += romanIntMap.get(x);
-                    }
-                }
-            } else if (x == 'C') {
-                
-                if(i == maxIndex) {
-                    result += 100;
-                } else {
-                    char nextChar = s.charAt(i + 1);
-                
-                    if(nextChar == 'D') {
-                        result += 400;
-                        i++;
-                    } else if(nextChar == 'M') {
-                        result += 900;
-                        i++;
-                    } else {
-                        result += romanIntMap.get(x);
-                    }
-                }
+        for(int i = 0; i < len; i++) {
+            if(i < (len - 1) && romanIntMap.get(s.charAt(i)) < romanIntMap.get(s.charAt(i + 1)) ) {
+                result -= romanIntMap.get(s.charAt(i));
             } else {
-                result += romanIntMap.get(x);
+                result += romanIntMap.get(s.charAt(i));
             }
-                        
         }
         
         return result;
+        
+        
     }
-    
 }
