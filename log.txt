@@ -1,0 +1,28 @@
+Log
+Day 1 - 28th June
+
+*** means research
+
+a. Problem Two Sum - https://leetcode.com/problems/two-sum (needed less than O(n2))
+ Attempt 1 - Tried bruteforce approach resulted in O(n2)
+ Attempt 2 - HashMap resulted in O(n2) ***** 
+		rechecking if it works
+ Attempt 3 - First sort the array (nlogn) and after that search the target - current value by looping over the array (Onlogn) total 2O(nlogn)
+	*** Learn to implement quick sort without Arrays.sort
+	flow chart making 
+
+Day 2 - 2nd July
+a. Problem Palindrome number
+	Needed to use some special cases in case if the given number length is only 2 or if the number is negative or in case where the number is even
+ Attempt - 1 converted given number to a string and then an array of integers by using a private method and then after getting the array of number, created a loop to go through the array to find if it is palindrome
+
+ Attempt - 2 converted given number to an array of integers by using modulus and division logic rather than strings 
+	
+ Learned char - '0' technique, modulus/division technique, then converting an array list of Integer to array of int using stream and maptoInt function, and toArray function
+
+Day 3 - 4th July
+a. Problem Roman to Int - https://leetcode.com/problems/roman-to-integer
+	Attempt - 1 first thought of solving it using map, but as the solution seemed possible to implement without that, removed the map. Wrote a series of if statements and cases to satisfy each and every case. for example for IX or IL something used condition for I and then x and L conditions nested in it. Although the solution worked but because of so many conditions it looked messy and less readable.
+	
+Day 4 - 5th July - same roman to int solution with different approach
+	Attempt - 2 followed NeetCode's approach and learned from the logic. Then implemented the solution in my own steps using Java. A simple, readable solution with good maintainability. 
