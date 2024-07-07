@@ -26,3 +26,13 @@ a. Problem Roman to Int - https://leetcode.com/problems/roman-to-integer
 	
 Day 4 - 5th July - same roman to int solution with different approach
 	Attempt - 2 followed NeetCode's approach and learned from the logic. Then implemented the solution in my own steps using Java. A simple, readable solution with good maintainability. 
+
+Day 5 - 6th July https://leetcode.com/problems/longest-common-prefix/
+	Attempt - 1 could not solve the problem by myself - so first attempt failed
+	Then understood the solution on NeetCode through youtube, and then implemented it
+
+	the logic for solving the problem starts with the assumption that we take the first string and then loop until its length
+	inside that loop, we go through each string and then compare the ith character of that string with the ith character of
+	the first string. if the characters are not equal, then we return resultant string otherwise we append the common character
+	
+	 
