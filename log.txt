@@ -34,5 +34,13 @@ Day 5 - 6th July https://leetcode.com/problems/longest-common-prefix/
 	the logic for solving the problem starts with the assumption that we take the first string and then loop until its length
 	inside that loop, we go through each string and then compare the ith character of that string with the ith character of
 	the first string. if the characters are not equal, then we return resultant string otherwise we append the common character
-	
-	 
+
+Day 5 - July 6th https://leetcode.com/problems/valid-parentheses/
+	Attempt - first implemented the logic but unsuccessful, so took a little hint to fix the mistake
+	The solution is not that hard - we first create an empty stack which will contain the opening brackets
+
+	Now, afterwards, we loop through each and every character of the string, and push the corresponding opening
+	brackets onto the stack. then if we encounter closing bracket, we first check if the stack is empty. If it is,
+	then false will be returned indicating invalid parentheses. Otherwise, we check if it is the correct closing
+	bracket, if no return false, else pop the element from the stack and continue. At the end, if the stack is not
+	empty still, then it is invalid as well. 
