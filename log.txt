@@ -44,3 +44,8 @@ Day 5 - July 6th https://leetcode.com/problems/valid-parentheses/
 	then false will be returned indicating invalid parentheses. Otherwise, we check if it is the correct closing
 	bracket, if no return false, else pop the element from the stack and continue. At the end, if the stack is not
 	empty still, then it is invalid as well. 
+
+Day 6 - July 8th - https://leetcode.com/problems/merge-two-sorted-lists/
+	Attempt - first tried to solve the logic by myself but could not get successful to solve it in the target time
+	so therefore watched the algorithm for it on Neetcode, and then implemented it based on that logic but without
+	seeing their code
