@@ -12,9 +12,7 @@ class Solution {
                 map.put(nums[i], 1);
             }
         }
-        
-        System.out.println(map);
-        
+                
         // satisfy the first condition - which is to keep the first k elements (size of hashmap) to be unique
         for(int i = 0, j = 0; i < nums.length; i = i + map.get(nums[i]), j++) {
             nums[j] = nums[i];
