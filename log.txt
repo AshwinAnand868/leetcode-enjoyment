@@ -49,3 +49,28 @@ Day 6 - July 8th - https://leetcode.com/problems/merge-two-sorted-lists/
 	Attempt - first tried to solve the logic by myself but could not get successful to solve it in the target time
 	so therefore watched the algorithm for it on Neetcode, and then implemented it based on that logic but without
 	seeing their code
+
+Day 7 - July 9th - https://leetcode.com/problems/remove-duplicates-from-sorted-array/
+
+	Attempt - 1  - succeded but better than only 5% of the user that submitted the solution
+	We created a map first to maintain the count of each and every element in the array
+	Then we filled the map by looping through the array. Afterwards, we knew that the size of the map
+	will be the k to be returned as no of unique elements. But we also needed to change the nums array 
+	in place. For that we created a for loop and used two pointers i and j. The value of i will change
+	depending upon the count of that current nums[i] in the map and the j will just be incremented by 1.
+	We replace the value at nums j with the value nums i. However, the algorithm was just faster than 5% of
+	the users.
+
+	Attempt - 2 - our assumption that we needed a hashmap to solve this problem proved wrong. the array was 
+	sorted. We just had to compare current element with the previous element. If the elements are not equal,
+	then replace the element at next unique index of the arrya with the value at the current ith index and
+	after that increment the unique index. 80% faster than users 
+
+	potential problems - It involves lots of visualization which is not intuitive (normal to think). This can be
+	done in second attempt. It's hard to do in the first attempt. even if you do it in first attempt, there are case
+	like 0 or i - 1 where the code can fail. if our brain does not think fast enough we will miss the soln. NEVER
+	EVER RUSH TO OPTMIZE THE SOLN. Check if the code is running. If it is, then OPTMIZE.
+
+	Although using a map was more readable for the first attempt compared to the second attempt we made, we can also make the second attempt more readable by introducing some variables. For example, 'current' can represent nums[i] and 'prev' can represent nums[i - 1]. - this much log length expected
+
+	
