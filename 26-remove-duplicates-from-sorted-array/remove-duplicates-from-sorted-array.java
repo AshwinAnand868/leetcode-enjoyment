@@ -19,11 +19,14 @@ class Solution {
                     nextUniqueIndex++;
                     continue;
                 }
+                
+                int current = nums[i];
+                int prev = nums[i - 1];
             
-                if(nums[i] != nums[i - 1]) {
+                if(prev != current) {
                     // unique
                     // map.put(nums[i], 1);
-                    nums[nextUniqueIndex] = nums[i];
+                    nums[nextUniqueIndex] = current;
                     nextUniqueIndex++;
                 }
             }
