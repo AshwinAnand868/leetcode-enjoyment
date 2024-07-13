@@ -73,4 +73,11 @@ Day 7 - July 9th - https://leetcode.com/problems/remove-duplicates-from-sorted-a
 
 	Although using a map was more readable for the first attempt compared to the second attempt we made, we can also make the second attempt more readable by introducing some variables. For example, 'current' can represent nums[i] and 'prev' can represent nums[i - 1]. - this much log length expected
 
-	
+Day 8 - July 11th - https://leetcode.com/problems/remove-element/
+
+	Attempt - 1 - This problem is almost the same as the above remove duplicates problem. The only difference is that
+	here we are required to remove a single value in place. To start with, we don't go with our instinct of using hashmap
+	as we know now that problems of this kind can be solved without it. Therefore, we will have a unique index variable
+	at which we will store the element that are not equal to val. We loop through the array and check if the value at 
+	current index is not equal to val. If it is not, then we store that value at unique index and increment the ui to move
+	to the next index. We continue until all the elements are replaced, and then at the end return the unique index as the k - no of elements not equal to val. 
