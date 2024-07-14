@@ -81,3 +81,11 @@ Day 8 - July 11th - https://leetcode.com/problems/remove-element/
 	at which we will store the element that are not equal to val. We loop through the array and check if the value at 
 	current index is not equal to val. If it is not, then we store that value at unique index and increment the ui to move
 	to the next index. We continue until all the elements are replaced, and then at the end return the unique index as the k - no of elements not equal to val. 
+
+Day 9 - July 12th - https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+
+	Attempt - 1 Needed to think for more than 15 minutes to find a possible solution and taking that much time is not good. The solution was not succesful either because of one logical mistakes. We started with the idea that we will have a start index and an end index. Start index will start with 0, and end index will start with startindex plus needle's length. The approach was good, and as we go through the loop, we were incrementing start index and the end index accordingly by adding needle's length into them, but this resulted in skipping of some in between elements. So, to resolve that part, we only incremented the end index part and stored that value in end index, but this also could not properly solve the question. Basically, we were incrementing the start index each and every time and comparing that chracter with the needle's chracter, but the problem was related to the end index now. As we were maintaining the end index, it skipped some characters in between as well. This solution was close to the right one, but because it was taking
+	lots of time and as I was getting late, I looked over the discussion section to see where I am wrong.
+
+	Attempt - 2 After reviewing the discussion part, I understood that there was a minor logical mistake that I made. All in all, the solution is that we don't need to have a separate endindex variable to solve it, we can just increment the loop index as we would normally do and substring the i and i + needle'slength part, to compare it with the needle. Then i gets incremented if it is not equal to go to next index. It was that simple. In this scenario, there was one special cast. If the i + needle length is more than haystack length, then we break because we know that it is going out of index now.
+
