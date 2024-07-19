@@ -89,3 +89,4 @@ Day 9 - July 12th - https://leetcode.com/problems/find-the-index-of-the-first-oc
 
 	Attempt - 2 After reviewing the discussion part, I understood that there was a minor logical mistake that I made. All in all, the solution is that we don't need to have a separate endindex variable to solve it, we can just increment the loop index as we would normally do and substring the i and i + needle'slength part, to compare it with the needle. Then i gets incremented if it is not equal to go to next index. It was that simple. In this scenario, there was one special cast. If the i + needle length is more than haystack length, then we break because we know that it is going out of index now.
 
+Had to take a pause because of other project/commitment
