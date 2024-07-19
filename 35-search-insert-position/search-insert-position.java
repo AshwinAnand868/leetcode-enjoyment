@@ -16,8 +16,6 @@ class Solution {
             }
         }
         
-        int toReturn = low + ((high - low) / 2);
-        
-        return toReturn;
+        return low;
     }
 }
