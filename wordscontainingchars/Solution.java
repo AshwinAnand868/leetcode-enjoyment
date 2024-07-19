@@ -30,6 +30,29 @@ public class Solution {
         return index;
     }
 
+    public static int searchInsert(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
+
+        while (low <= high) {
+            int mid = low + ((high - low) / 2);
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
+        int subCal = (high - low) / 2;
+
+        int toReturn = low + subCal;
+
+        return toReturn;
+    }
+
     public static int[] createTargetArray(int[] nums, int[] index) {
         int[] target = new int[nums.length];
         ArrayList<Integer> arr = new ArrayList<>();
@@ -62,7 +85,9 @@ public class Solution {
         // .println(Arrays.toString(createTargetArray(new int[] { 0, 1, 2, 3, 4 }, new
         // int[] { 0, 1, 2, 2, 1 })));
 
-        strStr("mississippi", "issi");
+        // strStr("mississippi", "issi");
+
+        searchInsert(new int[] { 1, 3, 5, 6 }, 2);
 
     }
 }
