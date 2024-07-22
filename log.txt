@@ -91,7 +91,64 @@ Day 9 - July 12th - https://leetcode.com/problems/find-the-index-of-the-first-oc
 
 Had to take a pause because of other project/commitment
 
-Day 10 - July 18th - https://leetcode.com/problems/search-insert-position/
+Day 10 - July 13th - https://leetcode.com/problems/search-insert-position/
 
 	Attempt - 1 Binary Search solution with little modification
 	The solution for this problem was easy if one is aware of how binary search works. We will need to maintain high and low indexes and find a mid index by looping through until the low index <= high index. If the give target exists in the given array, then the algorithm will return the mid index automatically, however if the target does not exist rather than returning the -1 in this case, we will return the left or low pointer indicating the index at which the target can be inserted.
+
+Day 11 - July 14th - https://leetcode.com/problems/length-of-last-word/
+
+	Attepmt - 1 This problem was focused on finding the length of the last word in the given string but ignoring the trailing spaces. The solution was simple. First of all we create a loop with the pointer i starting from the last index of the array, and going down until it reaches 0; The inside the loop, we first check if the current character is not equal to space. If it is not, then we increment a counter length variable that we declared outside the loop. Now, this continues until we encounter a space. If there is a space, then the second else if condition gets executed which checks if the length variable is greater than 0. If true, then it breaks the loop and return the length variable. The logic of using else if length > 0 condition is that we only break the loop if we have encountered any character than space in the given string from behind. 
+
+Day 12 - July 15th - https://leetcode.com/problems/sort-the-people/
+
+	Attempt - 1 Used hashmap and quick sort to solve the problem as the instinct solution is to connect both the given heights and names array once, which can be easily done through the map. The idea was to sort the height array first in descending order and then using the map to sort the names array by heights array.
+
+	Attempt - 2 Sorted the names array in place without using the map. Need to modify the params passed to quicksort and parition methods to handle the logic for ordering names elements in descending order.
+
+	Learnings:
+	Refreshed on quick sort algo, and learned how to reverse an array in place
+	n is the array's length
+
+	for(int i = 0; i < n / 2; ++i) {
+		int swap = arr[i];
+		arr[i] = arr[n - 1 - i];
+		arr[n - 1 - i] = swap;
+	}
+
+Day 13 - July 16th - https://leetcode.com/problems/add-binary/
+
+	Attempt - 1 (unsuccessful) Converted the given binary strings to integer using custom method and then added those two integers. After that, converted the resultant integer back to binary string using a custom method. There was one more problem with this solution. It couldn't handle larger values that exceeded the maximum value for java integers, and this resulted in overflow.
+
+	Attempt - 2 Used Java's in built type BigInteger to handle working with larger int values.
+
+	Solution learned 3:
+
+	class Solution {
+		public String addBinary(String a, String b) 
+		{
+			StringBuilder sb = new StringBuilder();
+			int carry = 0;
+			int i = a.length() - 1;
+			int j = b.length() - 1;
+
+			while (i >= 0 || j >= 0 || carry == 1) {
+				if(i >= 0)
+					carry += a.charAt(i--) - '0';
+				if(j >= 0)
+					carry += b.charAt(j--) - '0';
+				sb.append(carry % 2);
+				carry /= 2;
+			}
+			return sb.reverse().toString();
+		}
+	}
+
+
+Day 14 - July 18th - https://leetcode.com/problems/climbing-stairs/ (interesting problem)
+
+Attempt - 1 unsuccessful (could not think that it is fibonacci series for the first time)
+
+Went to discussion part, and realized that it is indeed based on that series and can be solved using recursion, iteration or other DP techs. 
+
+Attemp - 2 Understood the recursive solution and its working. Implemented the solution by myself. Afterwards, went on to learning memoization technique using hashmap and udpated the solution accordingly.
