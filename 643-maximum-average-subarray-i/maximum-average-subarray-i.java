@@ -1,6 +1,6 @@
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
-        double maxAvg = Double.NEGATIVE_INFINITY; // Fix: Correct initialization
+        double maxAvg = Double.NEGATIVE_INFINITY;
         int runningSum = 0;
         
         for (int i = 0; i < nums.length; i++) {
