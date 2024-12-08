@@ -1,14 +1,15 @@
 class Solution {
     public int maximumLengthSubstring(String s) {
-        Map<Character, Integer> map = new HashMap<>();
+       
         
         char[] cArr = s.toCharArray();
         int k = 2;
         
         int maxLength = 0;
+        Map<Character, Integer> map;
         
         for(int i = 0; i < cArr.length; ++i) {
-            map.clear();
+            map = new HashMap<>();
             
             for(int j = i; j < cArr.length; ++j) {
                 map.put(cArr[j], map.getOrDefault(cArr[j], 0) + 1);
