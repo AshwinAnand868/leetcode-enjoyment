@@ -1,7 +1,7 @@
 class Solution {
     public int numberOfAlternatingGroups(int[] colors) {
         int count = 0;
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new ArrayList<>(3);
 
         for (int i = 0; i < colors.length + 2; i++) {
 
