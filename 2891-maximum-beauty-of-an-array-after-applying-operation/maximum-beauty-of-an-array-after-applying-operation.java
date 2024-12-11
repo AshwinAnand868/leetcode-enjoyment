@@ -4,10 +4,10 @@ class Solution {
         // sort the array in ascending
         Arrays.sort(nums);
         
-        int maxCount = 0;
+        // int maxCount = 0;
         int left = 0;
-        
-        for(int right = 0; right < nums.length; ++right) {
+        int right;
+        for(right = 0; right < nums.length; ++right) {
             
             /*
                 The idea is to calculate the ranges of each number
@@ -17,15 +17,18 @@ class Solution {
                 nums[right] - k <= nums[left] + k
                 nums[right] - nums[left] <= 2 * k
             */
-            while(nums[right] - nums[left] > 2 * k) {
-                left++; // shrink the window
+            if(nums[right] - nums[left] > 2 * k) {
+                left++;
             }
+            // while(nums[right] - nums[left] > 2 * k) {
+            //     left++; // shrink the window
+            // }
             
-            maxCount = Math.max(maxCount, right - left + 1);
+            // maxCount = Math.max(maxCount, right - left + 1);
             
         }
         
-        return maxCount;
+        return right - left;
         
         
         // fails for certain cases as the approach is not correct
