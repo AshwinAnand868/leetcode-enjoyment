@@ -1,21 +1,39 @@
 class Solution {
     public int maxChunksToSorted(int[] arr) {
-        int cummSum = 0;
-        int indicesSum = 0;
+        
+        // using max comparison with indices
         int chunks = 0;
         int n = arr.length;
+        int max = 0;
         
         for(int i = 0; i < n; ++i) {
-            cummSum += arr[i]; // cummulative sum till now
-            indicesSum += i;
+            max = Math.max(max, arr[i]);
             
-            if(indicesSum == cummSum) {
+            if(max == i) {
                 chunks++;
             }
         }
         
         return chunks;
         
+// using cumulative sum approach
+//         int cummSum = 0;
+//         int indicesSum = 0;
+//         int chunks = 0;
+//         int n = arr.length;
+        
+//         for(int i = 0; i < n; ++i) {
+//             cummSum += arr[i]; // cummulative sum till now
+//             indicesSum += i;
+            
+//             if(indicesSum == cummSum) {
+//                 chunks++;
+//             }
+//         }
+        
+//         return chunks;
+       
+// using prefix and suffix arrays
         
 //         int chunks = 0;
 
