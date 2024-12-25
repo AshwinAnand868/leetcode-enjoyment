@@ -26,11 +26,13 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int n = queue.size();
-            PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(b, a)); // max heap
+            // PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(b, a)); // max heap
+            int max = Integer.MIN_VALUE;
 
             while (n-- > 0) {
                 TreeNode current = queue.poll();
-                pq.offer(current.val);
+                // pq.offer(current.val);
+                max = Math.max(max, current.val);
 
                 if (current.left != null) {
                     queue.offer(current.left);
@@ -41,7 +43,7 @@ class Solution {
                 }
             }
 
-            int max = pq.poll();
+            // int max = pq.poll();
             result.add(max);
         }
 
