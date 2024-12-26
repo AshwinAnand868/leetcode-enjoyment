@@ -1,45 +1,29 @@
 class Solution {
-    // premature optimizstion is the root cuase of all evil
     public int removeDuplicates(int[] nums) {
-        
-        // creating a hashmap to store the value and count for that
-        // HashMap<Integer, Integer> map = new HashMap<>();
-        int nextUniqueIndex = 0;
-        
-        // loop through the array to fill the map
-        for(int i = 0; i < nums.length; i++) {
-            
-//             if(map.containsKey(nums[i])) {
-//                 // not unique
-//                 // map.put(nums[i], map.get(nums[i]) + 1);
-                
-//             } else {
-                if(i == 0) { 
-                    nums[nextUniqueIndex] = nums[i];
-                    nextUniqueIndex++;
-                    continue;
-                }
-                
-                int current = nums[i];
-                int prev = nums[i - 1];
-            
-                if(prev != current) {
-                    // unique
-                    // map.put(nums[i], 1);
-                    nums[nextUniqueIndex] = current;
-                    nextUniqueIndex++;
-                }
-            }
-            
-            return nextUniqueIndex;
+        // two pointers approach
+        int i = 0;
+        int j = 1;
+        int n = nums.length;
+        int k = n;
+
+        if (n == 1) {
+            return 1;
         }
-                
-        // satisfy the first condition - which is to keep the first k elements (size of hashmap) to be unique
-//         for(int i = 0, j = 0; i < nums.length; i = i + map.get(nums[i]), j++) {
-//             nums[j] = nums[i];
-//         }
-        
-        // second condition to return k
-        
-    
+
+        while (j < n) {
+            if (nums[i] == nums[j]) {
+                ++j;
+            } else if (nums[i] != nums[j] && nums[i] == nums[i + 1]) {
+                nums[i + 1] = nums[j];
+                ++i;
+            } else if (nums[i] != nums[j]) {
+                nums[i + 1] = nums[j];
+                ++i;
+            }
+        }
+
+        k = i + 1;
+
+        return k;
+    }
 }
