@@ -13,37 +13,32 @@ class Pair {
     }
 }
 
-class Solution {    
-    public int bfs(int i, int j, int[][] grid, int m, int n) {
+class Solution {
+    
+    public int islandPerimeter(int[][] grid) {
         int perimeter = 0;
+        int m = grid.length;
+        int n = grid[0].length;
 
-        int[][] directions = new int[][] {
-                { 0, 1 },
-                { 1, 0 },
-                { 0, -1 },
-                { -1, 0 }
-        };
+        for(int i = 0; i < m; ++i) {
+            for(int j = 0; j < n; ++j) {
+                if(grid[i][j] == 1) { // land
 
-        Queue<Pair> queue = new LinkedList<>();
-        queue.add(new Pair(i,j));
-        grid[i][j] = -1;
+                    if(i - 1 < 0 || grid[i-1][j] == 0) {
+                        perimeter++;
+                    }
 
-        while(!queue.isEmpty()) {
-            Pair pair = queue.peek();
-            queue.poll();
+                    if(i + 1 >= m || grid[i + 1][j] == 0) {
+                        perimeter++;
+                    }
 
-            for(int[] direction: directions) {
-                int i1 = pair.i + direction[0];
-                int j1 = pair.j + direction[1];
+                    if(j - 1 < 0 || grid[i][j-1] == 0) {
+                        perimeter++;
+                    }
 
-                // out of bound or water - increment boundary/peri
-                if(i1 < 0 || j1 < 0 || i1 >= m || j1 >= n || grid[i1][j1] == 0) {
-                    perimeter++;
-                } else if(grid[i1][j1] == -1) {
-                    continue;
-                } else {
-                    queue.offer(new Pair(i1, j1));
-                    grid[i1][j1] = -1;
+                    if(j + 1 >= n || grid[i][j + 1] == 0) {
+                        perimeter++;
+                    }
                 }
             }
         }
@@ -51,21 +46,58 @@ class Solution {
         return perimeter;
     }
 
-    // Using BFS
-    public int islandPerimeter(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
+    // public int bfs(int i, int j, int[][] grid, int m, int n) {
+    //     int perimeter = 0;
 
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
-                if (grid[i][j] == 1) { // stepped into the land, so explore the whole island
-                    return bfs(i, j, grid, m, n);
-                }
-            }
-        }
+    //     int[][] directions = new int[][] {
+    //             { 0, 1 },
+    //             { 1, 0 },
+    //             { 0, -1 },
+    //             { -1, 0 }
+    //     };
 
-        return -1;
-    }
+    //     Queue<Pair> queue = new LinkedList<>();
+    //     queue.add(new Pair(i,j));
+    //     grid[i][j] = -1;
+
+    //     while(!queue.isEmpty()) {
+    //         Pair pair = queue.peek();
+    //         queue.poll();
+
+    //         for(int[] direction: directions) {
+    //             int i1 = pair.i + direction[0];
+    //             int j1 = pair.j + direction[1];
+
+    //             // out of bound or water - increment boundary/peri
+    //             if(i1 < 0 || j1 < 0 || i1 >= m || j1 >= n || grid[i1][j1] == 0) {
+    //                 perimeter++;
+    //             } else if(grid[i1][j1] == -1) {
+    //                 continue;
+    //             } else {
+    //                 queue.offer(new Pair(i1, j1));
+    //                 grid[i1][j1] = -1;
+    //             }
+    //         }
+    //     }
+
+    //     return perimeter;
+    // }
+
+    // // Using BFS
+    // public int islandPerimeter(int[][] grid) {
+    //     int m = grid.length;
+    //     int n = grid[0].length;
+
+    //     for (int i = 0; i < m; ++i) {
+    //         for (int j = 0; j < n; ++j) {
+    //             if (grid[i][j] == 1) { // stepped into the land, so explore the whole island
+    //                 return bfs(i, j, grid, m, n);
+    //             }
+    //         }
+    //     }
+
+    //     return -1;
+    // }
 
     // private void dfs(int i, int j, int[] totalPerimeter, int[][] grid, int m, int n) {
     //     // if the current indexes are out of bounds or current grid is water,
