@@ -1,21 +1,68 @@
 class Solution {
     public List<String> summaryRanges(int[] nums) {
+        
+        int n = nums.length;
+        if(nums.length == 0) {
+            return new ArrayList<>();
+        }
 
         List<String> ranges = new ArrayList<>();
 
-        for (int i = 0; i < nums.length; ++i) {
-            int start = nums[i];
+        int start = 0;
+        int end = 0;
 
-            while(i + 1 < nums.length && nums[i] + 1 == nums[i + 1]) {
-                i++;
-            }
-
-            if(start != nums[i]) {
-                ranges.add("" + start + "->" + nums[i]);
+        for(int j = 0; j < nums.length; ++j) {
+            if(j < n - 1 && nums[j] + 1 == nums[j + 1]) {
+                end++;
             } else {
-                ranges.add("" + start);
+                if(end - start > 0) {
+                    String temp = nums[start] + "->" + nums[end];
+                    ranges.add(temp);
+                } else {
+                    ranges.add("" + nums[start]);
+                }
+
+                start = j + 1;
+                end = start;
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // List<String> ranges = new ArrayList<>();
+
+        // for (int i = 0; i < nums.length; ++i) {
+        //     int start = nums[i];
+
+        //     while(i + 1 < nums.length && nums[i] + 1 == nums[i + 1]) {
+        //         i++;
+        //     }
+
+        //     if(start != nums[i]) {
+        //         ranges.add("" + start + "->" + nums[i]);
+        //     } else {
+        //         ranges.add("" + start);
+        //     }
+        // }
 
         return ranges;
 
