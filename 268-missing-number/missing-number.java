@@ -1,16 +1,16 @@
 class Solution {
     public int missingNumber(int[] nums) {
        int n = nums.length;
-
-       Arrays.sort(nums);
+       int xor1 = 0, xor2 = 0;
 
        for(int i = 0; i < n; ++i) {
-            if(nums[i] != i) {
-                return i;
-            }
+            xor1 = xor1 ^ nums[i];
+            xor2 = xor2 ^ i;
        }
-    
-       return n;
+
+       xor2 = xor2 ^ n; // xor of the last digit from 0 to n inclusive
+
+       return xor1 ^ xor2;
        
        
        
