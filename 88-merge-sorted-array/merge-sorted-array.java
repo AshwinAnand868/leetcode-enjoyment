@@ -1,34 +1,52 @@
 class Solution {
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int[] tempArray = new int[m];
 
-        for(int i = 0; i < m; ++i) {
-            tempArray[i] = nums1[i];
-        }
+        // if two pointers from starting doesn't work, then use two pointers from the back
+        int i = m - 1;
+        int j = n - 1;
+        int r = m + n - 1;
 
-        int i = 0;
-        int j = 0;
-        int indx = 0;
-
-        while(i < m && j < n) {
-            if(tempArray[i] < nums2[j]) {
-                nums1[indx] = tempArray[i];
-                i++;
+        while(j >= 0) {
+            if(i >= 0 && nums1[i] >= nums2[j]) {
+                nums1[r] = nums1[i];
+                r--;
+                i--;
             } else {
-                nums1[indx] = nums2[j];
-                j++;
+                nums1[r] = nums2[j];
+                r--;
+                j--;
             }
-            indx++;
         }
 
-        // leftover lements
-        for(int k = i; k < m; k++) {
-            nums1[indx++] = tempArray[k];
-        }
+        // int[] tempArray = new int[m];
 
-        for(int k = j; k < n; k++) {
-            nums1[indx++] = nums2[k];
-        }
+        // for(int i = 0; i < m; ++i) {
+        //     tempArray[i] = nums1[i];
+        // }
+
+        // int i = 0;
+        // int j = 0;
+        // int indx = 0;
+
+        // while(i < m && j < n) {
+        //     if(tempArray[i] < nums2[j]) {
+        //         nums1[indx] = tempArray[i];
+        //         i++;
+        //     } else {
+        //         nums1[indx] = nums2[j];
+        //         j++;
+        //     }
+        //     indx++;
+        // }
+
+        // // leftover lements
+        // for(int k = i; k < m; k++) {
+        //     nums1[indx++] = tempArray[k];
+        // }
+
+        // for(int k = j; k < n; k++) {
+        //     nums1[indx++] = nums2[k];
+        // }
 
 
         // int mIndex = m - 1;
