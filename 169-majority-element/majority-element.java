@@ -1,26 +1,23 @@
 class Solution {
     public int majorityElement(int[] nums) {
 
-        // Boyer-Moore Majority Vote Algorithm
+        int majority = -1;
+        int count = 0;
 
-        int majority = nums[0];
-        int n = nums.length;
-        int count = 1;
-
-        for(int i = 1; i < n; ++i) {
-            if(count == 0) { // a fresh cycle
-                majority = nums[i]; // update majority
-                count++; // update count
-            } else if(nums[i] == majority) // if current element is majority
-            {
-                count++; // continue incrementing the count
+        for(int i = 0; i < nums.length; ++i) {
+            if(count == 0) {
+                majority = nums[i];
+                count++;
+            } else if(majority == nums[i]) {
+                count++;
             } else {
-                count--; // decrement count if current is not majority
+                count--;
             }
         }
 
-
         return majority;
+
+
 
         // int majorityElement = 0;
         // int n = nums.length;
