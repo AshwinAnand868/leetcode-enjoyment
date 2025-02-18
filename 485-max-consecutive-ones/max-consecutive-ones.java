@@ -13,6 +13,7 @@ class Solution {
             maxCount = Math.max(cnt, maxCount);
         }
 
+        // return Math.max(cnt, maxCount);
         return maxCount;
     }
 }
