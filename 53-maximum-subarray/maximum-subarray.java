@@ -21,13 +21,22 @@ class Solution {
     }
 
     public int maxSubArray(int[] nums) {
-        int[][] dp = new int[2][nums.length];
-        
-        for(int[] row: dp)  {
-            Arrays.fill(row, -1);
+        int maxSum = Integer.MIN_VALUE;
+        int sum = 0;
+
+        for (int i = 0; i < nums.length; ++i) {
+            sum += nums[i];
+
+            if (sum > maxSum) {
+                maxSum = sum;
+            }
+
+            if (sum < 0) {
+                sum = 0; // if sum is negative, reset the sum
+            }
         }
 
-        return solve(nums, false, 0, dp);
+        return maxSum;
         // Recursion
 
 
