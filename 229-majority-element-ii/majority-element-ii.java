@@ -1,48 +1,53 @@
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
-        int el1 = Integer.MIN_VALUE;
-        int el2 = Integer.MIN_VALUE;
-
-        int cnt1 = 0;
-        int cnt2 = 0;
-
-        int n = nums.length;
-
-        for(int i = 0; i < n; ++i) {
-            if(cnt1 == 0 && el2 != nums[i]) {
-                cnt1 = 1;
-                el1 = nums[i];
-            } else if(cnt2 == 0 && el1 != nums[i]) {
-                cnt2 = 1;
-                el2 = nums[i];
-            } else if(nums[i] == el1) {
-                cnt1++;
-            } else if(nums[i] == el2) {
-                cnt2++;
+        int element1 = Integer.MIN_VALUE;
+        int element2 = Integer.MIN_VALUE;
+        
+        // maximum elements that can occur more than n / 3 times are only two
+        // elements for any given array
+        int count1 = 0;
+        int count2 = 0;
+        
+        for(int i = 0; i < nums.length; ++i) {
+            if(count1 == 0 && element2 != nums[i]) {
+                count1 = 1;
+                element1 = nums[i];
+            } else if(count2 == 0 && element1 != nums[i]) {
+                count2 = 1;
+                element2 = nums[i];
+            } else if(nums[i] == element1) {
+                count1++;
+            } else if(nums[i] == element2) {
+                count2++;
             } else {
-                cnt1--;
-                cnt2--;
+                count1--;
+                count2--;
             }
         }
-
-
-        ArrayList<Integer> majorityElements = new ArrayList<>();
-        cnt1 = 0;
-        cnt2 = 0;
-        // elements check
-        for(int i = 0; i < n; ++i) {
-            if(nums[i] == el1) cnt1++;
-            if(nums[i] == el2) cnt2++;
+        
+        
+        count1 = 0;
+        count2 = 0;
+        for(int elem : nums) {
+            if(elem == element1) {
+                count1++;
+            }
+            if(elem == element2) {
+                count2++;
+            }
         }
+        
+        
+        List<Integer> res = new ArrayList<>();
 
-        if(cnt1 > (n/3)) {
-            majorityElements.add(el1);
+        if(count1 > (nums.length / 3)) {
+            res.add(element1);
         }
-
-        if(cnt2 > (n/3)) {
-            majorityElements.add(el2);
+        
+        if(count2 > (nums.length / 3)) {
+            res.add(element2);
         }
-
-        return majorityElements;
+        
+        return res;
     }
 }
