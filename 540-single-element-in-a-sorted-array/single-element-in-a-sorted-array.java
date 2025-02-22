@@ -5,15 +5,17 @@ class Solution {
         int low = 1; // starting from 2nd element
         int high = n - 2; // going till 2nd last element
 
+        // Edge case I
         if (n == 1) {
             return arr[0];
         }
 
-        // Edge case I
+        // Edge case II
         if (arr[0] != arr[1]) {
             return arr[0];
         }
 
+        // Edge case III
         if (arr[n - 1] != arr[n - 2]) {
             return arr[n - 1];
         }
