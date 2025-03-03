@@ -7,14 +7,23 @@ class Solution {
         int n = words.length;
 
         StringBuilder sb = new StringBuilder();
+        Stack<String> st = new Stack<String>();
 
-        for(int i = n - 1; i >= 0; --i) {
-            sb.append(words[i]);
+        for(int i = 0; i < n; ++i) {
+            st.push(words[i]);
+            // sb.append(words[i]);
 
-            if(i > 0) {
-                sb.append(" ");
-            }
+            // if(i > 0) {
+            //     sb.append(" ");
+            // }
         }
+
+        while(st.size() != 1) {
+            sb.append(st.pop());
+            sb.append(" ");
+        }
+
+        sb.append(st.pop());
 
         return sb.toString();
     }
