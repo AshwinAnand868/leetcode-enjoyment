@@ -5,6 +5,8 @@ class Solution {
             return false;
         }
 
+        if(s1.equals(s2)) return true;
+
         StringBuilder temp = new StringBuilder(s1);
 
         for (int i = 0; i < s1.length(); i++) {
