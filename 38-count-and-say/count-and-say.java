@@ -1,31 +1,29 @@
 class Solution {
     public String countAndSay(int n) {
 
-        String result = "";
+        String result = "1";
 
-        for (int j = 1; j <= n; ++j) {
-            if (j == 1) {
-                result += "1";
-            } else {
-                int i = 0;
+        for (int j = 2; j <= n; ++j) {
 
-                StringBuilder sb = new StringBuilder();
+            int i = 0;
 
-                while (i < result.length()) {
-                    int count = 0;
-                    char current = result.charAt(i);
+            StringBuilder sb = new StringBuilder();
 
-                    while (i < result.length() && current == result.charAt(i)) {
-                        count++;
-                        i++;
-                    }
+            while (i < result.length()) {
+                int count = 0;
+                char current = result.charAt(i);
 
-                    sb.append(count);
-                    sb.append(current);
+                while (i < result.length() && current == result.charAt(i)) {
+                    count++;
+                    i++;
                 }
 
-                result = sb.toString();
+                sb.append(count);
+                sb.append(current);
             }
+
+            result = sb.toString();
+
         }
 
         return result;
