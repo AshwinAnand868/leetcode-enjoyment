@@ -4,17 +4,20 @@ public class Solution {
 
         int maxLen = Integer.MIN_VALUE;
         String maxStr = "";
+        int start = 0;
+        int end = 0;
 
         for(int i = 0; i < n; ++i) {
             for(int j = i; j < n; ++j) {
                 if(j - i + 1 > maxLen && isPalindrome(s.substring(i, j + 1))) {
                     maxLen = j - i + 1;
-                    maxStr = s.substring(i, j + 1);
+                    start = i;
+                    end = j;
                 }
             }
         }
 
-        return maxStr;
+        return s.substring(start, end + 1);
     }
 
     private boolean isPalindrome(String str) {
