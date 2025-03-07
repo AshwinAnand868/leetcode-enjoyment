@@ -1,5 +1,7 @@
 class Solution {
     public String orderlyQueue(String s, int k) {
+
+        // Learned from Code Story With MIK
         if(k > 1) {
             char[] chars = s.toCharArray();
             Arrays.sort(chars);
