@@ -17,34 +17,33 @@ class Solution {
 
         boolean[] isPrime = new boolean[n];
         Arrays.fill(isPrime, true);
-        int count = 0;
+        int nonPrimeCount = 2;
 
         isPrime[0] = false;
         isPrime[1] = false;
 
         int sqrtN = (int) Math.sqrt(n);
+        int primeCount = n - 2; // initially
 
         for(int i = 2; i <= sqrtN; ++i) {
             if(isPrime[i]) {
                 // if the number is prime, then its factors will not be prime
                 for(int series = 2; i * series < n; ++series) {
-                    isPrime[i * series] = false; // mark the factors as not prime
+                    if(isPrime[i * series]) {
+                        isPrime[i * series] = false; // mark the factors as not prime
+                        primeCount--;
+                    }
+                    
                 }
             }
         }
 
-        // for(int i = 2; i < n; ++i) {
-        //     if(isPrime(i)) {
+        // for(int i = 0; i < isPrime.length; ++i) {
+        //     if(isPrime[i]) {
         //         count++;
         //     }
         // }
 
-        for(int i = 0; i < isPrime.length; ++i) {
-            if(isPrime[i]) {
-                count++;
-            }
-        }
-
-        return count;
+        return primeCount;
     }
 }
