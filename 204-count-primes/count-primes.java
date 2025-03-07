@@ -19,11 +19,12 @@ class Solution {
         Arrays.fill(isPrime, true);
         int nonPrimeCount = 2;
 
+        // 0 and 1 are not prime
         isPrime[0] = false;
         isPrime[1] = false;
 
         int sqrtN = (int) Math.sqrt(n);
-        int primeCount = n - 2; // initially
+        int primeCount = n - 2; // assuming all numbers >= 2 are prime
 
         for(int i = 2; i <= sqrtN; ++i) {
             if(isPrime[i]) {
@@ -31,7 +32,7 @@ class Solution {
                 for(int series = 2; i * series < n; ++series) {
                     if(isPrime[i * series]) {
                         isPrime[i * series] = false; // mark the factors as not prime
-                        primeCount--;
+                        primeCount--; // decrement the prime count
                     }
                     
                 }
