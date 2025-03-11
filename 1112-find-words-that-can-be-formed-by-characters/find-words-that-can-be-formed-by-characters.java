@@ -10,7 +10,6 @@ class Solution {
         }
 
         for(String word : words) {
-            int[] tempCharCount = Arrays.copyOf(charsCount, charsCount.length);
 
             int[] charWordCount = new int[26];
 
@@ -19,7 +18,7 @@ class Solution {
             for(int i = 0; i < word.length(); ++i) {
                 char ch = word.charAt(i);
                 charWordCount[ch - 'a']++;
-                if(charWordCount[ch - 'a'] > tempCharCount[ch - 'a']) {
+                if(charWordCount[ch - 'a'] > charsCount[ch - 'a']) {
                     valid = false;
                     break;
                 }
