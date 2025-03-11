@@ -14,19 +14,14 @@ class Solution {
 
             int[] charWordCount = new int[26];
 
+            valid = true;
+            
             for(int i = 0; i < word.length(); ++i) {
                 char ch = word.charAt(i);
                 charWordCount[ch - 'a']++;
-            }
-
-            valid = true;
-            for(int i = 0; i < word.length(); ++i) {
-                char curr = word.charAt(i);
-                if(tempCharCount[curr - 'a'] >= charWordCount[curr - 'a']) {
-                    tempCharCount[curr - 'a']--;
-                    charWordCount[curr - 'a']--;
-                } else {
+                if(charWordCount[ch - 'a'] > tempCharCount[ch - 'a']) {
                     valid = false;
+                    break;
                 }
             }
 
