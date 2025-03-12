@@ -1,34 +1,33 @@
 class Solution {
 
-    private void helper(List<String> result, String s, int n, int start, String temp) {
-        if(start == n) {
-            result.add(temp);
-            return;
-        }
+    private void helper(List<String> result, StringBuilder temp, String s, int n, int start) {
+        result.add(temp.toString());  // Store the current combination
 
-        // for(int i = start; i < n; ++i) {
-            char ch = s.charAt(start);
-            if(Character.isDigit(ch)) {
-                temp = temp + ch;
-                helper(result, s, n, start + 1, temp);
-            } else {
-                temp = temp + ch;
-                helper(result, s, n, start + 1, temp);
-                temp = temp.substring(0, temp.length() - 1);
-                temp = temp + switchCase(ch);
-                helper(result, s, n, start + 1, temp);
+        for (int i = start; i < n; i++) {
+            char ch = s.charAt(i);
+
+            // Skip digits since they remain unchanged
+            if (Character.isLetter(ch)) {
+                // Swap case
+                temp.setCharAt(i, switchCase(ch));
+
+                // Recur for next index
+                helper(result, temp, s, n, i + 1);
+
+                // Backtrack - revert the character to its original state
+                temp.setCharAt(i, ch);
             }
-        // }
+        }
     }
 
     private char switchCase(char ch) {
-        if(Character.isUpperCase(ch)) return Character.toLowerCase(ch);
-        return Character.toUpperCase(ch);
+        return Character.isUpperCase(ch) ? Character.toLowerCase(ch) : Character.toUpperCase(ch);
     }
 
     public List<String> letterCasePermutation(String s) {
         List<String> result = new ArrayList<>();
-        helper(result, s, s.length(), 0, "");
+        StringBuilder temp = new StringBuilder(s); // Using StringBuilder for in-place modifications
+        helper(result, temp, s, s.length(), 0);
         return result;
     }
 }
