@@ -1,8 +1,6 @@
 class Solution {
     public boolean detectCapitalUse(String word) {
 
-        if(word.length() <= 1) return true;
-
         boolean detectedUpper = false;
         boolean detectedLower = false;
 
