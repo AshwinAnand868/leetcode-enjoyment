@@ -1,5 +1,6 @@
 class Solution {
 
+    // Bottomm UP
     public static int mincostTickets(int[] days, int[] costs) {
         HashSet<Integer> travelDays = new HashSet<>();
         for (int day : days) {
