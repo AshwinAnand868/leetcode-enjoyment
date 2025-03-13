@@ -2,31 +2,28 @@ class Solution {
 
     // Bottomm UP
     public static int mincostTickets(int[] days, int[] costs) {
-        HashSet<Integer> travelDays = new HashSet<>();
-        for (int day : days) {
-            travelDays.add(day); // Store travel days in a set
-        }
+        int maxDay = days[days.length - 1];
+        boolean[] travelDay = new boolean[maxDay + 1];
 
-        int lastDay = days[days.length - 1]; // Last travel day
-        int[] dp = new int[lastDay + 1]; // DP array (only up to last travel day)
+        for (int day : days)
+            travelDay[day] = true;
 
-        for (int i = 1; i <= lastDay; i++) {
-            if (!travelDays.contains(i)) {
-                dp[i] = dp[i - 1]; // If no travel, cost stays the same
+        int[] dp = new int[maxDay + 1];
+        dp[0] = 0;
+
+        for (int i = 1; i <= maxDay; i++) {
+            if (!travelDay[i]) {
+                dp[i] = dp[i - 1];
                 continue;
             }
 
-            // Take the minimum cost of the three ticket options
-            dp[i] = Math.min(
-                costs[0] + dp[Math.max(0, i - 1)],  // 1-day pass
-                Math.min(
-                    costs[1] + dp[Math.max(0, i - 7)],  // 7-day pass
-                    costs[2] + dp[Math.max(0, i - 30)]  // 30-day pass
-                )
-            );
+            dp[i] = costs[0] + dp[i - 1];
+            dp[i] = Math.min(dp[Math.max(0, i - 7)] + costs[1], dp[i]);
+            dp[i] = Math.min(dp[Math.max(0, i - 30)] + costs[2], dp[i]);
         }
 
-        return dp[lastDay]; // The minimum cost from first to last travel day
+        return dp[maxDay];
+
 
     }
 
