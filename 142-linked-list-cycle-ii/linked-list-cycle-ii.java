@@ -16,18 +16,39 @@ public class Solution {
             return null;
         }
 
-       ListNode current = head;
+        ListNode slow = head;
+        ListNode fast = head;
 
-       HashMap<ListNode, Integer> map = new HashMap<>();
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
 
-       while(current != null) {
-            if(map.containsKey(current)) {
-                return current;
+            if(fast == slow) {
+                slow = head;
+
+                while(slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+
+                return slow;
             }
-            map.put(current, 1);
-            current = current.next;
-       }
+        }
 
-       return null;
+        return null;
+
+    //    ListNode current = head;
+
+    //    HashMap<ListNode, Integer> map = new HashMap<>();
+
+    //    while(current != null) {
+    //         if(map.containsKey(current)) {
+    //             return current;
+    //         }
+    //         map.put(current, 1);
+    //         current = current.next;
+    //    }
+
+    //    return null;
     }
 }
