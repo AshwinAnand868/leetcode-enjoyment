@@ -9,6 +9,21 @@
  * }
  */
 class Solution {
+
+    public ListNode reverseLinkedList(ListNode head) {
+        
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode newHead = reverseLinkedList(head.next);
+        ListNode front = head.next;
+        front.next = head;
+        head.next = null;
+        
+        return newHead;
+    }
+
     public boolean isPalindrome(ListNode head) {
 
         // an empty list or a list with one element is palindrome
@@ -16,24 +31,52 @@ class Solution {
             return true;
         }
 
-        Stack<Integer> stack = new Stack<>();
+        ListNode slow = head;
+        ListNode fast = head;
 
-        ListNode temp = head;
-
-        while(temp != null) {
-            stack.push(temp.val);
-            temp = temp.next;
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
         }
 
-        temp = head;
+        ListNode newHead = reverseLinkedList(slow);
 
-        while(temp != null) {
-            if(temp.val != stack.pop()) {
+        ListNode first = head;
+        ListNode second = newHead;
+
+        while(second != null) {
+            if(first.val != second.val) {
+                reverseLinkedList(newHead);
                 return false;
             }
-            temp = temp.next;
+
+            first = first.next;
+            second = second.next;
         }
 
+        reverseLinkedList(newHead);
+
         return true;
+
+
+        // Stack<Integer> stack = new Stack<>();
+
+        // ListNode temp = head;
+
+        // while(temp != null) {
+        //     stack.push(temp.val);
+        //     temp = temp.next;
+        // }
+
+        // temp = head;
+
+        // while(temp != null) {
+        //     if(temp.val != stack.pop()) {
+        //         return false;
+        //     }
+        //     temp = temp.next;
+        // }
+
+        // return true;
     }
 }
