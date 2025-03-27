@@ -1,16 +1,17 @@
 class Solution {
     public int[] plusOne(int[] digits) {
-        
-        int carry = -1;
+
         int n = digits.length;
+        int carry = 0;
 
         for(int i = n - 1; i >= 0; --i) {
             int temp = digits[i] + 1;
+
             if(temp < 10) {
                 digits[i] += 1;
                 return digits;
             } else {
-                carry = (digits[i] + 1) / 10;
+                carry = (digits[i] + 1) - 9;
                 digits[i] = 0;
             }
         }
@@ -19,6 +20,7 @@ class Solution {
         newDigits[0] = carry;
 
         return newDigits;
+       
         // long largeNumber = digits[0];
         // int n = digits.length;
 
