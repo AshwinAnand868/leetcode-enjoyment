@@ -25,11 +25,23 @@ class Solution {
 
     public int findLongestChain(int[][] pairs) {
         Arrays.sort(pairs, (a, b) -> a[1] - b[1]); 
-        int[][] dp = new int[pairs.length][pairs.length + 1];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
+        int lastEnd = Integer.MIN_VALUE;
+        int count = 0;
+
+        for(int[] pair : pairs) {
+            if(pair[0] > lastEnd) {
+                count++;
+                lastEnd = pair[1];
+            }
         }
-        return findLongestChain(pairs, 0, -1, dp);
+
+        return count;
+        
+        // int[][] dp = new int[pairs.length][pairs.length + 1];
+        // for (int[] row : dp) {
+        //     Arrays.fill(row, -1);
+        // }
+        // return findLongestChain(pairs, 0, -1, dp);
 
     }
 }
