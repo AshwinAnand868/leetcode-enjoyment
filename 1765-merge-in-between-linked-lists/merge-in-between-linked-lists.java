@@ -12,12 +12,12 @@ class Solution {
     public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
         int a1Index = a + 1;
         int b1Index = b + 1;
-        int difference = b1Index - a1Index + 1;
+        int difference = b - a + 1;
 
 
         ListNode aNode = list1;
 
-        while(a1Index-- > 2) {
+        while(a-- > 1) {
             aNode = aNode.next;
         }
 
