@@ -9,34 +9,36 @@
  * }
  */
 class Solution {
-    public ListNode removeNodes(ListNode head) {
-        // Whenever you are asked to do a traversal from right to left,
-        // you can either use recursion, reverse the list or stack
 
-        // Approach I - Using stack
-        Stack<ListNode> stack = new Stack<>();
+    public ListNode reverse(ListNode head) {
+        ListNode next = null, curr = head, prev = null;
 
-        ListNode temp = head;
-
-        while(temp != null) {
-            stack.push(temp);
-            temp = temp.next;
+        while (curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
-        int max = Integer.MIN_VALUE;
-        ListNode newNode = null;
+        return prev;
+    }
 
-        while(!stack.isEmpty()) {
-            ListNode top = stack.pop();
+    public ListNode removeNodes(ListNode head) {
+        ListNode newHead = reverse(head);
 
-            if(newNode == null) {
-                newNode = top;
-                max = top.val;
-            } else if(newNode.val <= top.val) {
-                ListNode dummy = newNode;
-                newNode = top;
-                newNode.next = dummy;
+        ListNode newNode = newHead;
+        ListNode temp = newHead.next;
+        newNode.next = null;
+
+        while (temp != null) {
+            ListNode nextNode = temp.next;
+
+            if (temp.val >= newNode.val) {
+                temp.next = newNode;
+                newNode = temp;
             }
+
+            temp = nextNode;
         }
 
         return newNode;
