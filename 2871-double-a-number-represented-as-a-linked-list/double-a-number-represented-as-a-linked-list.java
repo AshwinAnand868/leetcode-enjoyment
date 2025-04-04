@@ -36,8 +36,8 @@ class Solution {
         if(head == null) return null;
 
         ListNode result = null;
-        ListNode newHead = reverse(head);
-        ListNode newNode = newHead;
+        head = reverse(head);
+        ListNode newNode = head;
 
         int sum = 0;
         int carry = 0;
@@ -53,13 +53,13 @@ class Solution {
             sum = carry;
         }
 
-        newHead = reverse(newHead);
+        head = reverse(head);
 
         if(carry > 0) {
             result = new ListNode(carry);
-            result.next = newHead;
+            result.next = head;
         }
 
-        return result == null ? newHead : result;
+        return result == null ? head : result;
     }
 }
