@@ -11,14 +11,24 @@
 class Solution {
 
     public ListNode reverse(ListNode head) {
-        if(head.next == null) {
-            return head;
+        // if(head.next == null) {
+        //     return head;
+        // }
+
+        // ListNode last = reverse(head.next);
+        // head.next.next = head;
+        // head.next = null;
+        // return last;
+        ListNode next = null, curr = head, prev = null;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
-        ListNode last = reverse(head.next);
-        head.next.next = head;
-        head.next = null;
-        return last;
+        return prev;
     }
 
     public ListNode doubleIt(ListNode head) {
