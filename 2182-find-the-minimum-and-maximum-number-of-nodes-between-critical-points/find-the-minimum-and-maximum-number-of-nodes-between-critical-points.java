@@ -29,8 +29,8 @@ class Solution {
                 if(first == -1) {
                     first = position;
                 } else {
-                    minDistance = Math.min(minDistance, position - prevCrit);
                     last = position;
+                    minDistance = Math.min(minDistance, last - prevCrit);
                 }
                 prevCrit = position;
             }
