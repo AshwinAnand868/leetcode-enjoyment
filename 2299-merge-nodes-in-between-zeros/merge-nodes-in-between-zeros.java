@@ -20,9 +20,8 @@ class Solution {
         int val = 0;
 
         while(curr.next != null) {
-            if(curr.val != 0) {
-                val += curr.val;
-            } else {
+            val += curr.val;
+            if(curr.val == 0) {
                 newNode.next = new ListNode(val);
                 newNode = newNode.next;
                 val = 0;
