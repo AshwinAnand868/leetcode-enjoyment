@@ -26,18 +26,29 @@ class Solution {
             return head;
         }
 
-        ListNode curr = head;
-        ListNode next = head.next;
 
-        while(next != null) {
-            ListNode gcdNode = new ListNode(findGCD(curr.val, next.val));
-            curr.next = gcdNode;
-            gcdNode.next = next;
+        ListNode temp = insertGreatestCommonDivisors(head.next);
 
-            curr = next;
-            next = next.next;
-        }
+        ListNode gcdNode = new ListNode(findGCD(head.val, head.next.val));
+
+        gcdNode.next = temp;
+
+        head.next = gcdNode;
 
         return head;
+
+        // ListNode curr = head;
+        // ListNode next = head.next;
+
+        // while(next != null) {
+        //     ListNode gcdNode = new ListNode(findGCD(curr.val, next.val));
+        //     curr.next = gcdNode;
+        //     gcdNode.next = next;
+
+        //     curr = next;
+        //     next = next.next;
+        // }
+
+        // return head;
     }
 }
