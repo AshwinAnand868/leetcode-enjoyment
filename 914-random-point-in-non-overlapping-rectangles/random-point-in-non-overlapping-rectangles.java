@@ -32,16 +32,10 @@ class Solution {
 
         int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
 
-        int width = x2 - x1 + 1;
-
-        int base = chosenRectIndex == 0 ? 0 : prefixSums[chosenRectIndex - 1];
-        int offset = randPoint - base - 1;
-
-        int x = offset % width;
-        int y = offset / width;
-
-        return new int[] {x1 + x, y1 + y};
-
+        int x = x1 + random.nextInt(x2 - x1 + 1);
+        int y = y1 + random.nextInt(y2 - y1 + 1);
+        
+        return new int[]{x, y};
     }
 
     public int binarySearch(int[] arr, int n, int x) {
