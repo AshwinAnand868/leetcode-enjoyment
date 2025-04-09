@@ -11,45 +11,30 @@
 class Solution {
 
     ListNode head = null;
-    int size = 0;
 
     public Solution(ListNode head) {
         this.head = head;
-        this.size = getSize(head);
     }
-
-    private int getSize(ListNode head) {
-        ListNode temp = head;
-        int count = 0;
-
-        while (temp != null) {
-            count++;
-            temp = temp.next;
-        }
-
-        return count;
-    }
-
+    
     public int getRandom() {
-        int randomIndex = (int) (Math.random() * this.size);
+        int count = 1;
+        int result = 0;
 
-        int count = 0;
-        ListNode temp = this.head;
+        ListNode temp = head;
 
-        if (temp == null) return -1;
+        while(temp != null) {
 
-        while (temp != null) {
-            if (count == randomIndex) {
-                return temp.val;
+            if (Math.random() < 1.0 / count) {
+                result = temp.val;
             }
+
             count++;
             temp = temp.next;
         }
 
-        return -1; // dummy fallback statement
+        return result;
     }
 }
-
 
 /**
  * Your Solution object will be instantiated and called as such:
