@@ -1,45 +1,41 @@
 class Solution {
-
-    private int[] reverseArray(int[] nums, int start, int end) {
-        while (start <= end) {
-            int temp = nums[start];
-            nums[start] = nums[end];
-            nums[end] = temp;
-
-            start++;
-            end--;
-        }
-
-        return nums;
-    }
-
     public void nextPermutation(int[] nums) {
-        int idx = -1;
-        
-        for(int i = nums.length - 2; i >= 0; --i) {
-            if(nums[i] < nums[i + 1]) {
-                idx = i; // diping point (breakpoint)
-                break;
-            }
-        }
-
-        if(idx == -1) { // reverse the array as this is the last sequence of the lexicographical order
-            reverseArray(nums, 0, nums.length - 1);
+        if(nums.length == 1) {
             return;
         }
 
-        // finding the next lexicographical permutation
+        int pivot = -1;
 
-        for(int i = nums.length - 1; i > idx; --i) {
-            if(nums[i] > nums[idx]) {
-                int t = nums[i];
-                nums[i] = nums[idx];
-                nums[idx] = t;
+        for(int i = nums.length - 1; i > 0; --i) {
+            if(nums[i - 1] < nums[i]) {
+                pivot = i - 1;
                 break;
             }
         }
 
-        reverseArray(nums, idx + 1, nums.length - 1);
+        if(pivot == -1) {
+            Arrays.sort(nums);
+            return;
+        }
 
+        for(int i = nums.length - 1; i > pivot; --i) {
+            if(nums[i] > nums[pivot]) {
+                int temp = nums[i];
+                nums[i] = nums[pivot];
+                nums[pivot] = temp;
+                break;
+            }
+        }
+
+        // Reverse the suffix
+        int left = pivot + 1, right = nums.length - 1;
+
+        while(left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+            left++;
+            right--;
+        }
     }
 }
