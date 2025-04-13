@@ -2,19 +2,31 @@ class Solution {
     static final int MOD = 1_000_000_007;
 
     public long power(long base, long exponent) {
-        long ans = 1;
-
-        while (exponent > 0) {
-            if (exponent % 2 == 1) {
-                ans = (ans * base) % MOD;
-                exponent = exponent - 1;
-            } else {
-                base = (base * base) % MOD;
-                exponent = exponent / 2;
-            }
+        if(exponent == 0) {
+            return 1;
         }
 
-        return ans;
+        long result = power(base, exponent / 2);
+
+        if(exponent % 2 == 0) {
+            return (result * result) % MOD;
+        } else {
+            return (result * result * base) % MOD;
+        }
+
+        // return ans;
+
+        // while (exponent > 0) {
+        //     if (exponent % 2 == 1) {
+        //         ans = (ans * base) % MOD;
+        //         exponent = exponent - 1;
+        //     } else {
+        //         base = (base * base) % MOD;
+        //         exponent = exponent / 2;
+        //     }
+        // }
+
+        // return ans;
     }
 
     public int countGoodNumbers(long n) {
