@@ -1,21 +1,23 @@
 class Solution {
 
     public boolean isValid(int row, int col, List<String> board) {
-        for(int i = row; i >= 0; i--) {
+        // check if Q is present in the same column
+        for(int i = row; i >= 0; --i) {
             if(board.get(i).charAt(col) == 'Q') {
                 return false;
             }
         }
 
-        // left upward for diagonals
+        // check if Q is in the left upwards
         for(int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
             if(board.get(i).charAt(j) == 'Q') {
                 return false;
             }
         }
 
-        // check right diagonals upwards
-        for(int i = row, j = col; i >= 0 && j < board.size(); i--, j++) {
+        // check if Q is in the right upwards
+        int n = board.size();
+        for(int i = row, j = col; i >= 0 && j < n; i--, j++) {
             if(board.get(i).charAt(j) == 'Q') {
                 return false;
             }
@@ -30,16 +32,19 @@ class Solution {
             return;
         }
 
+        // keeping row as fix and changing cols
         for(int col = 0; col < board.size(); ++col) {
-            if(isValid(row, col, board)) {
-                StringBuilder newRow = new StringBuilder(board.get(row));
-                newRow.setCharAt(col, 'Q');
-                board.set(row, newRow.toString());
+            if(isValid(row, col, board)) { // if the queen can be placed at current row and col
+                StringBuilder sb = new StringBuilder(board.get(row));
+                sb.setCharAt(col, 'Q');
+                board.set(row, sb.toString());
 
+                // moving to the next row
                 solve(result, board, row + 1);
 
-                newRow.setCharAt(col, '.');
-                board.set(row, newRow.toString());
+                // resetting data
+                sb.setCharAt(col, '.');
+                board.set(row, sb.toString());
             }
         }
     }
@@ -59,10 +64,10 @@ class Solution {
             board.add(row.toString());
         }
 
-        // for n = 3, we get {"...", "...", "..."} as board
 
         solve(result, board, 0);
 
         return result;
+
     }
 }
