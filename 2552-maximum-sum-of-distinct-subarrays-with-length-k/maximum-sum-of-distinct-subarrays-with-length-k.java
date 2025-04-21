@@ -3,27 +3,30 @@ class Solution {
         int i = 0, j = 0;
         int n = nums.length;
 
-        Set<Integer> set = new HashSet<>();
-        long sum = 0, maxSum = 0;
+        Set<Integer> subs = new HashSet<>(); // to avoid duplicates
+        long runningSum = 0;
+        long maxSum = 0;
 
-        while (j < n) {
-            while (set.contains(nums[j])) {
-                sum -= nums[i];
-                set.remove(nums[i]);
+        while(j < n) {
+            
+            while(subs.contains(nums[j])) { // if current index value already present, remove it to move ahead
+                runningSum -= nums[i];
+                subs.remove(nums[i]);
                 i++;
             }
 
-            set.add(nums[j]);
-            sum += nums[j];
+            subs.add(nums[j]);
+            runningSum += nums[j];
 
-            if (j - i + 1 == k) {
-                maxSum = Math.max(maxSum, sum);
-                sum -= nums[i];
-                set.remove(nums[i]);
+            if(j - i + 1 == k) {
+                maxSum = Math.max(maxSum, runningSum);
+                runningSum -= nums[i];
+                subs.remove(nums[i]);
                 i++;
             }
+            
 
-            j++;
+            ++j;
         }
 
         return maxSum;
