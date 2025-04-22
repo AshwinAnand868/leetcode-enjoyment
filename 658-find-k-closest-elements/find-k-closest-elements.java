@@ -1,5 +1,8 @@
 class Solution {
 
+    // find lower bound
+    // it returns the index of target if it exists, otherwise
+    // it returns the position where it should be in the array
     private int binarySearch(int[] arr, int target) {
         int left = 0;
         int right = arr.length - 1;
