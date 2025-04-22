@@ -1,0 +1,71 @@
+class Solution {
+
+    private int binarySearch(int[] arr, int target) {
+        int left = 0;
+        int right = arr.length - 1;
+        int ans = arr.length; // default if all elements are less than target
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (arr[mid] >= target) {
+                ans = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int xPotentialIdx = binarySearch(arr, x);
+
+        int ptr1 = xPotentialIdx - 1;
+        int ptr2 = xPotentialIdx;
+        int chosenElem = 0;
+        int n = arr.length;
+
+        List<Integer> result = new ArrayList<>();
+
+        while (ptr1 >= 0 && ptr2 < n && chosenElem < k) {
+            int leftDiff = Math.abs(arr[ptr1] - x);
+            int rightDiff = Math.abs(arr[ptr2] - x);
+
+            if (leftDiff < rightDiff) {
+                result.add(arr[ptr1]);
+                ptr1--;
+            } else if (leftDiff > rightDiff) {
+                result.add(arr[ptr2]);
+                ptr2++;
+            } else {
+                if (arr[ptr1] <= arr[ptr2]) {
+                    result.add(arr[ptr1]);
+                    ptr1--;
+                } else {
+                    result.add(arr[ptr2]);
+                    ptr2++;
+                }
+            }
+
+            chosenElem++;
+        }
+
+        // Add remaining elements if needed
+        while (chosenElem < k && ptr1 >= 0) {
+            result.add(arr[ptr1]);
+            ptr1--;
+            chosenElem++;
+        }
+
+        while (chosenElem < k && ptr2 < n) {
+            result.add(arr[ptr2]);
+            ptr2++;
+            chosenElem++;
+        }
+
+        Collections.sort(result);
+        return result;
+    }
+}
