@@ -1,49 +1,68 @@
 class Solution {
     public int longestSubarray(int[] nums) {
-        List<Integer> chunks = new ArrayList<>();
 
         int n = nums.length;
-        int count = 0;
-        boolean zeroesPresent = false;
+        int maxLen = 0;
+        int zeroesCount = 0;
+        int i = 0;
 
-        for(int num : nums) {
-            if(num == 1) {
-                count++;
-            } else {
-                if(count > 0) {
-                    chunks.add(count);
-                    count = 0; // reset count
-                }
+        for(int j = 0; j < n; ++j) {
+            if(nums[j] == 0) zeroesCount++;
 
-                chunks.add(0);
-                zeroesPresent = true;
+            while(zeroesCount > 1) {
+                if(nums[i] == 0) zeroesCount--;
+                i++;
             }
+
+            maxLen = Math.max(maxLen, j - i);
         }
 
-        // for the last chunk if count is greater than 0
-        if(count > 0) {
-            chunks.add(count);
-        }
+        return maxLen;
 
-        if(!zeroesPresent) {
-            return chunks.get(0) - 1; // if only ones are present
-        }
+        // List<Integer> chunks = new ArrayList<>();
 
-        int max = 0;
+        // int n = nums.length;
+        // int count = 0;
+        // boolean zeroesPresent = false;
 
-        for(int i = 0; i < chunks.size(); i++) {
-            if(chunks.get(i) == 0 && i - 1 >= 0 && i + 1 < chunks.size()) {
-                max = Math.max(max, chunks.get(i + 1) + chunks.get(i - 1));
-            }
-        }
+        // for(int num : nums) {
+        //     if(num == 1) {
+        //         count++;
+        //     } else {
+        //         if(count > 0) {
+        //             chunks.add(count);
+        //             count = 0; // reset count
+        //         }
 
-        // Fallback: if no 0 between two 1s was found, just take the largest 1-chunk
-        for (int i = 0; i < chunks.size(); i++) {
-            if (chunks.get(i) != 0) {
-                max = Math.max(max, chunks.get(i));
-            }
-        }
+        //         chunks.add(0);
+        //         zeroesPresent = true;
+        //     }
+        // }
 
-        return max;
+        // // for the last chunk if count is greater than 0
+        // if(count > 0) {
+        //     chunks.add(count);
+        // }
+
+        // if(!zeroesPresent) {
+        //     return chunks.get(0) - 1; // if only ones are present
+        // }
+
+        // int max = 0;
+
+        // for(int i = 0; i < chunks.size(); i++) {
+        //     if(chunks.get(i) == 0 && i - 1 >= 0 && i + 1 < chunks.size()) {
+        //         max = Math.max(max, chunks.get(i + 1) + chunks.get(i - 1));
+        //     }
+        // }
+
+        // // Fallback: if no 0 between two 1s was found, just take the largest 1-chunk
+        // for (int i = 0; i < chunks.size(); i++) {
+        //     if (chunks.get(i) != 0) {
+        //         max = Math.max(max, chunks.get(i));
+        //     }
+        // }
+
+        // return max;
     }
 }
