@@ -1,29 +1,49 @@
 class Solution {
 
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
-        // Queue maintains the farthest element on the top
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> {
-            int diffA = Math.abs(a - x);
-            int diffB = Math.abs(b - x);
 
-            if(diffA != diffB) {
-                return diffB - diffA; // Max heap
-            } else {
-                return b - a; // if difference is same, then the larger value goes on the top
-            }
-        });
-
+        // Deque approach
+        Deque<Integer> closestElements = new LinkedList<>();
         for(int num : arr) {
-            maxHeap.offer(num);
+            closestElements.offer(num);
+        }
 
-            if(maxHeap.size() > k) {
-                maxHeap.poll(); // if more than k elems in the heap, then the remove the top most elem
+        while(closestElements.size() > k) {
+            int left = closestElements.peekFirst();
+            int right = closestElements.peekLast();
+
+            if(Math.abs(left - x) > Math.abs(right - x)) {
+                closestElements.pollFirst();
+            } else {
+                closestElements.pollLast();
             }
         }
 
-        List<Integer> result = new ArrayList<>(maxHeap);
-        Collections.sort(result); // final result must be sorted
-        return result;
+        return new ArrayList<>(closestElements);
+
+        // Queue maintains the farthest element on the top
+        // PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> {
+        //     int diffA = Math.abs(a - x);
+        //     int diffB = Math.abs(b - x);
+
+        //     if(diffA != diffB) {
+        //         return diffB - diffA; // Max heap
+        //     } else {
+        //         return b - a; // if difference is same, then the larger value goes on the top
+        //     }
+        // });
+
+        // for(int num : arr) {
+        //     maxHeap.offer(num);
+
+        //     if(maxHeap.size() > k) {
+        //         maxHeap.poll(); // if more than k elems in the heap, then the remove the top most elem
+        //     }
+        // }
+
+        // List<Integer> result = new ArrayList<>(maxHeap);
+        // Collections.sort(result); // final result must be sorted
+        // return result;
 
     }
 
