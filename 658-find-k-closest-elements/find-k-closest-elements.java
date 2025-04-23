@@ -2,24 +2,44 @@ class Solution {
 
     public List<Integer> findClosestElements(int[] arr, int k, int x) {
 
-        // Deque approach
-        Deque<Integer> closestElements = new LinkedList<>();
-        for(int num : arr) {
-            closestElements.offer(num);
-        }
+        int low = 0;
+        int high = arr.length - k;
 
-        while(closestElements.size() > k) {
-            int left = closestElements.peekFirst();
-            int right = closestElements.peekLast();
-
-            if(Math.abs(left - x) > Math.abs(right - x)) {
-                closestElements.pollFirst();
+        while(low < high) {
+            int mid = (low + high) / 2;
+            if(x - arr[mid] > arr[mid + k] - x) {
+                low = mid + 1;
             } else {
-                closestElements.pollLast();
+                high = mid;
             }
         }
 
-        return new ArrayList<>(closestElements);
+        List<Integer> result = new ArrayList<>();
+        for (int i = low; i < low + k; i++) {
+            result.add(arr[i]);
+        }
+
+        return result;
+
+
+        // Deque approach
+        // Deque<Integer> closestElements = new LinkedList<>();
+        // for(int num : arr) {
+        //     closestElements.offer(num);
+        // }
+
+        // while(closestElements.size() > k) {
+        //     int left = closestElements.peekFirst();
+        //     int right = closestElements.peekLast();
+
+        //     if(Math.abs(left - x) > Math.abs(right - x)) {
+        //         closestElements.pollFirst();
+        //     } else {
+        //         closestElements.pollLast();
+        //     }
+        // }
+
+        // return new ArrayList<>(closestElements);
 
         // Queue maintains the farthest element on the top
         // PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> {
