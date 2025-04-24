@@ -9,11 +9,11 @@ class Solution {
             count[s.charAt(j) - 'A']++;
             maxFreq = Math.max(count[s.charAt(j) - 'A'], maxFreq);
 
-            while((j - i + 1) - maxFreq > k) {
+            if((j - i + 1) - maxFreq > k) {
                 count[s.charAt(i) - 'A']--;
-                for(int l = 0; l < 26; ++l) {
-                    maxFreq = Math.max(count[l], maxFreq);
-                }
+                // for(int l = 0; l < 26; ++l) {
+                //     maxFreq = Math.max(count[l], maxFreq);
+                // }
                 ++i;
             }
 
