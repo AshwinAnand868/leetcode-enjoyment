@@ -1,36 +1,21 @@
 class Solution {
     public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> prefixOccMap = new HashMap<>();
+        prefixOccMap.put(0, 1); // add a dummy sum occurrence for 0 sum
+        
+        int prefixSum = 0;
         int count = 0;
+        
+        for(int right = 0; right < nums.length; ++right) {
+            prefixSum += nums[right];
 
-        HashMap<Integer, Integer> sumOccurencesMap = new HashMap<>();
-        sumOccurencesMap.put(0, 1); // considering a sum of 0 with one occurence
-
-        int sum = 0;
-
-        for(int i = 0; i < nums.length; ++i) {
-            sum += nums[i];
-
-            int rem = sum - k; // number of times remaining occurred will be the number of times k occurred
-            if(sumOccurencesMap.containsKey(rem)) {
-                count += sumOccurencesMap.get(rem);
+            if(prefixOccMap.containsKey(prefixSum - k)) {
+                count += prefixOccMap.get(prefixSum - k); 
             }
 
-            sumOccurencesMap.merge(sum, 1, Integer::sum);
+            prefixOccMap.put(prefixSum, prefixOccMap.getOrDefault(prefixSum, 0) + 1);
         }
 
         return count;
-
-        // for(int start = 0; start < nums.length; ++start) {
-        //     int sum = 0;
-        //     for(int end = start; end < nums.length; ++end) {
-        //         sum += nums[end];
-
-        //         if(sum == k) {
-        //             count++;
-        //         }
-        //     }
-        // }
-
-        // return count;
     }
 }
