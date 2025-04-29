@@ -6,7 +6,7 @@ class Solution {
         while(j < n) {
             freqMap.put(nums[j], freqMap.getOrDefault(nums[j], 0) + 1);
 
-            while(i < j && freqMap.get(nums[j]) > k) {
+            while(i <= j && freqMap.get(nums[j]) > k) {
                 freqMap.put(nums[i], freqMap.get(nums[i]) - 1);
                 i++;
             }
