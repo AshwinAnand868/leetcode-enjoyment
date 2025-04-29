@@ -16,7 +16,7 @@ class Solution {
         HashMap<Character, Integer> sMap = new HashMap<>();
         int currCount = 0;
         int[] ans = new int[3];
-        ans[0] = -1;
+        ans[0] = Integer.MAX_VALUE;
 
         while(j < m) {
             sMap.put(s.charAt(j), sMap.getOrDefault(s.charAt(j), 0) + 1);
@@ -26,7 +26,7 @@ class Solution {
             }
 
             while(i <= j && currCount == uniqueCount) {
-                if(ans[0] == -1 || j - i + 1 < ans[0]) {
+                if(j - i + 1 < ans[0]) {
                     ans[0] = j - i + 1;
                     ans[1] = i;
                     ans[2] = j;
@@ -48,6 +48,6 @@ class Solution {
             ++j;
         }
 
-        return ans[0] == -1 ? "" : s.substring(ans[1], ans[2] + 1);
+        return ans[0] == Integer.MAX_VALUE ? "" : s.substring(ans[1], ans[2] + 1);
     }
 }
