@@ -1,52 +1,62 @@
 class Solution {
+
     public int solve(int start, int end, String word, int k) {
         int result = 0;
-        for (int chars = 1; chars <= 26 && chars * k <= end - start + 1; chars++) {
-            int[] count = new int[26];
-            int goodChars = 0; // How many chars are of frequency k
 
-            // Now do a sliding window
+        // considering unique chars from 1 to 26 or upto maximum substring length
+        for(int uniqueChars = 1; uniqueChars <= 26 && uniqueChars * k <= end - start + 1; uniqueChars++) {
+            int[] count = new int[26]; // for lowercase characters count only
+            int goodChar = 0;
+
             int i = start;
-            int windowLength = chars * k;
-            for (int j = start; j <= end; j++) {
+            int windowLen = k * uniqueChars; // maximum curr window length
+
+            for(int j = start; j <= end; ++j) {
                 char ch = word.charAt(j);
 
                 count[ch - 'a']++;
-                if (count[ch - 'a'] == k) {
-                    goodChars++;
-                } else if (count[ch - 'a'] == k + 1) {
-                    goodChars--;
+
+                if(count[ch - 'a'] == k) {
+                    goodChar++;
+                } else if(count[ch - 'a'] == k + 1) {
+                    goodChar--;
                 }
 
-                if (j - i + 1 > windowLength) { // Need to shift window right
-                    if (count[word.charAt(i) - 'a'] == k) {
-                        goodChars--;
-                    } else if (count[word.charAt(i) - 'a'] == k + 1) {
-                        goodChars++;
+                // if curr window exceeds max curr window len
+                if(j - i + 1 > windowLen) {
+                    char chi = word.charAt(i);
+                    if(count[chi - 'a'] == k) { // we decrement good char if curr char at i equal to k, because we are gonna decrease the frequency of this char or remove it from window
+                        goodChar--;
+                    } else if(count[chi - 'a'] == k + 1) {
+                        goodChar++;
                     }
-                    count[word.charAt(i) - 'a']--;
+                    count[chi - 'a']--;
                     i++;
                 }
 
-                if (goodChars == chars) {
+                if(goodChar == uniqueChars) {
                     result++;
                 }
             }
+
         }
+
         return result;
     }
 
     public int countCompleteSubstrings(String word, int k) {
         int n = word.length();
-        int result = 0;
         int last = 0;
+        int result = 0;
 
-        for (int i = 1; i <= n; i++) {
-            if (i == n || Math.abs(word.charAt(i) - word.charAt(i - 1)) > 2) { // satisfying condition 2
-                result += solve(last, i - 1, word, k); // condition 1
+        for(int i = 1; i <= n; ++i) {
+            // borders like "aa" | "ddff" | "kk"
+            if(i == n || Math.abs(word.charAt(i) - word.charAt(i - 1)) > 2) {
+                result += solve(last, i - 1, word, k);
                 last = i;
             }
         }
+
         return result;
     }
 }
