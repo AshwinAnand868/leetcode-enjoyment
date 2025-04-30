@@ -20,7 +20,7 @@ class Solution {
 
 
             if((end - start + 1) == totalOnes || 
-                (start > end && Math.abs(end - start) == totalOnes)) {
+                (start > end && (end - start + 1 + n)% n == totalOnes)) {
 
                 maxOnesTogether = Math.max(maxOnesTogether, currWindowOnes);
 
