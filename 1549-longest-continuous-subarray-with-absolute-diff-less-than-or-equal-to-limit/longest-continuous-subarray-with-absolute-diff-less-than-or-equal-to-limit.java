@@ -3,15 +3,28 @@ class Solution {
 
         int i = 0, j = 0, maxLength = 0, n = nums.length;
 
-        TreeMap<Integer,Integer> treeMap = new TreeMap<>();
+        Deque<Integer> maxDeque = new ArrayDeque<>();
+        Deque<Integer> minDeque = new ArrayDeque<>();
 
         while(j < n) {
-            treeMap.put(nums[j], treeMap.getOrDefault(nums[j], 0) + 1);
+            while(!maxDeque.isEmpty() && maxDeque.peekLast() < nums[j]) {
+                maxDeque.pollLast();
+            }
 
-            while(treeMap.lastKey() - treeMap.firstKey() > limit) {
-                treeMap.put(nums[i], treeMap.get(nums[i]) - 1);
-                if(treeMap.get(nums[i]) == 0) {
-                    treeMap.remove(nums[i]);
+            maxDeque.offerLast(nums[j]);
+
+            while (!minDeque.isEmpty() && minDeque.peekLast() > nums[j]) {
+                minDeque.pollLast();
+            }
+
+            minDeque.offerLast(nums[j]);
+
+            while(maxDeque.peekFirst() - minDeque.peekFirst() > limit) {
+                if(maxDeque.peekFirst() == nums[i]) {
+                    maxDeque.pollFirst();
+                }
+                if(minDeque.peekFirst() == nums[i]) {
+                    minDeque.pollFirst();
                 }
                 i++;
             }
@@ -21,6 +34,25 @@ class Solution {
         }
 
         return maxLength;
+
+        // TreeMap<Integer,Integer> treeMap = new TreeMap<>();
+
+        // while(j < n) {
+        //     treeMap.put(nums[j], treeMap.getOrDefault(nums[j], 0) + 1);
+
+        //     while(treeMap.lastKey() - treeMap.firstKey() > limit) {
+        //         treeMap.put(nums[i], treeMap.get(nums[i]) - 1);
+        //         if(treeMap.get(nums[i]) == 0) {
+        //             treeMap.remove(nums[i]);
+        //         }
+        //         i++;
+        //     }
+
+        //     maxLength = Math.max(maxLength, j - i + 1);
+        //     j++;
+        // }
+
+        // return maxLength;
 
         // PriorityQueue<int[]> maxPq = new PriorityQueue<>((a,b) -> b[0] - a[0]);
         // PriorityQueue<int[]> minPq = new PriorityQueue<>((a,b) -> a[0] - b[0]);
