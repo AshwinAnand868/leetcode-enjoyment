@@ -19,29 +19,56 @@ class Solution {
         List<Integer> result = new ArrayList<>();
         if(root == null) return result;
 
-        Stack<TreeNode> stack1 = new Stack<>();
-        stack1.push(root);
+        Stack<TreeNode> stack = new Stack<>();
 
-        Stack<TreeNode> stack2 = new Stack<>();
+        TreeNode current = root;
+        TreeNode prev = null;
 
-        while(!stack1.isEmpty()) {
-            TreeNode node = stack1.pop();
-            stack2.push(node);
-
-            if(node.left != null) {
-                stack1.push(node.left);
+        while(!stack.isEmpty() || current != null) {
+            // go to left as left as possible
+            while(current != null) {
+                stack.push(current);
+                current = current.left;
             }
 
-            if(node.right != null) {
-                stack1.push(node.right);
-            }
-        }
+            TreeNode peekNode = stack.peek();
 
-        while(!stack2.isEmpty()) {
-            result.add(stack2.pop().val);
+            if(peekNode.right != null && peekNode.right != prev) {
+                current = peekNode.right;
+            } else {
+                result.add(peekNode.val);
+                prev = stack.pop();
+            }
         }
 
         return result;
+
+        // Stack<TreeNode> stack1 = new Stack<>();
+
+
+
+        // stack1.push(root);
+
+        // Stack<TreeNode> stack2 = new Stack<>();
+
+        // while(!stack1.isEmpty()) {
+        //     TreeNode node = stack1.pop();
+        //     stack2.push(node);
+
+        //     if(node.left != null) {
+        //         stack1.push(node.left);
+        //     }
+
+        //     if(node.right != null) {
+        //         stack1.push(node.right);
+        //     }
+        // }
+
+        // while(!stack2.isEmpty()) {
+        //     result.add(stack2.pop().val);
+        // }
+
+        // return result;
 
 
         // List<Integer> result = new ArrayList<>();
