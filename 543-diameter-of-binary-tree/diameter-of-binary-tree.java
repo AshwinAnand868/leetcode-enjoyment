@@ -19,23 +19,24 @@ class Solution {
 
     public int maxDepth(TreeNode root) {
         if(root == null) return 0;
-        int lh = maxDepth(root.left);
-        int rh = maxDepth(root.right);
-        return 1 + Math.max(lh, rh);
-    }
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        if(root == null) return 0;
-
-        // brute force is to get max depth - height of every node
         int lh = maxDepth(root.left);
         int rh = maxDepth(root.right);
 
         maxHeight = Math.max(maxHeight, lh + rh);
 
-        diameterOfBinaryTree(root.left);
-        diameterOfBinaryTree(root.right);
+        return 1 + Math.max(lh, rh);
+    }
 
+    public int diameterOfBinaryTree(TreeNode root) {
+        
+        maxDepth(root);
         return maxHeight;
+
+        // brute force is to get max depth - height of every node - n^2
+        // diameterOfBinaryTree(root.left);
+        // diameterOfBinaryTree(root.right);
+
+        // return maxHeight;
     }
 }
