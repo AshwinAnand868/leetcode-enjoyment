@@ -15,25 +15,27 @@
  */
 class Solution {
 
-    public int getDiameter(TreeNode root, int[] result) {
-        if (root == null) {
-            return 0;
-        }
+    int maxHeight = 0;
 
-        int left = getDiameter(root.left, result);
-        int right = getDiameter(root.right, result);
-
-        result[0] = Math.max(result[0], left + right);
-
-        return Math.max(left, right) + 1;
+    public int maxDepth(TreeNode root) {
+        if(root == null) return 0;
+        int lh = maxDepth(root.left);
+        int rh = maxDepth(root.right);
+        return 1 + Math.max(lh, rh);
     }
 
-
     public int diameterOfBinaryTree(TreeNode root) {
-        int[] result = new int[] { 0 };
+        if(root == null) return 0;
 
-        getDiameter(root, result);
+        // brute force is to get max depth - height of every node
+        int lh = maxDepth(root.left);
+        int rh = maxDepth(root.right);
 
-        return result[0];
+        maxHeight = Math.max(maxHeight, lh + rh);
+
+        diameterOfBinaryTree(root.left);
+        diameterOfBinaryTree(root.right);
+
+        return maxHeight;
     }
 }
