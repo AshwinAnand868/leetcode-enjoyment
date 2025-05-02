@@ -15,9 +15,26 @@
  */
 class Solution {
     public boolean isBalanced(TreeNode root) { 
-        boolean[] continuee = {true};
-        helper(root, continuee);
-        return continuee[0];
+        return checkHeightBalanced(root) != -1;
+        // boolean[] continuee = {true};
+        // helper(root, continuee);
+        // return continuee[0];
+    }
+
+    public int checkHeightBalanced(TreeNode root) {
+        if(root == null) return 0;
+
+        int lh = checkHeightBalanced(root.left);
+        if(lh == -1) return -1;
+
+        int rh = checkHeightBalanced(root.right);
+        if(rh == -1) return -1;
+
+        if(Math.abs(lh - rh) > 1) {
+            return -1;
+        }
+
+        return 1 + Math.max(lh, rh);
     }
 
     public void helper(TreeNode root, boolean[] continuee) {
