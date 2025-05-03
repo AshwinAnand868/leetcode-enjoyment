@@ -14,19 +14,34 @@
  * }
  */
 class Solution {
+
+    int maximumSum;
+
     public int maxPathSum(TreeNode root) {
-        int[] maxValue = new int[1];
-        maxValue[0] = Integer.MIN_VALUE;
-        maxSum(root, maxValue);
-        return maxValue[0];
+        maximumSum = Integer.MIN_VALUE;
+        maxSum(root);
+        return maximumSum;
     }
 
-    private int maxSum(TreeNode root, int[] maxValue) {
-        if(root == null) return 0;
-        int left = Math.max(0, maxSum(root.left, maxValue));
-        int right = Math.max(0, maxSum(root.right, maxValue));
+    private int maxSum(TreeNode root) {
+       if(root == null) {
+        return 0;
+       }
 
-        maxValue[0] = Math.max(maxValue[0], left + right + root.val);
-        return Math.max(left, right) + root.val;
+       int lh = maxSum(root.left);
+       int rh = maxSum(root.right);
+
+       int foundAnswerInDownOnly = lh + rh + root.val;
+
+       int eitherLeftOrRightGood = Math.max(lh, rh) + root.val;
+
+       int onlyRootGood = root.val;
+
+       maximumSum = Math.max(maximumSum, foundAnswerInDownOnly);
+       maximumSum = Math.max(maximumSum, eitherLeftOrRightGood);
+       maximumSum = Math.max(maximumSum, onlyRootGood);
+
+       // explore only root good or left/right good - 2 paths only
+       return Math.max(onlyRootGood, eitherLeftOrRightGood);
     }
 }
