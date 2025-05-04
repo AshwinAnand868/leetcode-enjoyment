@@ -14,33 +14,44 @@
  * }
  */
 class Solution {
+
+    public boolean isMirror(TreeNode left, TreeNode right) {
+        if(left == null && right == null) return true;
+        if(left == null || right == null) return false;
+
+        if(left.val != right.val) return false;
+
+        return isMirror(left.left, right.right) && isMirror(left.right, right.left);
+    }
+
     public boolean isSymmetric(TreeNode root) {
         if(root == null) return true;
+        return isMirror(root.left, root.right);
 
-        Queue<TreeNode> q1 = new LinkedList<>();
-        Queue<TreeNode> q2 = new LinkedList<>();
+        // Queue<TreeNode> q1 = new LinkedList<>();
+        // Queue<TreeNode> q2 = new LinkedList<>();
 
-        q1.offer(root.left);
-        q2.offer(root.right);
+        // q1.offer(root.left);
+        // q2.offer(root.right);
 
-        while(!q1.isEmpty() && !q2.isEmpty()) {
-            TreeNode node1 = q1.poll();
-            TreeNode node2 = q2.poll();
+        // while(!q1.isEmpty() && !q2.isEmpty()) {
+        //     TreeNode node1 = q1.poll();
+        //     TreeNode node2 = q2.poll();
 
-            if(node1 == null && node2 == null) continue;
+        //     if(node1 == null && node2 == null) continue;
 
-            if(node1 == null || node2 == null || node1.val != node2.val) {
-                return false;
-            }
+        //     if(node1 == null || node2 == null || node1.val != node2.val) {
+        //         return false;
+        //     }
 
-            q1.offer(node1.left);
-            q1.offer(node1.right);
+        //     q1.offer(node1.left);
+        //     q1.offer(node1.right);
 
-            q2.offer(node2.right);
-            q2.offer(node2.left);
+        //     q2.offer(node2.right);
+        //     q2.offer(node2.left);
 
-        }
+        // }
 
-        return true;
+        // return true;
     }
 }
