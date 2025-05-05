@@ -14,28 +14,31 @@
  * }
  */
 class Solution {
-    public boolean isCompleteTree(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>();
 
-        queue.offer(root);
-
-        boolean past = false;
-
-        while(!queue.isEmpty()) {
-            TreeNode node = queue.poll();
-
-            if(node == null) {
-                past = true;
-            } else {
-                if(past) {
-                    return false;
-                }
-
-                queue.offer(node.left);
-                queue.offer(node.right);
-            }
+    int countNodes(TreeNode root) {
+        if(root == null) {
+            return 0; // if root is null - no nodes
         }
 
-        return true;
+        return 1 + countNodes(root.right) + countNodes(root.left);
+    }
+
+    public boolean dfs(TreeNode root, int i, int totalNodes) {
+        if(root == null) {
+            return true; // an emmpty tree is already complete
+        }
+
+        if(i > totalNodes) {
+            return false;
+        }
+
+        return dfs(root.left, 2 * i, totalNodes) && dfs(root.right, 2 * i + 1, totalNodes);
+    }
+
+    public boolean isCompleteTree(TreeNode root) {
+        if(root == null) return true;
+        int totalNodes = countNodes(root);
+
+        return dfs(root, 1, totalNodes);
     }
 }
