@@ -17,35 +17,31 @@ class Solution {
     public List<String> binaryTreePaths(TreeNode root) {
         List<String> result = new ArrayList<>();
         if (root == null) return result;
-        helper(root, result, new ArrayList<>());
+
+        helper(root, new StringBuilder(), result);
         return result;
     }
 
-    public void helper(TreeNode root, List<String> result, List<Integer> path) {
-        if (root.left == null && root.right == null) {
-            path.add(root.val);
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < path.size(); ++i) {
-                sb.append(path.get(i));
-                if (i != path.size() - 1) {
-                    sb.append("->");
-                }
-            }
-            result.add(sb.toString());
-            path.remove(path.size() - 1);
+    public void helper(TreeNode node, StringBuilder path, List<String> result) {
+        int len = path.length();
+
+        if (node.left == null && node.right == null) {
+            path.append(node.val);
+            result.add(path.toString());
+            path.setLength(len);
             return;
         }
 
-        if (root.left != null) {
-            path.add(root.val);
-            helper(root.left, result, path);
-            path.remove(path.size() - 1);
+        path.append(node.val).append("->");
+
+        if (node.left != null) {
+            helper(node.left, path, result);
         }
 
-        if (root.right != null) {
-            path.add(root.val);
-            helper(root.right, result, path);
-            path.remove(path.size() - 1);
+        if (node.right != null) {
+            helper(node.right, path, result);
         }
+
+        path.setLength(len);
     }
 }
