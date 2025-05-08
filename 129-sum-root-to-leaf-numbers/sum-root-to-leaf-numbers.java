@@ -21,26 +21,21 @@ class Solution {
         
         if(root == null) return 0;
 
-        sumNumbersHelper(root, new StringBuilder());
+        sumNumbersHelper(root, 0);
         return maxSum;
     }
 
-    public void sumNumbersHelper(TreeNode root, StringBuilder sb) {
+    public void sumNumbersHelper(TreeNode root, int current) {
         if(root == null) return;
+        
+        current = current * 10 + root.val;
 
         if(root.left == null && root.right == null) {
-            sb.append(root.val);
-            int currNum = Integer.parseInt(sb.toString());
-            maxSum += currNum;
-            sb.setLength(sb.length() - 1);
+            maxSum += current;
             return;
         } 
 
-        sb.append(root.val);
-
-        sumNumbersHelper(root.left, sb);
-        sumNumbersHelper(root.right, sb);
-
-        sb.setLength(sb.length() - 1);
+        sumNumbersHelper(root.left, current);
+        sumNumbersHelper(root.right, current);
     }
 }
