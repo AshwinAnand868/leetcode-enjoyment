@@ -14,43 +14,28 @@
  * }
  */
 class Solution {
+    private int count = 0;
+
     public int averageOfSubtree(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        int count = 0;
-
-        while(!queue.isEmpty()) {
-            TreeNode curr = queue.poll();
-
-            int avg = getSubtreeAvg(curr);
-            if (curr.val == avg) {
-                count++;
-            }
-
-            if(curr.left != null) queue.add(curr.left);
-            if(curr.right != null) queue.add(curr.right);
-        }
-
+        dfs(root);
         return count;
     }
 
-    private int getSubtreeAvg(TreeNode root) {
-        int[] sum = {0};
-        int[] count = {0};
+    public int[] dfs(TreeNode root) {
+        if(root == null) return new int[] {0,0};
 
-        getSumSubtreeAndCountNodes(root, sum, count);
+        int[] left = dfs(root.left);
+        int[] right = dfs(root.right);
 
-        return (int) sum[0]/count[0];
-    }
+        int nodesCount = left[0] + right[0] + 1;
+        int sum = left[1] + right[1] + root.val;
 
-    private void getSumSubtreeAndCountNodes(TreeNode root, int[] sum, int[] count) {
-        if(root == null) return;
+        int avg = sum / nodesCount;
 
-        sum[0] += root.val;
-        count[0]++;
+        if(root.val == avg) {
+            count++;
+        }
 
-        getSumSubtreeAndCountNodes(root.left, sum, count);
-        getSumSubtreeAndCountNodes(root.right, sum, count);
+        return new int[] {nodesCount, sum};
     }
 }
