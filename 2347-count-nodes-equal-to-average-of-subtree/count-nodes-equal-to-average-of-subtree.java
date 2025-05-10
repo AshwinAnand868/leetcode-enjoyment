@@ -14,6 +14,7 @@
  * }
  */
 class Solution {
+    // story se code - recursive leap of faith
     private int count = 0;
 
     public int averageOfSubtree(TreeNode root) {
