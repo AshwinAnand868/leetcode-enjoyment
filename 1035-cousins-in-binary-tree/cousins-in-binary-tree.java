@@ -17,33 +17,38 @@ class Solution {
     public boolean isCousins(TreeNode root, int x, int y) {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-        Map<Integer, int[]> map = new HashMap<>();
-        map.put(root.val, new int[]{-1, 0}); 
-        int level = 0;
 
         while (!queue.isEmpty()) {
             int size = queue.size();
+            TreeNode xParent = null, yParent = null;
 
-            for (int i = 0; i < size; ++i) {
+            for (int i = 0; i < size; i++) {
                 TreeNode curr = queue.poll();
 
                 if (curr.left != null) {
-                    map.put(curr.left.val, new int[]{curr.val, level + 1});
+                    if (curr.left.val == x) xParent = curr;
+                    if (curr.left.val == y) yParent = curr;
                     queue.offer(curr.left);
                 }
 
                 if (curr.right != null) {
-                    map.put(curr.right.val, new int[]{curr.val, level + 1});
+                    if (curr.right.val == x) xParent = curr;
+                    if (curr.right.val == y) yParent = curr;
                     queue.offer(curr.right);
                 }
             }
 
-            level++;
+            // Both found at same level
+            if (xParent != null && yParent != null) {
+                return xParent != yParent; // same level, different parent
+            }
+
+            // Found only one at this level
+            if (xParent != null || yParent != null) {
+                return false;
+            }
         }
 
-        int[] xArr = map.get(x);
-        int[] yArr = map.get(y);
-
-        return xArr[0] != yArr[0] && xArr[1] == yArr[1];
+        return false;
     }
 }
