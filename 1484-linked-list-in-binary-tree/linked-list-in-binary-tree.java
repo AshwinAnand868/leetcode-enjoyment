@@ -26,8 +26,8 @@
 class Solution {
 
     public boolean check(ListNode head, TreeNode root) {
-        if(head == null) return true; // we have found the linked list inside
-        if(root == null) return false; // we could not find the list in this subtree
+        if(head == null) return true;
+        if(root == null) return false;
 
         if(head.val != root.val) {
             return false;
@@ -38,7 +38,7 @@ class Solution {
 
     public boolean isSubPath(ListNode head, TreeNode root) {
         if(root == null) {
-            return false; // we have reached the end of this subtree
+            return false;
         }
 
         return check(head, root) || isSubPath(head, root.left) || isSubPath(head, root.right);
