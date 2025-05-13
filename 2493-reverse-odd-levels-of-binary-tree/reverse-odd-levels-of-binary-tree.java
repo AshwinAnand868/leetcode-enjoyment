@@ -1,6 +1,21 @@
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
+ * int val;
+ * TreeNode left;
+ * TreeNode right;
+ * TreeNode() {}
+ * TreeNode(int val) { this.val = val; }
+ * TreeNode(int val, TreeNode left, TreeNode right) {
+ * this.val = val;
+ * this.left = left;
+ * this.right = right;
+ * }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
  *     int val;
  *     TreeNode left;
  *     TreeNode right;
@@ -13,48 +28,63 @@
  *     }
  * }
  */
+import java.util.*;
+
 class Solution {
     public TreeNode reverseOddLevels(TreeNode root) {
-        int level = 0;
-        Queue<TreeNode> queue = new ArrayDeque<>();
+        if (root == null) return null;
+
+        Map<Integer, Stack<Integer>> levelMap = new HashMap<>();
+
+        // First BFS to collect values at odd levels
+        Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-        
-        while(!queue.isEmpty()) {
-            int n = queue.size();
-            ArrayList<TreeNode> list = new ArrayList<>(); // all nodes per level
-            while(n-- > 0) {
-                TreeNode node = queue.peek();
-                queue.poll();
-                
-                list.add(node);
-                
-                if(node.left != null) {
-                    queue.offer(node.left);
+        int level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Stack<Integer> stack = new Stack<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (level % 2 == 1) {
+                    stack.push(node.val);  // Store in stack to reverse later
                 }
-                
-                if(node.right != null) {
-                    queue.offer(node.right);
-                }
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
             }
-            
-            if(level % 2 == 1) {
-               int i = 0;
-                int j = list.size() - 1;
-                
-                while(i < j) {
-                    int temp = list.get(i).val;
-                    list.get(i).val = list.get(j).val;
-                    list.get(j).val = temp;
-                    
-                    i++;
-                    j--;
-                }
+
+            if (level % 2 == 1) {
+                levelMap.put(level, stack);
             }
-            
+
             level++;
-        } 
-        
+        }
+
+        // Second BFS to update odd levels from stack
+        queue.offer(root);
+        level = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (level % 2 == 1) {
+                    // Pop from corresponding stack
+                    node.val = levelMap.get(level).pop();
+                }
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            level++;
+        }
+
         return root;
-        
     }
 }
