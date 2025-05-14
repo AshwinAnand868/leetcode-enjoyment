@@ -14,52 +14,23 @@
  * }
  */
 class Solution {
-    public boolean isBalanced(TreeNode root) { 
-        return checkHeightBalanced(root) != -1;
-        // boolean[] continuee = {true};
-        // helper(root, continuee);
-        // return continuee[0];
+    public boolean isBalanced(TreeNode root) {
+        return checkBalancedTree(root) != -1;
     }
 
-    public int checkHeightBalanced(TreeNode root) {
+    public int checkBalancedTree(TreeNode root) {
         if(root == null) return 0;
 
-        int lh = checkHeightBalanced(root.left);
-        if(lh == -1) return -1;
 
-        int rh = checkHeightBalanced(root.right);
+        int lh = checkBalancedTree(root.left);
+        if(lh == -1) return -1;
+        int rh = checkBalancedTree(root.right);
         if(rh == -1) return -1;
 
         if(Math.abs(lh - rh) > 1) {
-            return -1;
+            return -1; // mark as not balanced
         }
 
-        return 1 + Math.max(lh, rh);
-    }
-
-    public void helper(TreeNode root, boolean[] continuee) {
-        if(root == null) return;
-
-        if(continuee[0] == false) {
-            return;
-        }
-
-        int lh = maxDepth(root.left);
-        int rh = maxDepth(root.right);
-
-        if(Math.abs(lh - rh) > 1) {
-            continuee[0] = false;
-            return;
-        }
-
-        helper(root.left, continuee);
-        helper(root.right, continuee);
-    }
-
-    public int maxDepth(TreeNode root) {
-        if(root == null) return 0;
-        int lh = maxDepth(root.left);
-        int rh = maxDepth(root.right);
         return 1 + Math.max(lh, rh);
     }
 }
