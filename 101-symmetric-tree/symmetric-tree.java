@@ -17,18 +17,23 @@ class Solution {
     public boolean isSymmetric(TreeNode root) {
         if(root == null) return true;
 
-        return isSymmetricHelper(root.left, root.right);
-    }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root.left);
+        queue.offer(root.right);
 
-    public boolean isSymmetricHelper(TreeNode left, TreeNode right) {
-        if(left == null && right == null) return true;
+        while(!queue.isEmpty()) {
+           TreeNode left = queue.poll();
+           TreeNode right = queue.poll();
 
-        if(left == null || right == null) return false;
+           if(left == null && right == null) continue;
+           if(left == null || right == null || left.val != right.val) return false;
 
-        if(left.val != right.val) {
-            return false;
+           queue.offer(left.left);
+           queue.offer(right.right);
+           queue.offer(left.right);
+           queue.offer(right.left);
         }
 
-        return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
+        return true;
     }
 }
