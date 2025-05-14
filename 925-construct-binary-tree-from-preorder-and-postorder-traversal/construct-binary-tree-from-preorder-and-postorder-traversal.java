@@ -14,8 +14,12 @@
  * }
  */
 class Solution {
+    Map<Integer, Integer> postorderMap = new HashMap<>();
     public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
         int n = preorder.length;
+        for(int i = 0; i < postorder.length; ++i) {
+            postorderMap.put(postorder[i], i);
+        }
         return construct(0, n - 1, 0, preorder, postorder);
     }
 
@@ -30,11 +34,11 @@ class Solution {
 
         int nextVal = preorder[preorderStart + 1];
 
-        int j = 0;
+        int j = postorderMap.get(nextVal);
 
-        while(postorder[j] != nextVal) {
-            j++;
-        }
+        // while(postorder[j] != nextVal) {
+        //     j++;
+        // }
 
         int numNodes = j - postorderStart + 1;
 
