@@ -15,55 +15,54 @@
  */
 class Solution {
 
-    public void buildGraphAndStoreLeafNodes(TreeNode node, TreeNode parent, Map<TreeNode, List<TreeNode>> adjList, Set<TreeNode> leafNodes) {
+    public void buildGraphAndCollectLeafNodes(Map<TreeNode, List<TreeNode>> adjList, Set<TreeNode> leaves, TreeNode node, TreeNode neighbour) {
         if(node == null) return;
+
+        if(node.left == null && node.right == null) {
+            leaves.add(node);
+        }
 
         adjList.putIfAbsent(node, new ArrayList<>());
 
-        if(node.left == null && node.right == null) {
-            leafNodes.add(node);
+        if(neighbour != null) {
+            adjList.putIfAbsent(neighbour, new ArrayList<>());
+            adjList.get(node).add(neighbour);
+            adjList.get(neighbour).add(node);
         }
 
-        if(parent != null) {
-            adjList.putIfAbsent(parent, new ArrayList<>());
-            adjList.get(node).add(parent);
-            adjList.get(parent).add(node);
-        }
-
-        buildGraphAndStoreLeafNodes(node.left, node, adjList, leafNodes);
-        buildGraphAndStoreLeafNodes(node.right, node, adjList, leafNodes);
+        buildGraphAndCollectLeafNodes(adjList, leaves, node.left, node);
+        buildGraphAndCollectLeafNodes(adjList, leaves, node.right, node);
     }
-
 
     public int countPairs(TreeNode root, int distance) {
         Map<TreeNode, List<TreeNode>> adjList = new HashMap<>();
         Set<TreeNode> leafNodes = new HashSet<>();
 
-        buildGraphAndStoreLeafNodes(root, null, adjList, leafNodes);
+        buildGraphAndCollectLeafNodes(adjList, leafNodes, root, null);
 
         int count = 0;
 
-
-        for(TreeNode leafNode : leafNodes) {
+        for(TreeNode currentLeaf : leafNodes) {
             Queue<TreeNode> queue = new LinkedList<>();
             Set<TreeNode> visited = new HashSet<>();
-            queue.offer(leafNode);
-            visited.add(leafNode);
+            queue.offer(currentLeaf);
+            visited.add(currentLeaf);
 
-            for(int level = 0; level <= distance; level++) {
+            for(int level = 0; level <= distance; ++level) {
                 int size = queue.size();
 
                 while(size-- > 0) {
-                    TreeNode curr = queue.poll();
+                    TreeNode node = queue.poll();
 
-                    if(curr != leafNode && leafNodes.contains(curr)) {
+                    // a leaf node but it is not equal to current leaf node
+                    if(node != currentLeaf && leafNodes.contains(node)) {
                         count++;
                     }
 
-                    for(TreeNode neighbour : adjList.getOrDefault(curr, new ArrayList<>())) {
+                    for(TreeNode neighbour : adjList.getOrDefault(node, new ArrayList<>())) {
                         if(!visited.contains(neighbour)) {
                             visited.add(neighbour);
-                            queue.offer(neighbour);
+                            queue.offer(neighbour);    
                         }
                     }
                 }
@@ -71,6 +70,6 @@ class Solution {
         }
 
         return count / 2;
-
+   
     }
 }
