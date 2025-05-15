@@ -14,48 +14,85 @@
  * }
  */
 class Solution {
-
-    public void buildGraph(TreeNode node, TreeNode parent, Map<Integer, List<Integer>> graph) {
-        if(node == null) return;
-
-        graph.putIfAbsent(node.val, new ArrayList<>());
-
-        if(parent != null) {
-            graph.get(node.val).add(parent.val);
-            graph.get(parent.val).add(node.val);
-        }
-
-        buildGraph(node.left, node, graph);
-        buildGraph(node.right, node, graph);
-    }
+    HashMap<TreeNode, TreeNode> childToParent = new HashMap<>();
 
     public int amountOfTime(TreeNode root, int start) {
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        buildGraph(root, null, graph);
 
-        Queue<Integer> queue = new LinkedList<>();
-        Set<Integer> visited = new HashSet<>();
+        if(root == null) return 0;
+        if(root.left == null && root.right == null) return 0;
 
-        queue.offer(start);
-        visited.add(start);
+        populateChildToParentMap(root);
 
-        int minutes = -1;
+        TreeNode st = findStartNode(root, start);
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(st);
+
+        Set<TreeNode> infected = new HashSet<>();
+        infected.add(st);
+
+        int minutes = 0;
 
         while(!queue.isEmpty()) {
             int size = queue.size();
-            minutes++;
 
             for(int i = 0; i < size; ++i) {
-                int curr = queue.poll();
-                for(int neighbour : graph.get(curr)) {
-                    if(!visited.contains(neighbour)) {
-                        visited.add(neighbour);
-                        queue.offer(neighbour);
-                    }
+                TreeNode curr = queue.poll();
+
+                if(curr.left != null && !infected.contains(curr.left)) {
+                    queue.offer(curr.left);
+                    infected.add(curr.left);
                 }
+
+                if(curr.right != null && !infected.contains(curr.right)) {
+                    queue.offer(curr.right);
+                    infected.add(curr.right);
+                }
+
+                if(childToParent.get(curr) != null && !infected.contains(childToParent.get(curr))) {
+                    queue.offer(childToParent.get(curr));
+                    infected.add(childToParent.get(curr));
+                }
+            }
+            if(!queue.isEmpty()) {
+                minutes++;
             }
         }
 
         return minutes;
+    }
+
+    private TreeNode findStartNode(TreeNode root, int start) {
+        if(root == null) return null;
+        if(root.val == start) {
+            return root;
+        }
+
+        // find in the left subtree
+        TreeNode leftResult  = findStartNode(root.left, start);
+        if(leftResult  != null) { // start node is this left one
+            return leftResult;
+        }
+
+        // Else search in the right subtree
+        return findStartNode(root.right, start);
+    }
+
+    private void populateChildToParentMap(TreeNode root) {
+        if(root == null) {
+            return;
+        }
+
+        if(root.left != null) {
+            childToParent.put(root.left, root);
+        }
+
+
+        if(root.right != null) {
+            childToParent.put(root.right, root);
+        }
+
+        populateChildToParentMap(root.left);
+        populateChildToParentMap(root.right);
     }
 }
