@@ -14,44 +14,29 @@
  * }
  */
 class Solution {
-
-    long SUM = 0;
-    long maxP = 0;
-    final int MOD = 1_000_000_007;
+    long maxProduct = 0;
 
     public int maxProduct(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-
-        SUM = getTotalSum(root);
-
-        getMaxProduct(root);
-
-        return (int)(maxP % MOD);
+        int totalSum = sumTotalNodes(root);
+        calculateMaxProduct(root, totalSum);
+        return (int)(maxProduct % 1_000_000_007);
     }
 
-    public long getTotalSum(TreeNode root) {
+    private int sumTotalNodes(TreeNode root) {
         if (root == null) return 0;
-
-        long left = getTotalSum(root.left);
-        long right = getTotalSum(root.right);
-
-        return root.val + left + right;
+        return root.val + sumTotalNodes(root.left) + sumTotalNodes(root.right);
     }
 
-    public long getMaxProduct(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
+    private int calculateMaxProduct(TreeNode node, int totalSum) {
+        if (node == null) return 0;
 
-        long leftSum = getMaxProduct(root.left);
-        long rightSum = getMaxProduct(root.right);
+        int leftSum = calculateMaxProduct(node.left, totalSum);
+        int rightSum = calculateMaxProduct(node.right, totalSum);
 
-        long subtreeSum = root.val + leftSum + rightSum;
-        long complement = SUM - subtreeSum;
+        int subtreeSum = leftSum + rightSum + node.val;
+        int complement = totalSum - subtreeSum;
 
-        maxP = Math.max(maxP, subtreeSum * complement);
+        maxProduct = Math.max(maxProduct, (long)subtreeSum * complement);
 
         return subtreeSum;
     }
