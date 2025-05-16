@@ -14,9 +14,7 @@
  * }
  */
 class Solution {
-    // story se code - recursive leap of faith
-    private int count = 0;
-
+    int count = 0;
     public int averageOfSubtree(TreeNode root) {
         dfs(root);
         return count;
@@ -28,8 +26,8 @@ class Solution {
         int[] left = dfs(root.left);
         int[] right = dfs(root.right);
 
-        int nodesCount = left[0] + right[0] + 1;
-        int sum = left[1] + right[1] + root.val;
+        int nodesCount = 1 + left[0] + right[0];
+        int sum = root.val + left[1] + right[1];
 
         int avg = sum / nodesCount;
 
@@ -37,6 +35,6 @@ class Solution {
             count++;
         }
 
-        return new int[] {nodesCount, sum};
+        return new int[]{nodesCount, sum};
     }
 }
