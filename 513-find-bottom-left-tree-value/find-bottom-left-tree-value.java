@@ -32,9 +32,29 @@ class Solution {
         dfs(root.right, depth + 1);
     }
 
+    public int bfs(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int leftMostVal = 0;
+        
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            leftMostVal = queue.peek().val;
+
+            for(int i = 0; i < size; ++i) {
+                TreeNode curr = queue.poll();
+
+                if(curr.left != null) queue.offer(curr.left);
+                if(curr.right != null) queue.offer(curr.right);
+            }
+        }
+
+        return leftMostVal;
+    }
+
     public int findBottomLeftValue(TreeNode root) {
-        dfs(root, 1);
-        return leftMostValue;
+        return bfs(root);
+        // return leftMostValue;
         // int bottomLeft = -1;
 
         // if(root == null) return -1;
