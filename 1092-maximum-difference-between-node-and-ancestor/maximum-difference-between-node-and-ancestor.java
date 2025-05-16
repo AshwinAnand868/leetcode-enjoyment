@@ -14,25 +14,22 @@
  * }
  */
 class Solution {
-    int maxDiff = 0;
-
     public int maxAncestorDiff(TreeNode root) {
-        if (root == null) return 0;
-        dfs(root, root.val, root.val);
-        return maxDiff;
+        return dfs(root, root.val, root.val);
     }
 
-    private void dfs(TreeNode node, int currMin, int currMax) {
-        if (node == null) return;
+    // do dfs while keeping track of the max and min encountered in the path
+    public int dfs(TreeNode root, int max, int min) {
+        if(root == null) {
+            return max - min;
+        }
 
-        // Update min and max seen so far
-        currMin = Math.min(currMin, node.val);
-        currMax = Math.max(currMax, node.val);
+        max = Math.max(max, root.val);
+        min = Math.min(min, root.val);
 
-        maxDiff = Math.max(maxDiff, currMax - currMin);
+        int left = dfs(root.left, max, min);
+        int right = dfs(root.right, max, min);
 
-        // Recurse left and right
-        dfs(node.left, currMin, currMax);
-        dfs(node.right, currMin, currMax);
+        return Math.max(left, right);
     }
 }
