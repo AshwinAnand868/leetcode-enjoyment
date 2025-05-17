@@ -18,37 +18,53 @@ class Solution {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
 
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            TreeNode xParent = null, yParent = null;
+        TreeNode xParent = null, yParent = null;
+        int xDepth = -1, yDepth = -1;
+        int depth = 0;
+        boolean breakLoop = false;
 
-            for (int i = 0; i < size; i++) {
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+
+            for(int i = 0; i < size; ++i) {
                 TreeNode curr = queue.poll();
 
-                if (curr.left != null) {
-                    if (curr.left.val == x) xParent = curr;
-                    if (curr.left.val == y) yParent = curr;
+                if(curr.right != null) {
+                    if(curr.right.val == x) {
+                        xParent = curr;
+                        xDepth = depth;
+                    }
+                    if(curr.right.val == y) {
+                        yParent = curr;
+                        yDepth = depth;
+                    }
+                    queue.offer(curr.right);
+                }
+
+                if(curr.left != null) {
+                    if(curr.left.val == x) {
+                        xParent = curr;
+                        xDepth = depth;
+                    }
+                    if(curr.left.val == y) {
+                        yParent = curr;
+                        yDepth = depth;
+                    }
                     queue.offer(curr.left);
                 }
 
-                if (curr.right != null) {
-                    if (curr.right.val == x) xParent = curr;
-                    if (curr.right.val == y) yParent = curr;
-                    queue.offer(curr.right);
+                if(xParent != null && yParent != null) {
+                    breakLoop = true;
                 }
             }
 
-            // Both found at same level
-            if (xParent != null && yParent != null) {
-                return xParent != yParent; // same level, different parent
+            if(breakLoop) {
+                break;
             }
 
-            // Found only one at this level
-            if (xParent != null || yParent != null) {
-                return false;
-            }
+            depth++;
         }
-
-        return false;
+        if(xParent == null || yParent == null) return false;
+        return xParent.val != yParent.val && xDepth == yDepth;
     }
 }
