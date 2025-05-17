@@ -14,55 +14,55 @@
  * }
  */
 class Solution {
-    
+
     public int minimumOperations(TreeNode root) {
-        if(root == null) return 0;
-
         Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
+        queue.add(root);
+        int totalSwaps = 0;
 
-        int swaps = 0;
+        // Process tree level by level using BFS
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            int[] levelValues = new int[levelSize];
 
-        while(!queue.isEmpty()) {
-            int size = queue.size();
-            int[] levelValues = new int[size];
+            // Store values of current level and add children to queue
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                levelValues[i] = node.val;
 
-            for(int i = 0; i < size; ++i) {
-                TreeNode curr = queue.poll();
-
-                levelValues[i] = curr.val;
-
-                if(curr.left != null) queue.offer(curr.left);
-                if(curr.right != null) queue.offer(curr.right);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
             }
 
-            swaps += getMinSwaps(levelValues);
+            // Add minimum swaps needed for current level
+            totalSwaps += getMinSwaps(levelValues);
         }
-
-        return swaps;
+        return totalSwaps;
     }
 
+    // Calculate minimum swaps needed to sort an array
     private int getMinSwaps(int[] original) {
+        int swaps = 0;
         int[] target = original.clone();
         Arrays.sort(target);
 
-        Map<Integer, Integer> valToPosition = new HashMap<>();
-
-        for(int i = 0; i < original.length; ++i) {
-            valToPosition.put(original[i], i);
+        // Map to track current positions of values
+        Map<Integer, Integer> pos = new HashMap<>();
+        for (int i = 0; i < original.length; i++) {
+            pos.put(original[i], i);
         }
 
-        int swaps = 0;
-        for(int i = 0; i < original.length; ++i) {
-            if(original[i] != target[i]) {
+        // For each position, swap until correct value is placed
+        for (int i = 0; i < original.length; i++) {
+            if (original[i] != target[i]) {
                 swaps++;
 
-                int correctPosition = valToPosition.get(target[i]);
-                valToPosition.put(original[i], correctPosition);
-                original[correctPosition] = original[i];
+                // Update position of swapped values
+                int curPos = pos.get(target[i]);
+                pos.put(original[i], curPos);
+                original[curPos] = original[i];
             }
         }
-
         return swaps;
     }
 }
