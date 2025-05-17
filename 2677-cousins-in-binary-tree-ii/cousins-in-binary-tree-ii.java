@@ -15,55 +15,61 @@
  */
 class Solution {
     public TreeNode replaceValueInTree(TreeNode root) {
-        if (root == null) return null;
-
-        Map<Integer, Integer> levelSum = new HashMap<>();
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         int level = 0;
+        Map<Integer, Integer> levelSum = new HashMap<>();
 
-        // First BFS to compute sum at each level
-        while (!queue.isEmpty()) {
+        while(!queue.isEmpty()) {
             int size = queue.size();
             int sum = 0;
-            for (int i = 0; i < size; ++i) {
-                TreeNode curr = queue.poll();
-                if (curr.left != null) {
-                    sum += curr.left.val;
-                    queue.offer(curr.left);
+
+            for(int i = 0; i < size; ++i) {
+                TreeNode node = queue.poll();
+
+                if(node.left != null) {
+                    queue.offer(node.left);
+                    sum += node.left.val;
                 }
-                if (curr.right != null) {
-                    sum += curr.right.val;
-                    queue.offer(curr.right);
+
+                if(node.right != null) {
+                    queue.offer(node.right);
+                    sum += node.right.val;
                 }
             }
-            levelSum.put(level + 1, sum); // children are on next level
+
+            levelSum.put(level + 1, sum);
             level++;
         }
 
-        // Second BFS to update node values
         queue.offer(root);
         root.val = 0;
         level = 0;
 
-        while (!queue.isEmpty()) {
+        while(!queue.isEmpty()) {
             int size = queue.size();
 
-            for (int i = 0; i < size; ++i) {
+            for(int i = 0; i < size; ++i) {
                 TreeNode curr = queue.poll();
+                int levelKaSum = levelSum.get(level + 1);
 
-                int nextLevelSum = levelSum.getOrDefault(level + 1, 0);
-                int siblingSum = 0;
+                int siblingKaSum = 0;
 
-                if (curr.left != null) siblingSum += curr.left.val;
-                if (curr.right != null) siblingSum += curr.right.val;
+                if(curr.left != null) {
+                    siblingKaSum += curr.left.val;
+                }
 
-                if (curr.left != null) {
-                    curr.left.val = nextLevelSum - siblingSum;
+                if(curr.right != null) {
+                    siblingKaSum += curr.right.val;
+                }
+
+                if(curr.left != null) {
+                    curr.left.val = levelKaSum - siblingKaSum;
                     queue.offer(curr.left);
                 }
-                if (curr.right != null) {
-                    curr.right.val = nextLevelSum - siblingSum;
+
+                if(curr.right != null) {
+                    curr.right.val = levelKaSum - siblingKaSum;
                     queue.offer(curr.right);
                 }
             }
