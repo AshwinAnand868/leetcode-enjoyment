@@ -1,3 +1,27 @@
+class Pair {
+    int position, jump;
+    Pair(int position, int jump) {
+        this.position = position;
+        this.jump = jump;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(!(o instanceof Pair)) {
+            return false;
+        }
+
+        Pair pair = (Pair) o;
+        return this.position == pair.position && this.jump == pair.jump;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, jump);
+    }
+}
+
 class Solution {
     public boolean canCross(int[] stones) {
         Set<Integer> stonesSet = new HashSet<>();
@@ -6,17 +30,17 @@ class Solution {
             stonesSet.add(integer);
         }
 
-        Map<String, Boolean> memo = new HashMap<>();
+        Map<Pair, Boolean> memo = new HashMap<>();
 
         return canCrossHelper(stonesSet, stones[stones.length - 1], 0, 0, memo);
     }
 
-    public boolean canCrossHelper(Set<Integer> stonesSet, int target, int position, int lastJump, Map<String, Boolean> memo) {
+    public boolean canCrossHelper(Set<Integer> stonesSet, int target, int position, int lastJump, Map<Pair, Boolean> memo) {
         if(position == target) { // frog reached the target (last) stone
             return true;
         }
 
-        String key = position + "," + lastJump;
+        Pair key = new Pair(position, lastJump);
 
         if(memo.containsKey(key)) {
             return memo.get(key);
