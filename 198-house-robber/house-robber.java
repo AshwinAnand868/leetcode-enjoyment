@@ -2,8 +2,21 @@ class Solution {
     public int rob(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
-        Arrays.fill(dp, -1);
-        return robHelper(0, nums, dp);
+        
+        dp[0] = nums[0]; // populate the base case
+
+        for(int i = 1; i < n; ++i) {
+            int pick = nums[i];
+
+            if(i > 1) {
+                pick += dp[i - 2];
+            }
+            int nonPick = dp[i - 1];
+
+            dp[i] = Math.max(pick, nonPick);
+        }
+
+        return dp[n - 1];
     }
 
     public int robHelper(int index, int[] nums, int[] dp) {
