@@ -1,32 +1,37 @@
 class Solution {
     public int rob(int[] nums) {
         int n = nums.length;
+
         if(n == 0) return 0;
         if(n == 1) return nums[0];
 
         int[] memo1 = new int[n];
-        for (int i = 0; i < n; i++) memo1[i] = -1;
-        int max1 = robLinear(nums, 0, n - 2, memo1);
+        Arrays.fill(memo1, -1);
+        int amountRobbed1 = robHelper(0, n - 2, nums, memo1);
 
         int[] memo2 = new int[n];
-        for (int i = 0; i < n; i++) memo2[i] = -1;
-        int max2 = robLinear(nums, 1, n - 1, memo2);
+        Arrays.fill(memo2, -1);
+        int amountRobbed2 = robHelper(1, n - 1, nums, memo2);
 
-        return Math.max(max1, max2);
+        return Math.max(amountRobbed1, amountRobbed2);
     }
 
-    public int robLinear(int[] nums, int start, int end, int[] memo) {
+    public int robHelper(int start, int end, int[] moneyArray, int[] memo) {
         if(start > end) {
             return 0;
         }
 
-        if(memo[start] != -1) return memo[start];
+        if(start == end) {
+            return moneyArray[start];
+        }
 
-        int pick = nums[start] + robLinear(nums, start + 2, end, memo);
-        int nonPick = robLinear(nums, start + 1, end, memo);
+        if(memo[start] != -1) {
+            return memo[start];
+        }
 
-        memo[start] = Math.max(pick, nonPick);
+        int pick = moneyArray[start] + robHelper(start + 2, end, moneyArray, memo);
+        int nonPick = 0 + robHelper(start + 1, end, moneyArray, memo);
 
-        return memo[start];
+        return memo[start] = Math.max(pick, nonPick);
     }
 }
