@@ -1,64 +1,25 @@
-class Pair {
-    int position, jump;
-    Pair(int position, int jump) {
-        this.position = position;
-        this.jump = jump;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(!(o instanceof Pair)) {
-            return false;
-        }
-
-        Pair pair = (Pair) o;
-        return this.position == pair.position && this.jump == pair.jump;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(position, jump);
-    }
-}
-
 class Solution {
     public boolean canCross(int[] stones) {
-        Set<Integer> stonesSet = new HashSet<>();
 
-        for(int integer: stones) {
-            stonesSet.add(integer);
+        // store stone with jump sizes to reach that stone
+        Map<Integer, Set<Integer>> dp = new HashMap<>();
+
+        for(int stone : stones) {
+            dp.put(stone, new HashSet<>()); // initially empty to reach each stone
         }
 
-        Map<Pair, Boolean> memo = new HashMap<>();
+        dp.get(0).add(0);
 
-        return canCrossHelper(stonesSet, stones[stones.length - 1], 0, 0, memo);
-    }
-
-    public boolean canCrossHelper(Set<Integer> stonesSet, int target, int position, int lastJump, Map<Pair, Boolean> memo) {
-        if(position == target) { // frog reached the target (last) stone
-            return true;
-        }
-
-        Pair key = new Pair(position, lastJump);
-
-        if(memo.containsKey(key)) {
-            return memo.get(key);
-        }
-
-        for(int jump = lastJump - 1; jump <= lastJump + 1; jump++) {
-            if(jump > 0) {
-                int nextPosition = position + jump; // nextPosition
-                if (stonesSet.contains(nextPosition)) {
-                    if (canCrossHelper(stonesSet, target, nextPosition, jump, memo)) {
-                        memo.put(key, true);
-                        return true;
+        for(int stone : stones) {
+            for(int jump : dp.get(stone)) {
+                for(int step = jump - 1; step <= jump + 1; step++) {
+                    if(step > 0 && dp.containsKey(stone + step)) {
+                        dp.get(stone + step).add(step);
                     }
                 }
             }
         }
 
-        memo.put(key, false);
-        return false;
+        return !dp.get(stones[stones.length - 1]).isEmpty();
     }
 }
