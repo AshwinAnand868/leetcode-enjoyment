@@ -1,27 +1,22 @@
 class Solution {
+
     public int minimumTotal(List<List<Integer>> triangle) {
         int m = triangle.size();
-        int[][] memo = new int[m][m + 1];
+        int[][] dp = new int[m][m];
 
-        for (int[] row : memo) {
-            Arrays.fill(row, -1); // mark all as uncomputed
+        for (int j = 0; j < triangle.get(m - 1).size(); ++j) {
+            dp[m - 1][j] = triangle.get(m - 1).get(j);
         }
 
-        return helper(0, 0, m, triangle, memo);
-    }
-
-    public int helper(int i, int j, int m, List<List<Integer>> triangle, int[][] memo) {
-        if(i == m - 1) { // after reaching last row
-            return triangle.get(i).get(j);
+        for(int i = m - 2; i >= 0; i--) {
+            for(int j = 0; j <= i; ++j) {
+                int num = triangle.get(i).get(j);
+                int down = num + dp[i + 1][j];
+                int diagonal = num + dp[i + 1][j + 1];
+                dp[i][j] = Math.min(down, diagonal);
+            }
         }
 
-        if (memo[i][j] != -1) {
-            return memo[i][j]; // use cached result
-        }
-
-        int down = helper(i + 1, j, m, triangle, memo);
-        int diagonal = helper(i + 1, j + 1, m, triangle, memo);
-
-        return memo[i][j] = triangle.get(i).get(j) + Math.min(down, diagonal);
+        return dp[0][0];
     }
 }
