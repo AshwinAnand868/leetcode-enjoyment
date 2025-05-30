@@ -1,21 +1,22 @@
 class Solution {
-    int totalSum;
-
     public int findTargetSumWays(int[] nums, int target) {
-        // Map<String, Integer> map = new HashMap<>();
-        
-        totalSum = Arrays.stream(nums).sum();
+        int totalSum = 0;
+
+        for(int num : nums) {
+            totalSum += num;
+        }
 
         int[][] memo = new int[nums.length][2 * totalSum + 1];
-        for(int[] row: memo) {
+
+        for(int[] row : memo) {
             Arrays.fill(row, -1);
         }
-        
-        return calcWays(nums, 0, 0, target, memo);
+
+        return calcWays(nums, target, 0, 0, memo, totalSum);
     }
 
-    private int calcWays(int[] nums, int currentIdx, int currentSum, int target, int[][] memo) {
-        if(currentIdx == nums.length) {
+    public int calcWays(int[] nums, int target, int currentSum, int index, int[][] memo, int totalSum) {
+        if(index == nums.length) {
             if(currentSum == target) {
                 return 1;
             } else {
@@ -23,21 +24,13 @@ class Solution {
             }
         }
 
-        // String key = Integer.toString(currentIdx) + "_" + Integer.toString(currentSum);
-        if(memo[currentIdx][currentSum + totalSum] != -1) {
-            return memo[currentIdx][currentSum + totalSum]; // just a state
+        if(memo[index][currentSum + totalSum] != -1) {
+            return memo[index][currentSum + totalSum];
         }
 
-        // if(map.containsKey(key)) {
-        //     return map.get(key);
-        // }
+        int plus = calcWays(nums, target, currentSum + nums[index], index + 1, memo, totalSum);
+        int minus = calcWays(nums, target, currentSum - nums[index], index + 1, memo, totalSum);
 
-        // exploring both possibilities for each integer
-        int plus = calcWays(nums, currentIdx + 1, currentSum + nums[currentIdx], target, memo);
-        int minus = calcWays(nums, currentIdx + 1, currentSum - nums[currentIdx], target, memo);
-
-        // map.put(key, plus + minus);
-        memo[currentIdx][currentSum + totalSum] = plus + minus;
-        return memo[currentIdx][currentSum + totalSum];
+        return memo[index][currentSum + totalSum] = plus + minus;
     }
 }
