@@ -1,58 +1,31 @@
 class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int n = coins.length;
+        int[][] dp = new int[n][amount + 1];
 
-    private int minCoins = Integer.MAX_VALUE;
-
-    public int backtrack(int[] coins, int amount, int index, int[][] dp) {
-        if(amount == 0) { 
-            return 0;
+        // Initialize dp with -1 (uncomputed)
+        for (int[] row : dp) {
+            Arrays.fill(row, -1);
         }
 
-        if(amount < 0 || index >= coins.length) return Integer.MAX_VALUE;
-
-        if(dp[index][amount] != -1) return dp[index][amount];
-
-        int take = backtrack(coins, amount - coins[index], index, dp);
-        if(take != Integer.MAX_VALUE) {
-            take += 1;
-        }
-
-        int skip = backtrack(coins, amount, index + 1, dp);
-
-        dp[index][amount] = Math.min(take, skip);
-        return dp[index][amount];
+        int ans = helper(coins, amount, n - 1, dp);
+        return ans >= (int)1e9 ? -1 : ans;
     }
 
-    public int coinChange(int[] coins, int amount) {
-        // Arrays.sort(coins);
-        
-        // backtrack(coins, amount, 0, 0);
-        // return minCoins == Integer.MAX_VALUE ? -1 : minCoins;
+    public int helper(int[] coins, int amount, int index, int[][] dp) {
+        if (amount == 0) return 0;
+        if (index < 0) return (int)1e9;
 
-        // int[][] dp = new int[coins.length][amount + 1]; // Create memoization table
-        // for (int[] row : dp) Arrays.fill(row, -1); // Initialize with -1 (uncomputed)
+        if (dp[index][amount] != -1) return dp[index][amount];
 
-        // int result = backtrack(coins, amount, 0, dp);
-        // return result == Integer.MAX_VALUE ? -1 : result;
+        int nonPick = helper(coins, amount, index - 1, dp);
+        int pick = (int)1e9;
 
-        if(amount < 1) return 0;
-
-        int[] minCoinsAtI = new int[amount + 1];
-
-        for(int varyingAmount = 1; varyingAmount <= amount; ++varyingAmount) {
-            minCoinsAtI[varyingAmount] = Integer.MAX_VALUE;
-
-            for(int coin: coins) {
-                if(coin <= varyingAmount && minCoinsAtI[varyingAmount - coin] != Integer.MAX_VALUE) {
-                    minCoinsAtI[varyingAmount] = Math.min(minCoinsAtI[varyingAmount], 1 + minCoinsAtI[varyingAmount - coin]);
-                }
-            }
+        if (coins[index] <= amount) {
+            pick = 1 + helper(coins, amount - coins[index], index, dp);
         }
 
-        if(minCoinsAtI[amount] != Integer.MAX_VALUE) {
-            return minCoinsAtI[amount];
-        }
-
-        return -1;
-
+        dp[index][amount] = Math.min(pick, nonPick);
+        return dp[index][amount];
     }
 }
