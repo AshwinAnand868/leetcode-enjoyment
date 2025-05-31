@@ -1,28 +1,36 @@
 class Solution {
-
-    private int minCoins = Integer.MAX_VALUE;
-
-    public int backtrack(int[] coins, int amount, int index, int[][] dp) {
-        if(amount == 0) {
-            return 1;
-        }
-
-        if(amount < 0 || index >= coins.length) return 0;
-
-        if (dp[index][amount] != -1) return dp[index][amount];
-
-        int ways = 0;
-        for(int times = (amount/coins[index]); times >= 0; times--) {
-            ways += backtrack(coins, amount - times * coins[index], index + 1, dp);
-        }
-
-        dp[index][amount] = ways;
-        return ways;
-    }
-
     public int change(int amount, int[] coins) {
-        int[][] dp = new int[coins.length][amount + 1];
-        for (int[] row : dp) Arrays.fill(row, -1);
-        return backtrack(coins, amount, 0, dp);
+        int n = coins.length;
+        int[][] dp = new int[n + 1][amount + 1];
+
+        // ✅ Base Case I: When amount = 0
+        for (int c = 0; c <= n; ++c) {
+            dp[c][0] = 1;  // 1 way to make amount 0
+        }
+
+        // ✅ Base Case II: Only using the first coin
+        for (int a = 0; a <= amount; ++a) {
+            if (a % coins[0] == 0) {
+                dp[1][a] = 1;  // Only one way to make amount 'a' using coins[0]
+            } else {
+                dp[1][a] = 0;
+            }
+        }
+
+        // ✅ Fill DP table
+        for (int c = 2; c <= n; ++c) {
+            for (int a = 1; a <= amount; ++a) {
+                int notPick = dp[c - 1][a];
+                int pick = 0;
+
+                if (coins[c - 1] <= a) {
+                    pick = dp[c][a - coins[c - 1]];
+                }
+
+                dp[c][a] = pick + notPick;
+            }
+        }
+
+        return dp[n][amount];
     }
 }
