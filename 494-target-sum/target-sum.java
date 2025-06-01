@@ -1,54 +1,43 @@
 class Solution {
-    static final int MOD = (int) 1e9 + 7;
-
     public int findTargetSumWays(int[] nums, int target) {
-        int totalSum = 0;
         int n = nums.length;
 
-        for (int i = 0; i < n; ++i) {
-            totalSum += nums[i];
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
         }
 
-        // Check for invalid conditions
-        if (totalSum < Math.abs(target) || (totalSum - target) % 2 != 0) {
-            return 0;
-        }
+        // if absolute target exceeds totalSum, it's not possible
+        if (Math.abs(target) > totalSum) return 0;
 
-        int subsetSum = (totalSum - target) / 2;
-        return countSubsetSum(nums, subsetSum);
+
+        // the sum index could go negative
+        int[][] memo = new int[n][2 * totalSum + 1];
+
+        for(int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        
+        return helper(nums, target, n - 1, 0, memo, totalSum);
     }
 
-    public int countSubsetSum(int[] nums, int target) {
-        int n = nums.length;
-        int[][] dp = new int[n][target + 1];
-
-        // Base case
-        // We can always make sum 0 — by taking nothing
-        for (int i = 0; i < n; ++i) {
-            dp[i][0] = 1;
+    private int helper(int[] nums, int target, int index, int runningSum, int[][] memo, int totalSum) {
+        if(index < 0) { // when all elemnts are used
+            return runningSum == target ? 1 : 0;
         }
 
-        // Special case handling for the first element
-        if (nums[0] <= target) {
-            if (nums[0] == 0) {
-                dp[0][0] = 2; // take or not take
-            } else {
-                dp[0][nums[0]] = 1;
-            }
+        int shiftedIndex = runningSum + totalSum;
+
+        if(memo[index][shiftedIndex] != -1) {
+            return memo[index][shiftedIndex];
         }
 
-        for (int i = 1; i < n; ++i) {
-            for (int j = 0; j <= target; ++j) {
-                int notPick = dp[i - 1][j];
-                int pick = 0;
-                if (nums[i] <= j) {
-                    pick = dp[i - 1][j - nums[i]];
-                }
+        // take
+        int plus = helper(nums, target, index - 1, runningSum + nums[index], memo, totalSum);
 
-                dp[i][j] = (pick + notPick) % MOD;
-            }
-        }
+        // skip
+        int minus = helper(nums, target, index - 1, runningSum - nums[index], memo, totalSum);
 
-        return dp[n - 1][target];
+        return memo[index][shiftedIndex] = plus + minus;
     }
 }
