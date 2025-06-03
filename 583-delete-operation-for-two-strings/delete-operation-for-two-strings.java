@@ -12,13 +12,36 @@ class Solution {
         int m = s2.length();
         
         
-        int[][] memo = new int[n][m];
-        
-        for(int[] row : memo) {
-            Arrays.fill(row, -1);
+        int[][] dp = new int[n + 1][m + 1]; // as the base case is for i < 0 we shift the indices to accomodate the 0 length
+
+        for(int i = 0; i <= n; ++i) {
+            dp[i][0] = 0;
         }
+
+        for(int i = 0; i <= m; ++i) {
+            dp[0][i] = 0;
+        }
+
+        for(int i = 1; i <= n; ++i) {
+            for(int j = 1; j <= m; ++j) {
+                if(s1.charAt(i - 1) == s2.charAt(j - 1)) {
+                    // if both chars are equal, shrink the strings
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = Math.max(dp[i][j-1], dp[i-1][j]);
+                }
+            }
+        }
+
+        return dp[n][m];
+
+        // int[][] memo = new int[n][m];
         
-        return helper(s1, s2, n - 1, m - 1, memo);
+        // for(int[] row : memo) {
+        //     Arrays.fill(row, -1);
+        // }
+        
+        // return helper(s1, s2, n - 1, m - 1, memo);
     }
     
     private int helper(String s1, String s2, int i1, int i2, int[][] memo) {
