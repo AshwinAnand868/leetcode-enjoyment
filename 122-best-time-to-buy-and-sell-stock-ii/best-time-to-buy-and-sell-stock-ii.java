@@ -1,12 +1,30 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        int maxProfit = 0;
-        for(int i = 0; i < prices.length - 1; ++i) {
-            if(prices[i+1] > prices[i]) {
-                maxProfit += prices[i + 1] - prices[i];
-            }
+        int n = prices.length;
+        Integer[][] memo = new Integer[n][2];
+        return helper(prices, 0, 1, memo);
+    }
+
+    private int helper(int[] prices, int index, int buy, Integer[][] memo) {
+        
+        if(index == prices.length) {
+            return 0; // no profits to be made
         }
 
-        return maxProfit;
+        if(memo[index][buy] != null) {
+            return memo[index][buy];
+        }
+
+        if(buy == 1) { // stock yet to be bought
+            // i can either buy it which will result in reduction in our profit
+            int profit1 = -prices[index] + helper(prices, index + 1, 0, memo);
+            int profit2 = 0 + helper(prices, index + 1, 1, memo); // if I do not buy it
+            return memo[index][buy] = Math.max(profit1, profit2);
+        } else { // sell case
+            // if the stock is already bought, i can either sell it
+            int profit1 = prices[index] + helper(prices, index + 1, 1, memo);
+            int profit2 = 0 + helper(prices, index + 1, 0, memo);
+            return memo[index][buy] = Math.max(profit1, profit2);
+        }
     }
 }
