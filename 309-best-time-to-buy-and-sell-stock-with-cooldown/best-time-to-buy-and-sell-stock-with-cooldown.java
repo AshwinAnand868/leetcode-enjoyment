@@ -2,13 +2,31 @@ class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
         // Initialize dp array with -1 to indicate uncomputed states
-        int[][] dp = new int[n][2];
-        for (int i = 0; i < n; i++) {
-            dp[i][0] = -1;
-            dp[i][1] = -1;
+        int[][] dp = new int[n + 2][2];
+        
+        dp[n][1] = 0;
+        dp[n][0] = 0;
+
+        for(int i = n - 1; i >= 0; i--) {
+            for(int buy = 0; buy <= 1; buy++) {
+                if(buy == 1) {
+                    dp[i][buy] = Math.max(-prices[i] + dp[i + 1][0], dp[i + 1][1]);
+                } else {
+                    dp[i][buy] = Math.max(prices[i] + dp[i + 2][1], dp[i + 1][0]);
+                }
+            }
         }
 
-        return helper(prices, 0, 1, dp);
+        return dp[0][1];
+
+        // int[][] dp = new int[n][2];
+
+        // for (int i = 0; i < n; i++) {
+        //     dp[i][0] = -1;
+        //     dp[i][1] = -1;
+        // }
+
+        // return helper(prices, 0, 1, dp);
     }
 
     private int helper(int[] prices, int index, int buy, int[][] dp) {
