@@ -1,36 +1,21 @@
 class Solution {
     public int maxProfit(int[] prices, int fee) {
         int n = prices.length;
-        int[][] dp = new int[n][2];
+        int[][] dp = new int[n + 1][2]; // dp[i][0] = max profit on day i with stock in hand
+                                        // dp[i][1] = max profit on day i without stock
 
-        for(int[] row : dp) {
-            Arrays.fill(row, -1);
+        dp[n][0] = dp[n][1] = 0;
+
+        for (int i = n - 1; i >= 0; i--) {
+            for(int buy = 0; buy <= 1; buy++) {
+                if(buy == 1) {
+                    dp[i][1] = Math.max(-prices[i] + dp[i + 1][0], dp[i + 1][1]);
+                } else {
+                    dp[i][0] = Math.max(prices[i] - fee + dp[i + 1][1], dp[i + 1][0]);
+                }
+            }
         }
 
-        return helper(prices, 0, 1, fee, dp);
-    }
-
-    private int helper(int[] prices, int index, int buy, int fee, int[][] dp) {
-        if(index == prices.length) {
-            return 0;
-        }
-
-        if(dp[index][buy] != -1) {
-            return dp[index][buy];
-        }
-
-        int profit = 0;
-
-        if (buy == 1) {
-            int profit1 = -prices[index] + helper(prices, index + 1, 0, fee, dp);
-            int profit2 = helper(prices, index + 1, 1, fee, dp);
-            profit = Math.max(profit1, profit2);
-        } else {
-            int profit1 = prices[index] - fee + helper(prices, index + 1, 1, fee, dp);
-            int profit2 = helper(prices, index + 1, 0, fee, dp);
-            profit = Math.max(profit1, profit2);
-        }
-
-        return dp[index][buy] = profit;
+        return dp[0][1];
     }
 }
