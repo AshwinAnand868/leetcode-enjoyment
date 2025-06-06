@@ -5,25 +5,44 @@ class Solution {
     public int longestStrChain(String[] words) {
         Arrays.sort(words, comp);
         int n = words.length;
-        int[][] dp = new int[n + 1][n + 1];
 
-        // base cases
-        dp[n][n] = 0;
+        int[] dp = new int[n];
+        int maxLen = 1;
 
-        for(int i = n - 1; i >= 0; --i) {
-            for(int prev = n - 1; prev >= -1; --prev) {
-                int skip = dp[i + 1][prev + 1];
+        Arrays.fill(dp, 1);
 
-                int take = 0;
-                if(prev == -1 || checkPossible(words[i], words[prev])) {
-                    take = 1 + dp[i + 1][i + 1];
+        for(int i = 0; i < n; ++i) {
+            for(int prev = 0; prev < i; ++prev) {
+                if(dp[i] < dp[prev] + 1 && checkPossible(words[i], words[prev])) {
+                    dp[i] = dp[prev] + 1;
                 }
-
-                dp[i][prev + 1] = Math.max(take, skip);
             }
+
+            maxLen = Math.max(maxLen, dp[i]);
         }
 
-        return dp[0][-1 + 1];
+        return maxLen;
+
+
+        // int[][] dp = new int[n + 1][n + 1];
+
+        // base cases
+        // dp[n][n] = 0;
+
+        // for(int i = n - 1; i >= 0; --i) {
+        //     for(int prev = n - 1; prev >= -1; --prev) {
+        //         int skip = dp[i + 1][prev + 1];
+
+        //         int take = 0;
+        //         if(prev == -1 || checkPossible(words[i], words[prev])) {
+        //             take = 1 + dp[i + 1][i + 1];
+        //         }
+
+        //         dp[i][prev + 1] = Math.max(take, skip);
+        //     }
+        // }
+
+        // return dp[0][-1 + 1];
 
         // int[][] memo = new int[n][n + 1];
         // for(int[] row: memo) {
