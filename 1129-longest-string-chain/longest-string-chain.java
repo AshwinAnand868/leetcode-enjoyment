@@ -13,8 +13,8 @@ class Solution {
 
         for(int i = 0; i < n; ++i) {
             for(int prev = 0; prev < i; ++prev) {
-                if(dp[i] < dp[prev] + 1 && checkPossible(words[i], words[prev])) {
-                    dp[i] = dp[prev] + 1;
+                if(checkPossible(words[i], words[prev])) {
+                    dp[i] = Math.max(dp[i], dp[prev] + 1);
                 }
             }
 
