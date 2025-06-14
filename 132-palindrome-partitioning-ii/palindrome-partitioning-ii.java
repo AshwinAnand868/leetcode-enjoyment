@@ -30,8 +30,25 @@ class Solution {
 
     public int minCut(String s) {
         int n = s.length();
-        int[] dp = new int[n];
-        Arrays.fill(dp, -1);
-        return helper(0, n, s, dp) - 1;
+        int[] dp = new int[n + 1];
+        
+        // Arrays.fill(dp, -1);
+        // return helper(0, n, s, dp) - 1;
+
+        dp[n] = 0; // base case
+
+        for(int i = n - 1; i >= 0; --i) {
+            int minCuts = Integer.MAX_VALUE;
+            // String[i...j]
+            for (int j = i; j < n; j++) {
+                if (isPalindrome(i, j, s)) {
+                    int cuts = 1 + dp[j + 1];
+                    minCuts = Math.min(minCuts, cuts);
+                }
+            }
+            dp[i] = minCuts;
+        }
+
+        return dp[0] - 1;
     }
 }
