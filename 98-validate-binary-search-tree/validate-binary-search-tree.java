@@ -15,26 +15,17 @@
  */
 class Solution {
     public boolean isValidBST(TreeNode root) {
-        List<Integer> vals = new ArrayList<>();
-
-        inorder(root, vals);
-
-        for(int i = 0; i < vals.size() - 1; ++i) {
-            if(vals.get(i) >= vals.get(i + 1)) {
-                return false;
-            }
-        }
-
-        return true;
+        return isValidBSTHelper(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
-    private void inorder(TreeNode root, List<Integer> vals) {
-        if(root == null) return;
+    private boolean isValidBSTHelper(TreeNode root, long start, long end) {
+        if(root == null) return true;
 
-        inorder(root.left, vals);
+        if(root.val <= start || root.val >= end) {
+            return false;
+        }
 
-        vals.add(root.val);
-
-        inorder(root.right, vals);
+        return isValidBSTHelper(root.left, start, root.val)
+            && isValidBSTHelper(root.right, root.val, end);
     }
 }
