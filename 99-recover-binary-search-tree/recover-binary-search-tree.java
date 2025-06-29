@@ -32,9 +32,34 @@ class Solution {
     }
 
     private void inorder(TreeNode root, List<TreeNode> nodes) {
-        if (root == null) return;
-        inorder(root.left, nodes);
-        nodes.add(root);
-        inorder(root.right, nodes);
+        // if (root == null) return;
+        // inorder(root.left, nodes);
+        // nodes.add(root);
+        // inorder(root.right, nodes);
+        if(root == null) return;
+
+        TreeNode curr = root;
+
+        while(curr != null) {
+            if(curr.left == null) {
+                nodes.add(curr);
+                curr = curr.right;
+            } else {
+                TreeNode prev = curr.left;
+
+                while(prev.right != null && prev.right != curr) {
+                    prev = prev.right;
+                }
+
+                if(prev.right == null) {
+                    prev.right = curr;
+                    curr = curr.left;
+                } else {
+                    prev.right = null;
+                    nodes.add(curr);
+                    curr = curr.right;
+                }
+            }
+        }
     }
 }
