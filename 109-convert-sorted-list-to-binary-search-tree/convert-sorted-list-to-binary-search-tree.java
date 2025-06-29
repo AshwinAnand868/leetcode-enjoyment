@@ -25,35 +25,27 @@
  */
 class Solution {
     public TreeNode sortedListToBST(ListNode head) {
+        if(head == null) return null;
 
-        // edge cases
-        if(head == null) {
-            return null;
-        }
+        if(head.next == null) return new TreeNode(head.val);
 
-        if(head.next == null) {
-            return new TreeNode(head.val);
-        }
-
+        ListNode prev = null;
         ListNode slow = head;
         ListNode fast = head;
-        ListNode slowPrevious = null;
 
-        // finding the mid node
-        // fast will reach the last node, and slow will be at the mid node
-        while(fast != null && fast.next != null) {
-            slowPrevious = slow;
+        while (fast != null && fast.next != null) {
+            prev = slow;
             slow = slow.next;
             fast = fast.next.next;
         }
 
-        // create the current root node
+        if(prev != null) {
+            prev.next = null;
+        }
+
         TreeNode root = new TreeNode(slow.val);
 
-        // break the link to create left subtree
-        slowPrevious.next = null;
-
-        root.left = sortedListToBST(head);
+        root.left = sortedListToBST(prev == null ? null : head);
         root.right = sortedListToBST(slow.next);
 
         return root;
