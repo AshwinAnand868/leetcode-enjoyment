@@ -15,40 +15,19 @@
  */
 class Solution {
     public void flatten(TreeNode root) {
-        flattenHelper(root);
-    }
+        if(root == null) return;
+        flatten(root.left);
+        flatten(root.right);
 
-    public TreeNode flattenHelper(TreeNode root) {
-        if (root == null) return null;
-
-        // leaf is already flattened
-        if (root.right == null && root.left == null) return root;
-
-        TreeNode rootLeftFlattened = flattenHelper(root.left);
-        root.left = null;
-
-        TreeNode curr = rootLeftFlattened;
-
-        if (root.right != null) {
-            TreeNode rootRightFlattened = flattenHelper(root.right);
-
-            // check if curr is not null before dereferencing
-            if (curr != null) {
-                root.right = rootLeftFlattened;
-
-                while (curr.right != null) {
-                    curr = curr.right;
-                }
-
-                curr.right = rootRightFlattened;
-            } else {
-                // No left subtree, attach right subtree directly
-                root.right = rootRightFlattened;
+        if(root.left != null) {
+            TreeNode rightMost = root.left;
+            while(rightMost.right != null) {
+                rightMost = rightMost.right;
             }
-        } else {
-            root.right = rootLeftFlattened;
-        }
 
-        return root;
+            rightMost.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
     }
 }
