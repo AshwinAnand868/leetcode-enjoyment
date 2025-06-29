@@ -14,52 +14,43 @@
  * }
  */
 class Solution {
+    TreeNode first = null, middle = null, last = null, prev = null;
+
     public void recoverTree(TreeNode root) {
-        List<TreeNode> nodes = new ArrayList<>();
-        inorder(root, nodes);
+        inorder(root);
 
-        List<TreeNode> sorted = new ArrayList<>(nodes);
-        sorted.sort((a, b) -> Integer.compare(a.val, b.val));
-
-        for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).val != sorted.get(i).val) {
-                int temp = nodes.get(i).val;
-                nodes.get(i).val = sorted.get(i).val;
-                sorted.get(i).val = temp;
-                break;
-            }
+        // Case 1: Non-adjacent nodes swapped
+        if (first != null && last != null) {
+            int temp = first.val;
+            first.val = last.val;
+            last.val = temp;
+        }
+        // Case 2: Adjacent nodes swapped
+        else if (first != null && middle != null) {
+            int temp = first.val;
+            first.val = middle.val;
+            middle.val = temp;
         }
     }
 
-    private void inorder(TreeNode root, List<TreeNode> nodes) {
-        // if (root == null) return;
-        // inorder(root.left, nodes);
-        // nodes.add(root);
-        // inorder(root.right, nodes);
-        if(root == null) return;
+    private void inorder(TreeNode root) {
+        if (root == null) return;
 
-        TreeNode curr = root;
+        inorder(root.left);
 
-        while(curr != null) {
-            if(curr.left == null) {
-                nodes.add(curr);
-                curr = curr.right;
+        // Find the first violation
+        if (prev != null && root.val < prev.val) {
+            if (first == null) {
+                first = prev;
+                middle = root;
             } else {
-                TreeNode prev = curr.left;
-
-                while(prev.right != null && prev.right != curr) {
-                    prev = prev.right;
-                }
-
-                if(prev.right == null) {
-                    prev.right = curr;
-                    curr = curr.left;
-                } else {
-                    prev.right = null;
-                    nodes.add(curr);
-                    curr = curr.right;
-                }
+                // Second violation
+                last = root;
             }
         }
+
+        prev = root;
+
+        inorder(root.right);
     }
 }
