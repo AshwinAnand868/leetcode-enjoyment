@@ -7,7 +7,7 @@ class Solution {
         }
 
         // creating a max heap to maintain the most frequent task at the top
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a, b) -> b - a);
         for(int f : freq) {
             if(f > 0) {
                 maxHeap.offer(f);
