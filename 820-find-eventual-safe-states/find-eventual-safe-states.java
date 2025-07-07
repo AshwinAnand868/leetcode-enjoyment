@@ -16,7 +16,7 @@ class Solution {
         boolean[] pathVis = new boolean[n];
 
         for (int i = 0; i < n; ++i) {
-            if (!dfs(i, graph, vis, pathVis, terminalNodes, safeNodes)) {
+            if (!vis[i] && !dfs(i, graph, vis, pathVis, terminalNodes, safeNodes)) {
                 safeNodes.add(i);
             }
         }
