@@ -1,50 +1,49 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
         int n = graph.length;
-        Set<Integer> terminalNodes = new HashSet<>();
-        Set<Integer> safeNodes = new HashSet<>();
 
+        ArrayList<ArrayList<Integer>> adjRev = new ArrayList<>();
         for (int i = 0; i < n; ++i) {
-            if (graph[i].length == 0) {
-                terminalNodes.add(i);
+            adjRev.add(new ArrayList<>());
+        }
+
+        int[] indegree = new int[n];
+
+        // Reverse the graph: for each edge u -> v, add u to adjRev[v]
+        for (int u = 0; u < n; ++u) {
+            for (int v : graph[u]) {
+                adjRev.get(v).add(u);
+                indegree[u]++;
             }
         }
 
-        safeNodes.addAll(terminalNodes);
-
-        boolean[] vis = new boolean[n];
-        boolean[] pathVis = new boolean[n];
-
+        // Start with all terminal nodes (original terminal → now indegree 0)
+        Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < n; ++i) {
-            if (!vis[i] && !dfs(i, graph, vis, pathVis, terminalNodes, safeNodes)) {
-                safeNodes.add(i);
+            if (indegree[i] == 0) {
+                queue.offer(i);
             }
         }
 
-        List<Integer> result = new ArrayList<>(safeNodes);
-        Collections.sort(result); // problem requires sorted order
-        return result;
-    }
+        boolean[] safe = new boolean[n];
 
-    private boolean dfs(int node, int[][] graph, boolean[] vis, boolean[] pathVis,
-                        Set<Integer> terminalNodes, Set<Integer> safeNodes) {
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            safe[node] = true;
 
-        vis[node] = true;
-        pathVis[node] = true;
-
-        for (int neighbour : graph[node]) {
-            if (!vis[neighbour]) {
-                if (dfs(neighbour, graph, vis, pathVis, terminalNodes, safeNodes)) {
-                    return true; // cycle found
-                } else {
-                    safeNodes.add(neighbour); // mark safe
+            for (int prev : adjRev.get(node)) {
+                indegree[prev]--;
+                if (indegree[prev] == 0) {
+                    queue.offer(prev);
                 }
-            } else if (pathVis[neighbour]) {
-                return true; // cycle found
             }
         }
 
-        pathVis[node] = false;
-        return false; // no cycle
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            if (safe[i]) result.add(i);
+        }
+
+        return result;
     }
 }
