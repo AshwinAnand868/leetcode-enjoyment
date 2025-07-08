@@ -1,46 +1,46 @@
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         Set<String> wordSet = new HashSet<>(wordList);
-        if(!wordSet.contains(endWord)) return 0;
+        if(!wordSet.contains(endWord)) {
+            return 0;
+        }
 
-        // shortest = BFS
-        Queue<String> queue = new LinkedList<>();
-        // to keep track of visited words/nodes
         Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+        Queue<String> queue = new LinkedList<>();
 
         queue.offer(beginWord);
-        visited.add(beginWord);
 
-        int steps = 1; // inclusive begin word
+        int steps = 1;
 
         while(!queue.isEmpty()) {
+            
             int size = queue.size();
 
             for(int i = 0; i < size; ++i) {
                 String curr = queue.poll();
-                char[] currArray = curr.toCharArray();
-
-                for(int j = 0; j < currArray.length; ++j) {
-                    char originalChar = currArray[j];
-
+                char[] arr = curr.toCharArray();
+                for(int k = 0; k < arr.length; ++k) {
+                    char originalCh = arr[k];
                     for(char ch = 'a'; ch <= 'z'; ++ch) {
-                        currArray[j] = ch;
-                        String next = new String(currArray);
-                        if(next.equals(endWord)) return steps + 1; // inclusive end word
-                        if(wordSet.contains(next) && !visited.contains(next)) {
-                            visited.add(next);
-                            queue.offer(next);
+                        arr[k] = ch;
+                        String temp = new String(arr);
+                        if(temp.equals(endWord)) {
+                            return steps + 1;
+                        }
+
+                        if(wordSet.contains(temp) && !visited.contains(temp)) {
+                            visited.add(temp);
+                            queue.offer(temp);
                         }
                     }
 
-                    currArray[j] = originalChar; // restoring the original character
+                    arr[k] = originalCh;
                 }
+
             }
-
             steps++;
-        
         }
-
-        return 0;
+        return 0; // if no path exists from begin word to end word
     }
 }
