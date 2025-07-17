@@ -14,6 +14,7 @@ class Solution {
             }
         }
 
+        // queue for maintaing count and 
         Queue<int[]> cooldownQ = new LinkedList<>();
 
         int time = 0;
