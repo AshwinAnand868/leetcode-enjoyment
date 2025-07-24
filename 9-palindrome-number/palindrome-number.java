@@ -1,23 +1,19 @@
 class Solution {
     public boolean isPalindrome(int x) {
-        
-        // negative number is not a palindrome for this case
-        if(x < 0) return false;
-        
-        int j = x; // copy of x
-        int r = 0;
-        int reversedJ = 0;
-        
-        while(j != 0) {
-            r = j % 10; // get the remainder
-            j = j / 10; // take out the last digit from j
-            
-            reversedJ = reversedJ * 10 + r; // add the remainder to reversed value of j
+        // a number is palindrome it reads the same backward and forward
+        int reversed = reverseNumber(x);
+        return x == reversed;
+    }
+
+    public int reverseNumber(int x) {
+        int reversed = 0;
+
+        while(x > 0) {
+            int lastDigit = x % 10;
+            reversed = (reversed * 10) + lastDigit;
+            x = x / 10;
         }
-        
-        if(x == reversedJ)
-            return true;
-        
-        return false;
+
+        return reversed;
     }
 }
