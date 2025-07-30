@@ -7,12 +7,12 @@ public:
         for(int i = 0; i < nums.size(); ++i) {
             if(nums[i] == 1) {
                 count++;
-            } else {
                 maxCount = max(maxCount, count);
+            } else {
                 count = 0;
             }
         }
 
-        return max(maxCount, count);
+        return maxCount;
     }
 };
