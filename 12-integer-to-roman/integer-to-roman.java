@@ -1,39 +1,20 @@
 class Solution {
-    private static final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
     private static final String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-
+    private static final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    
     public String intToRoman(int num) {
 
-        StringBuilder resultBuilder = new StringBuilder();
-        int i = 0;
+         int i = 0;
+         StringBuilder sb = new StringBuilder();
 
-        while(num > 0) {
+         while(num > 0) {
             while(num >= values[i]) {
                 num = num - values[i];
-                resultBuilder.append(symbols[i]);
+                sb.append(symbols[i]);
             }
-            i++; // increment i when current num is less than val at i
-        }
+            i++;
+         }
 
-        return resultBuilder.toString();
-    
-
-    // Using recursion
-    // public String intToRoman(int num) {
-    //     return convert(num, 0);
-    // }
-
-    // private String convert(int num, int index) {
-    //     // Base case: If num is 0, return an empty string
-    //     if (num == 0) return "";
-
-    //     // Get how many times the current Roman numeral fits in num
-    //     int quotient = num / values[index];  
-        
-    //     // Get the remainder for next recursive call
-    //     int remainder = num % values[index];  
-
-    //     // Append the Roman numeral `quotient` times and recursively process the remainder
-    //     return symbols[index].repeat(quotient) + convert(remainder, index + 1);
+         return sb.toString();
     }
 }
