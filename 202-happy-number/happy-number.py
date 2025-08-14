@@ -13,7 +13,7 @@ class Solution(object):
         while(num > 0):
             temp = num % 10
             sum_ += temp * temp
-            num = num/10
+            num = num//10
         
         return self.isHappy(sum_)
 
