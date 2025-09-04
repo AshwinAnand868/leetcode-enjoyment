@@ -1,68 +1,23 @@
 class Solution {
-    public static int longestConsecutive(int[] nums) {
+    public int longestConsecutive(int[] arr) {
+        int n = arr.length;
+        if(n == 0) return 0;
 
-        if (nums.length == 0) {
-            return 0;
-        }
+        Arrays.sort(arr);
+        int lastSmaller = Integer.MIN_VALUE;
+        int currCount = 0;
+        int longestCount = 1;
 
-        Set<Integer> set = new HashSet<>();
-        int n = nums.length;
-
-        for (int i = 0; i < n; i++) {
-            set.add(nums[i]);
-        }
-
-        int count = 1, longestCount = 1;
-
-        for (int i : set) {
-            if (!set.contains(i - 1)) {
-                int y = i;
-
-                while (set.contains(y + 1)) {
-                    count++;
-                    y++;
-                }
+        for(int i = 0; i < n; ++i) {
+            if(arr[i] - 1 == lastSmaller) {
+                currCount += 1;
+            } else if(arr[i] != lastSmaller) {
+                currCount = 1;
             }
-
-            longestCount = Math.max(count, longestCount);
-            count = 1;
+            lastSmaller = arr[i];
+            longestCount = Math.max(longestCount, currCount);
         }
 
         return longestCount;
-
-        // if (nums.length == 0) {
-        // return 0;
-        // }
-
-        // PriorityQueue<Integer> minNums = new PriorityQueue<Integer>();
-
-        // for (int i = 0; i < nums.length; ++i) {
-        // minNums.offer(nums[i]);
-        // }
-
-        // int count = 1;
-        // int maxCount = 1;
-
-        // int prevElement = minNums.poll();
-
-        // while (!minNums.isEmpty()) {
-
-        // int nextElement = minNums.poll();
-
-        // if (prevElement == nextElement) {
-        // continue;
-        // }
-
-        // if (prevElement + 1 == nextElement) {
-        // count++;
-        // } else {
-        // count = 1;
-        // }
-
-        // maxCount = Math.max(maxCount, count);
-        // prevElement = nextElement;
-        // }
-
-        // return maxCount;
     }
 }
