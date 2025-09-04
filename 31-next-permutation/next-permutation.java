@@ -1,24 +1,22 @@
 class Solution {
     public void nextPermutation(int[] nums) {
-        if(nums.length == 1) {
-            return;
-        }
-
         int pivot = -1;
+        int n = nums.length;
 
-        for(int i = nums.length - 1; i > 0; --i) {
-            if(nums[i - 1] < nums[i]) {
+        for(int i = n - 1; i > 0; --i) {
+            if(nums[i] > nums[i - 1]) {
                 pivot = i - 1;
                 break;
             }
         }
 
         if(pivot == -1) {
-            Arrays.sort(nums);
+            Arrays.sort(nums); // the array is at the last permutation, so its next permutation will be the first one only
             return;
         }
 
-        for(int i = nums.length - 1; i > pivot; --i) {
+        // find the next greator element than the pivot value
+        for(int i = n - 1; i > pivot; --i) {
             if(nums[i] > nums[pivot]) {
                 int temp = nums[i];
                 nums[i] = nums[pivot];
@@ -27,13 +25,15 @@ class Solution {
             }
         }
 
-        // Reverse the suffix
-        int left = pivot + 1, right = nums.length - 1;
+        reverse(nums, pivot + 1, n - 1);
+    }
 
+    private void reverse(int[] nums, int left, int right) {
         while(left < right) {
             int temp = nums[left];
             nums[left] = nums[right];
             nums[right] = temp;
+
             left++;
             right--;
         }
