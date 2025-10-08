@@ -5,7 +5,7 @@ class Solution {
 
         Arrays.sort(arr);
         int lastSmaller = Integer.MIN_VALUE;
-        int currCount = 0;
+        int currCount = 0; 
         int longestCount = 1;
 
         for(int i = 0; i < n; ++i) {
