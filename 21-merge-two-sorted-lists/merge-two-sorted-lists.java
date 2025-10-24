@@ -10,27 +10,55 @@
  */
 class Solution {
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        // whenever we are given an output list to return, the common approach is to go with a dummy node
-        ListNode dummy = new ListNode();
-        ListNode ptr = dummy;
-        
-        while (list1 != null && list2 != null) {
-            if(list1.val < list2.val) {
-                ptr.next = list1;
-                list1 = list1.next;
-            } else {
-                ptr.next = list2;
-                list2 = list2.next;
-            }
-            ptr = ptr.next;
+
+        if(list1 == null && list2 == null) {
+            return null;
         }
-        
+
         if(list1 == null) {
-            ptr.next = list2;
-        } else {
-            ptr.next = list1;
+            return list2;
         }
+
+        if(list2 == null) {
+            return list1;
+        }
+
+        ListNode t1 = list1;
+        ListNode t2 = list2;
+        ListNode resultPointer = new ListNode();
+        ListNode result = resultPointer;
+
+        while(t1 != null && t2 != null) {
+            if(t1.val < t2.val) {
+                resultPointer.val = t1.val;
+                t1 = t1.next;
+            } else {
+                resultPointer.val = t2.val;
+                t2 = t2.next;
+            }
+            resultPointer.next = new ListNode();
+            resultPointer = resultPointer.next;
         
-        return dummy.next;
+        }
+
+        while(t1 != null) {
+            resultPointer.val = t1.val;
+            if(t1.next != null) {
+                resultPointer.next = new ListNode();
+                resultPointer = resultPointer.next;
+            }
+            t1 = t1.next;
+        }
+
+        while(t2 != null) {
+            resultPointer.val = t2.val;
+            if(t2.next != null) {
+                resultPointer.next = new ListNode();
+                resultPointer = resultPointer.next;
+            }
+            t2 = t2.next;
+        }
+
+        return result;
     }
 }
