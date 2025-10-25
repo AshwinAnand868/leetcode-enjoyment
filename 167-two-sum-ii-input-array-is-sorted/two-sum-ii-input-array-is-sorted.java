@@ -1,26 +1,23 @@
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
+        int n = numbers.length;
+        int x = 0;
+        int y = n - 1;
 
-        int i = 0;
-        int j = numbers.length - 1;
-        int[] indices = new int[2];
+        while(x < y) {
+            int num1 = numbers[x];
+            int num2 = numbers[y];
 
-        while (i < j) {
-            if (numbers[i] + numbers[j] < target) // need to increase the addition result
-            {
-                i++; // go to higher value
-
-            } else if (numbers[i] + numbers[j] > target) // need to decrease the addition result
-            {
-                j--; // move toward lower value
-
-            } else { // both are equal
-                indices[0] = i + 1;
-                indices[1] = j + 1;
-                break;
+            int sum = num1 + num2;
+            if(sum == target) {
+                return new int[] {x + 1, y + 1};
+            } else if(sum < target) {
+                x++;
+            } else {
+                y--;
             }
         }
 
-        return indices;
+        return new int[] {-1, -1};
     }
 }
