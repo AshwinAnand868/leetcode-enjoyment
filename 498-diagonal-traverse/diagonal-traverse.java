@@ -17,12 +17,16 @@ class Solution {
             }
         }
 
-        List<Integer> resultList = new ArrayList<>();
-        for(List<Integer> value: map.values()) {
-            resultList.addAll(value);
+        int[] result = new int[m * n];
+        int index = 0;
+
+        for(int i = 0; i <= m + n - 2; ++i) {
+            List<Integer> values = map.get(i);
+            for(int value: values) {
+                result[index++] = value;
+            }
         }
 
-
-        return resultList.stream().mapToInt(Integer::intValue).toArray();
+        return result;
     }
 }
