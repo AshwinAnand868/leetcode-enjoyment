@@ -1,32 +1,37 @@
 class Solution {
+    public int largestOverlap(int[][] A, int[][] B) {
+        // let's first get the offsets ready
+        int n = A.length;
+        int maxOverlap = 0;
 
-    public int countOverlaps(int[][] img1, int[][] img2, int rowOff, int colOff) {
-        int n = img1.length;
+        for(int rowOffset = -n + 1; rowOffset < n; ++rowOffset) {
+            // for each row offset, there are three column offset
+            for(int colOffset = - n + 1; colOffset < n; ++colOffset) {
+                maxOverlap = Math.max(maxOverlap, countOverlaps(A, B, rowOffset, colOffset));
+            }
+        }
+
+        return maxOverlap;
+    }
+
+    private int countOverlaps(int[][] A, int[][] B, int rowOffset, int colOffset) {
+        int n = A.length;
+
         int count = 0;
 
-        for(int row = 0; row < n; row++) {
-            for(int col = 0; col < n; col++) {
-                if(row + rowOff < 0 || row + rowOff >= n || col + colOff < 0 || col + colOff >= n) {
-                    continue;
+        for(int i = 0; i < n; ++i) {
+            for(int j = 0; j < n; ++j) {
+                int B_i = rowOffset + i;
+                int B_j = colOffset + j;
+
+                if(B_i < 0 || B_i >= n || B_j < 0 || B_j >= n) {
+                    continue; // skip this because of invalid indices
                 }
 
-                count += img1[row][col] * img2[row + rowOff][col + colOff];
+                count += A[i][j] * B[B_i][B_j];
             }
         }
 
         return count;
-    }
-
-    public int largestOverlap(int[][] img1, int[][] img2) {
-        int n = img1.length;
-        int maxCount = 0;
-
-        for(int rowOff = - n + 1; rowOff < n; ++rowOff) {
-            for(int colOff = -n + 1; colOff < n; ++colOff) {
-                maxCount = Math.max(maxCount, countOverlaps(img1, img2, rowOff, colOff));
-            }
-        }
-
-        return maxCount;
     }
 }
