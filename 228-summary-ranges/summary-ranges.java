@@ -1,107 +1,39 @@
 class Solution {
     public List<String> summaryRanges(int[] nums) {
-        
+        List<String> result = new ArrayList<>();
         int n = nums.length;
-        if(nums.length == 0) {
+
+        if(n == 0) {
             return new ArrayList<>();
         }
 
-        List<String> ranges = new ArrayList<>();
+        int startRange = nums[0];
+        int endRange = nums[0];
+        int prev = nums[0];
 
-        int start = 0;
-        int end = 0;
+        for(int i = 1; i < n; ++i) {
+            int curr = nums[i];
 
-        for(int j = 0; j < nums.length; ++j) {
-            if(j < n - 1 && nums[j] + 1 == nums[j + 1]) {
-                end++;
+            if(curr - prev == 1) {
+                endRange++;
             } else {
-                if(end - start > 0) {
-                    String temp = nums[start] + "->" + nums[end];
-                    ranges.add(temp);
+                if (startRange == endRange) {
+                    result.add(String.valueOf(startRange));
                 } else {
-                    ranges.add("" + nums[start]);
+                    result.add(startRange + "->" + endRange);
                 }
-
-                start = j + 1;
-                end = start;
+                startRange = curr;
+                endRange = curr;
             }
+            prev = curr;
         }
 
+        if (startRange == endRange) {
+            result.add(String.valueOf(startRange));
+        } else {
+            result.add(startRange + "->" + endRange);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // List<String> ranges = new ArrayList<>();
-
-        // for (int i = 0; i < nums.length; ++i) {
-        //     int start = nums[i];
-
-        //     while(i + 1 < nums.length && nums[i] + 1 == nums[i + 1]) {
-        //         i++;
-        //     }
-
-        //     if(start != nums[i]) {
-        //         ranges.add("" + start + "->" + nums[i]);
-        //     } else {
-        //         ranges.add("" + start);
-        //     }
-        // }
-
-        return ranges;
-
-        // if(nums.length == 0) return new ArrayList<>();
-
-        // if (nums.length == 1) {
-        //     List<String> one = new ArrayList<>();
-        //     one.add(nums[0] + "");
-        //     return one;
-        // }
-
-        // List<String> ranges = new ArrayList<>();
-
-        // int start = nums[0];
-        // int end = start;
-
-        // for (int i = 0; i < nums.length - 1; ++i) {
-        //     if (nums[i] + 1 == nums[i + 1]) {
-        //         end = nums[i + 1];
-        //     } else {
-        //         String temp = "";
-
-        //         if (start >= end) {
-        //             temp = "" + start;
-        //         } else {
-        //             temp = start + "->" + end;
-        //         }
-
-        //         ranges.add(temp);
-        //         start = nums[i + 1];
-        //     }
-        // }
-
-        // if (start == nums[nums.length - 1]) {
-        //     ranges.add("" + start);
-        // } else {
-        //     ranges.add(start + "->" + end);
-        // }
-
-        // return ranges;
+        return result;
     }
 }
