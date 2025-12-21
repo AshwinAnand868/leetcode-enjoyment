@@ -7,14 +7,12 @@ class Solution {
             if (nums[i] == 0) {
                 count++;
             } else {
-                long currCount = (count * (count + 1)) / 2;
-                nSubarrays += currCount;
                 count = 0;
             }
+
+            nSubarrays += count;
         }
 
-        long currCount = (count * (count + 1)) / 2;
-        nSubarrays += currCount;
         return nSubarrays;
     }
 }
