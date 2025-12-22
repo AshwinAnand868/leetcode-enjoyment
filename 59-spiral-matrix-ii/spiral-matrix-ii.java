@@ -1,38 +1,50 @@
 class Solution {
     public int[][] generateMatrix(int n) {
-        int[][] matrix = new int[n][n];
-        int num = 1;
+        int[][] result = new int[n][n];
+        int counter = 1;
+        int m = n;
 
-        if(n == 0) return matrix;
+        int top = 0;
+        int bottom = m - 1;
+        int left = 0;
+        int right = n - 1;
 
-        int left = 0, top = 0, bottom = n - 1, right = n - 1;
+        int dir = 0;
 
-        while(left <= right && top <= bottom) {
-            for(int i = left; i <= right; ++i) {
-                matrix[top][i] = num++;
+        while(top <= bottom && left <= right) {
+            // left to right
+            if(dir == 0) {
+                for(int i = left; i <= right; ++i) {
+                    result[top][i] = counter++;
+                }
+
+                top++;
             }
-            top++;
 
-            for(int i = top; i <= bottom; ++i) {
-                matrix[i][right] = num++;
+            if(dir == 1) {
+                for(int i = top; i <= bottom; ++i) {
+                    result[i][right] = counter++;
+                }
+                right--;
             }
-            right--;
 
-            if(top<= bottom) {
-                for(int i = right; i >= left; i--) {
-                    matrix[bottom][i] = num++;
+            if(dir == 2) {
+                for(int i = right; i >= left; --i) {
+                    result[bottom][i] = counter++;
                 }
                 bottom--;
             }
 
-            if(left <= right) {
-                for(int i = bottom; i >= top; i--) {
-                    matrix[i][left] = num++;  
+            if(dir == 3) {
+                for(int i = bottom; i >= top; --i) {
+                    result[i][left] = counter++;
                 }
                 left++;
             }
+
+            dir = (dir + 1) % 4;
         }
 
-        return matrix;
+        return result;
     }
 }
