@@ -1,59 +1,36 @@
 class Solution {
-    public String countAndSay(int n) {
+    private String rle(String curr) {
+        int count = 1;
+        StringBuilder str = new StringBuilder();
 
-        String result = "1";
-
-        for (int j = 2; j <= n; ++j) {
-
-            int i = 0;
-
-            StringBuilder sb = new StringBuilder();
-
-            while (i < result.length()) {
-                int count = 0;
-                char current = result.charAt(i);
-
-                while (i < result.length() && current == result.charAt(i)) {
-                    count++;
-                    i++;
-                }
-
-                sb.append(count);
-                sb.append(current);
+        for (int i = 0; i < curr.length() - 1; i++) {
+            if (curr.charAt(i) == curr.charAt(i + 1)) {
+                count++;
+            } else {
+                str.append(count);
+                str.append(curr.charAt(i));
+                count = 1;
             }
-
-            result = sb.toString();
-
         }
 
-        return result;
+        str.append(count);
+        str.append(curr.charAt(curr.length() - 1));
+        
+        return str.toString();
+    }
 
-        // if(n == 1) {
-        // return "1";
-        // }
+    private String countAndSayRecursive(int num, int n, String curr) {
+        if (num == n)
+            return curr;
+        curr =  rle(curr);
+        return countAndSayRecursive(num + 1, n,curr);
 
-        // // get the previous strings
-        // String str = countAndSay(n - 1);
+    }
 
-        // // process the str
-        // int i = 0;
-
-        // StringBuilder sb = new StringBuilder();
-
-        // while(i < str.length()) {
-        // int count = 0;
-        // char current = str.charAt(i);
-
-        // while(i < str.length() && current == str.charAt(i)) {
-        // count++;
-        // i++;
-        // }
-
-        // sb.append(count);
-        // sb.append(current);
-        // }
-
-        // return sb.toString();
-
+    public String countAndSay(int n) {
+        if (n == 1)
+            return "1";
+        String str = countAndSayRecursive(1, n, "1");
+        return str;
     }
 }
