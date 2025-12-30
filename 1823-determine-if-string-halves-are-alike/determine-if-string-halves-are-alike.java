@@ -1,27 +1,24 @@
 class Solution {
     public boolean halvesAreAlike(String s) {
-        Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
-
-        // Two pointers
+        Set<Character> vowelSet = Set.of('a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U');
         int n = s.length();
-        int mid = n/2;
-        int i = 0, j = mid;
-        int leftVowelCount = 0, rightVowelCount = 0;
 
-        while(i < mid && j < n) {
+        int mid = n / 2;
+        int aCount = 0;
+        int bCount = 0;
 
-            if(vowels.contains(s.charAt(i))) {
-                leftVowelCount++;
+        for(int i = 0; i < mid; ++i) {
+            if(vowelSet.contains(s.charAt(i))) {
+                aCount++;
             }
-
-            if(vowels.contains(s.charAt(j))) {
-                rightVowelCount++;
-            }
-
-            ++i;
-            ++j;
         }
 
-        return leftVowelCount == rightVowelCount;
+        for(int i = mid; i < n; ++i) {
+            if(vowelSet.contains(s.charAt(i))) {
+                bCount++;
+            }
+        }
+
+        return bCount == aCount;
     }
 }
