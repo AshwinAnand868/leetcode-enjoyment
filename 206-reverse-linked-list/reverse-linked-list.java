@@ -14,8 +14,6 @@ class Solution {
 
     public ListNode recurse(ListNode head, ListNode prev) {
         if(head.next == null) {
-            // head.next = prev;
-            // return prev;
             return head;
         }
 
@@ -24,9 +22,8 @@ class Solution {
         ListNode front = head.next;
         front.next = head;
         head.next = null;
-        // head.next = temp;
-        // newPrev.next = prev;
-        return newHead;  
+
+        return newHead;
     }
 
     public ListNode reverseList(ListNode head) {
