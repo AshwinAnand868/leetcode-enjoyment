@@ -11,14 +11,17 @@
 class Solution {
     
     public ListNode reverse(ListNode head, ListNode rightNode) {
-        if (head == null || head.next == null || head == rightNode) {
+        if(head == null || head.next == null || head == rightNode) {
             return head;
         }
-        
-        ListNode last = reverse(head.next, rightNode);
-        head.next.next = head;
+
+        ListNode newHead = reverse(head.next, rightNode);
+        // reverse the pointers
+        ListNode front = head.next;
+        front.next = head;
         head.next = null;
-        return last;
+
+        return newHead;
     }
 
     public ListNode reverseBetween(ListNode head, int left, int right) {
@@ -26,38 +29,35 @@ class Solution {
             return head;
         }
 
-        ListNode leftNode = null, leftPrev = null, rightNode = null, rightNext = null;
+        ListNode leftPrev = null, leftNode = null, rightNext = null, rightNode = null;
         ListNode curr = head;
-        int c = 1;
+        int counter = 1;
 
-        // Find leftPrev and leftNode
-        while (c < left) {
+        while(counter < left) {
             leftPrev = curr;
             curr = curr.next;
-            c++;
+            counter++;
         }
+
         leftNode = curr;
 
-        // Find rightNode and rightNext
-        while (c < right) {
+        while(counter < right) {
             curr = curr.next;
-            c++;
+            counter++;
         }
+
         rightNode = curr;
-        rightNext = rightNode.next;
+        rightNext = curr.next;
 
-        // Reverse nodes from leftNode to rightNode
-        ListNode temp = reverse(leftNode, rightNode);
+        ListNode newReversedHead = reverse(leftNode, rightNode);
 
-        // Adjust the connections
-        if (leftPrev != null) {
-            leftPrev.next = temp;
+        if(leftPrev != null) {
+            leftPrev.next = newReversedHead;
         } else {
-            // If left = 1, update head
-            head = temp;
+            head = newReversedHead;
         }
 
-        leftNode.next = rightNext; // Connect last node of reversed section
+        leftNode.next = rightNext;
 
         return head;
     }
