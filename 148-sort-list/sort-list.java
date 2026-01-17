@@ -40,10 +40,10 @@ ListNode findMiddle(ListNode head) {
 
     // Initializing slow and fast pointers
     ListNode slow = head;
-    ListNode fast = head.next;
+    ListNode fast = head;
 
     // Move the fast pointer twice as fast as the slow pointer
-    while (fast != null && fast.next != null) {
+    while (fast.next != null && fast.next.next != null) {
         slow = slow.next;
         fast = fast.next.next;
     }
