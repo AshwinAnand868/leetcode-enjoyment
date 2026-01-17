@@ -24,7 +24,7 @@ class Solution {
         }
 
         // Delete middle node
-        prev.next = slow.next;
+        prev.next = prev.next.next;
 
         return head;
     }
