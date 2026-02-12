@@ -14,35 +14,22 @@
  * }
  */
 class Solution {
-    // Using morris traversal logic without extra memory
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
-        TreeNode curr = root;
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode current = root;
 
-        while(curr != null) {
-            if(curr.left == null) {
-                // print root or curr, move to right side
-                result.add(curr.val);
-                curr = curr.right;
-            } else {
-                // go to the right most part of the left subtree
-                TreeNode prev = curr.left;
-
-                while(prev.right != null && prev.right != curr) {
-                    prev = prev.right;
-                }
-
-                if(prev.right == null) { // no thread exists - create the thread
-                    prev.right = curr;
-                    curr = curr.left; // visit teh left side
-                } else {
-                    prev.right = null;
-                    result.add(curr.val);
-                    curr = curr.right; // visit the right side as left is done
-                }
+        while(current != null || !stack.isEmpty()) {
+            while(current != null) {
+                stack.push(current);
+                current = current.left;
             }
-        }
 
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            current = node.right;
+        }
+        
         return result;
     }
 }
