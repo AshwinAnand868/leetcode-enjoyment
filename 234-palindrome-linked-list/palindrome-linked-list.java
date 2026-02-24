@@ -17,10 +17,8 @@ class Solution {
         }
 
         ListNode newHead = reverseLinkedList(head.next);
-        ListNode front = head.next;
-        front.next = head;
-        head.next = null;
-        
+        head.next.next = head;
+        head.next = null;        
         return newHead;
     }
 
