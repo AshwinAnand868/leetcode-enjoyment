@@ -20,7 +20,6 @@ class Solution {
                 decoded.append(temp.toString().repeat(count));
                 temp = decoded;
             } else {
-                // for letters directly
                 temp.append(c);
             }
         }
