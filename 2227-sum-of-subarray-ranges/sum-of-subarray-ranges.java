@@ -4,15 +4,11 @@ class Solution {
         long sum = 0;
 
         for (int i = 0; i < n; i++) {
+            int min = nums[i];
+            int max = nums[i];
             for (int j = i; j < n; j++) {
-                int min = nums[i];
-                int max = nums[i];
-
-                for (int k = i; k <= j; k++) {
-                    min = Math.min(min, nums[k]);
-                    max = Math.max(max, nums[k]);
-                }
-
+                min = Math.min(min, nums[j]);
+                max = Math.max(max, nums[j]);
                 sum += (max - min);
             }
         }
