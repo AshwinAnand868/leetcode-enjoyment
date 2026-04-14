@@ -1,44 +1,52 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        int n = numCourses;
+    public boolean canFinish(int numCourses, int[][] p) {
+        List<List<Integer>> adjList = new ArrayList<>();
 
-        for(int i = 0; i < n; ++i) {
-            adj.add(new ArrayList<>());
+        int[] indegree = new int[numCourses];
+
+        for(int i = 0; i < numCourses; ++i) {
+            adjList.add(new ArrayList<>());
         }
 
-        for(int[] edge : prerequisites) {
-           int u = edge[0], v = edge[1];
-           adj.get(u).add(v);
+        for(int i = 0; i < p.length; ++i) {
+            int a = p[i][0];
+            int b = p[i][1];
+
+            adjList.get(b).add(a);
+            indegree[a]++;
         }
 
-        boolean[] vis = new boolean[n];
-        boolean[] pathVis = new boolean[n];
-
-        for(int i = 0; i < n; ++i) {
-            if(!vis[i]) {
-                // if there is a cycle then we will never be able to finish all courses
-                if(dfs(i, adj, vis, pathVis)) return false;
-            }
-        }
-
-        return true;
+       return topology(adjList, numCourses, indegree);
     }
 
-    private boolean dfs(int node, ArrayList<ArrayList<Integer>> adj, boolean[] vis, boolean[] pathVis) {
-        vis[node] = true; // mark it as visited
-        pathVis[node] = true; // mark it for current path
+    private boolean topology(List<List<Integer>> adjList, int numCourses, int[] indegree) {
+        Queue<Integer> queue = new LinkedList<>();
+        int count = 0;
 
-        for(int neighbour : adj.get(node)) {
-            if(!vis[neighbour]) {
-                if(dfs(neighbour, adj, vis, pathVis)) return true; // propagate the value
-            } else if(pathVis[neighbour]) {
-                return true;
+        for(int i = 0; i < numCourses; ++i) {
+            if(indegree[i] == 0) {
+                queue.offer(i);
+                count++;
             }
         }
 
-        // restore path vis
-        pathVis[node] = false;
+        while(!queue.isEmpty()) {
+            int node = queue.poll();
+
+            for(int neighbour : adjList.get(node)) {
+                indegree[neighbour]--;
+
+                if(indegree[neighbour] == 0) {
+                    queue.offer(neighbour);
+                    count++;
+                }
+            }
+        }
+
+        if(count == numCourses) {
+            return true;
+        }
+
         return false;
     }
 }
