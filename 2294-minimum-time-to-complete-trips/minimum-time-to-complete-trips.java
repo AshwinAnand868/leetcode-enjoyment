@@ -1,39 +1,25 @@
 class Solution {
-
-    public boolean inAtLeast(int[] time, long timeTaken, int totalTrips) {
-
-        long trips = 0;
-
-        for(int t : time) {
-            trips += timeTaken / t;
-        }
-
-        return trips >= totalTrips;
-    }
-
     public long minimumTime(int[] time, int totalTrips) {
+        long left = 1;
+        long right = (long) Arrays.stream(time).min().getAsInt() * totalTrips;
 
-        long lb = 1;
+        while (left < right) {
+            long mid = left + (right - left) / 2;
 
-        int min = Integer.MAX_VALUE;
+            long trips = 0;
+            for (int t : time) {
+                trips += mid / t;
 
-        for(int t : time) {
-            min = Math.min(min, t);
-        }
+                if (trips >= totalTrips) break;
+            }
 
-        long ub = (long) min * totalTrips;
-
-        while(lb < ub) {
-
-            long mid = lb + (ub - lb) / 2;
-
-            if(inAtLeast(time, mid, totalTrips)) {
-                ub = mid;
+            if (trips >= totalTrips) {
+                right = mid; // can we do it in even shorter time
             } else {
-                lb = mid + 1;
+                left = mid + 1;
             }
         }
 
-        return lb;
+        return left;
     }
 }
