@@ -1,51 +1,23 @@
 class Solution {
-
-    public int findMaximum(int[] piles) {
-        int max = 0;
-
-        for(int i = 0; i < piles.length; ++i) {
-            max = Math.max(max, piles[i]);
-        }
-
-        return max;
-    }
-
-    public int calculateTotalHours(int[] piles, int hourlySpeed) {
-        int totalHours = 0;
-
-        for(int i = 0; i < piles.length; ++i) {
-            totalHours += Math.ceil((double)piles[i] / hourlySpeed);
-        }
-
-        return totalHours;
-    }
-
     public int minEatingSpeed(int[] piles, int h) {
-        int minSpeed = 0;
+        int left = 1;
+        int right = Arrays.stream(piles).max().getAsInt(); // max speed
 
-        int maxBananas = findMaximum(piles);
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            int hours = 0;
 
-        int low = 1;
-        int high = maxBananas;
-        int ans = 0;
+            for(int pile : piles) {
+                hours += Math.ceil((double)pile / mid);
+            }
 
-        while(low <= high) {
-            int mid = (low + high) / 2;
-            
-            int totalHours = calculateTotalHours(piles, mid);
-
-            if(totalHours <= h) {
-                high = mid - 1;
+            if(hours <= h) {
+                right = mid - 1; // reduce the speed to try more
             } else {
-                low = mid + 1;
+                left = mid + 1;
             }
         }
 
-        // for(int i = 1; i <= maxBananas; ++i) { 
-        //     int totalHours = calculateTotalHours(piles, i);
-        //     if(totalHours <= h) return i; // hourly speed
-        // }
-
-        return low; // dummy return statement
+        return left;
     }
 }
