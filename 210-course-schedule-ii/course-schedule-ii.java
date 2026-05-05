@@ -1,50 +1,58 @@
 class Solution {
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        int n = numCourses;
-
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) {
-            adj.add(new ArrayList<>());
-        }
-
-        for (int[] pre : prerequisites) {
-            int a = pre[0], b = pre[1];
-            adj.get(b).add(a);  // edge from b → a
-        }
-
-        int[] vis = new int[n];
-        int[] pathVis = new int[n];
-        List<Integer> topo = new ArrayList<>();
+    public int[] findOrder(int n, int[][] prereqs) {
+        List<List<Integer>> adjList = new ArrayList<>();
 
         for(int i = 0; i < n; ++i) {
-            if(vis[i] == 0) {
-                if(dfs(i, adj, vis, pathVis, topo)) { // detected a cycle
-                    return new int[0];
-                }
+            adjList.add(new ArrayList<>());
+        }
+
+        // build from edges/prereqs
+        for(int i = 0; i < prereqs.length; ++i) {
+            int a = prereqs[i][0];
+            int b = prereqs[i][1];
+            
+            adjList.get(b).add(a);
+        }
+
+
+        boolean[] visited = new boolean[n];
+        boolean[] pathVisited = new boolean[n];
+        int[] result = new int[n];
+        Stack<Integer> stack = new Stack<>();
+
+        for(int i = 0; i < n; ++i) {
+            if(!visited[i] && dfs(i, adjList, visited, pathVisited, stack)) {
+                return new int[]{};
             }
         }
 
-        Collections.reverse(topo);
-        return topo.stream().mapToInt(i -> i).toArray();
+        int i = 0;
+        while(!stack.isEmpty()) {
+            result[i] = stack.pop();
+            i++;
+        }
+
+        return result;
     }
 
-    public boolean dfs(int node, ArrayList<ArrayList<Integer>> adj,
-                       int[] vis, int[] pathVis, List<Integer> topo) {
+    private boolean dfs(int node, List<List<Integer>> adjList,
+                        boolean[] visited, boolean[] pathVisited, Stack<Integer> stack) {
 
-        vis[node] = 1;
-        pathVis[node] = 1;
+        pathVisited[node] = true;
+        visited[node] = true;
 
-        for (int neighbor : adj.get(node)) {
-            if (vis[neighbor] == 0) {
-                if (dfs(neighbor, adj, vis, pathVis, topo)) return true;
-            } else if (pathVis[neighbor] == 1) {
-                return true; // cycle found
+        for(int neighbour : adjList.get(node)) {
+            if(!visited[neighbour]) {
+                if(dfs(neighbour, adjList, visited, pathVisited, stack)) {
+                    return true; // cycle
+                }
+            } else if (pathVisited[neighbour]) {
+                return true;
             }
         }
 
-        pathVis[node] = 0; // backtrack
-        topo.add(node);   // post-order for topo sort
+        pathVisited[node] = false;
+        stack.push(node); // pehle mere bacho ko then mujhe
         return false;
     }
-
 }
