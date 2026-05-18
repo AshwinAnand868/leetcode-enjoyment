@@ -1,86 +1,70 @@
-public class DisjointSet {
-    int[] rank;
-    int[] parent;
-    int[] size;
-
-    DisjointSet(int n) {
-        this.rank = new int[n + 1];
-        this.size = new int[n + 1];
-        Arrays.fill(size, 1);
-        this.parent = new int[n + 1];
-        for (int i = 0; i < n + 1; ++i) {
-            this.parent[i] = i;
-        }
-    }
-
-    public int findParent(int node) {
-        if (parent[node] != node) {
-            parent[node] = findParent(parent[node]); // path compression - resetting each parent to ultimate parent (the
-                                                     // boss :>))
-        }
-        return parent[node];
-    }
-
-    public void union(int x, int y) {
-        int px = findParent(x);
-        int py = findParent(y);
-
-        if (px == py)
-            return;
-
-        if (rank[px] < rank[py]) {
-            parent[px] = py;
-        } else if (rank[px] > rank[py]) {
-            parent[py] = px;
-        } else {
-            parent[py] = px;
-            rank[px]++;
-        }
-    }
-
-    public void unionBySize(int x, int y) {
-        int px = findParent(x);
-        int py = findParent(y);
-
-        if (px == py)
-            return;
-
-        if (size[px] > size[py]) {
-            parent[py] = px;
-            size[px] += size[py];
-        } else {
-            parent[px] = py;
-            size[py] += size[px];
-        }
-    }
-
-}
+import java.util.*;
 
 class Solution {
     public int removeStones(int[][] stones) {
-        int maxRow = 0;
-        int maxCol = 0;
         int n = stones.length;
-        for(int i = 0; i < n; ++i) {
-            maxRow = Math.max(maxRow, stones[i][0]);
-            maxCol = Math.max(maxCol, stones[i][1]);
+
+        Map<Integer, List<Integer>> rowMap = new HashMap<>();
+        Map<Integer, List<Integer>> colMap = new HashMap<>();
+
+        // Build maps manually
+        for (int i = 0; i < n; i++) {
+            int r = stones[i][0];
+            int c = stones[i][1];
+
+            // Row map
+            if (!rowMap.containsKey(r)) {
+                rowMap.put(r, new ArrayList<>());
+            }
+            rowMap.get(r).add(i);
+
+            // Column map
+            if (!colMap.containsKey(c)) {
+                colMap.put(c, new ArrayList<>());
+            }
+            colMap.get(c).add(i);
         }
 
-        DisjointSet ds = new DisjointSet(maxRow + maxCol + 1); // total nodes passed
+        boolean[] visited = new boolean[n];
+        int components = 0;
 
-        for(int i = 0; i < n; ++i) {
-            int nodeRow = stones[i][0];
-            int nodeCol = stones[i][1];
-            ds.unionBySize(nodeRow, nodeCol + maxRow + 1);
-        }
-
-        int cnt = 0;
-        for(int i = 0; i <= maxRow + maxCol + 1; i++) {
-            if(ds.parent[i] == i && ds.size[i] > 1) {
-                cnt++;
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                dfs(i, stones, visited, rowMap, colMap);
+                components++;
             }
         }
 
-        return n - cnt;
+        return n - components;
+    }
+
+    private void dfs(int i, int[][] stones, boolean[] visited,
+                     Map<Integer, List<Integer>> rowMap,
+                     Map<Integer, List<Integer>> colMap) {
+
+        visited[i] = true;
+
+        int r = stones[i][0];
+        int c = stones[i][1];
+
+        // Visit all stones in same row
+        List<Integer> sameRow = rowMap.get(r);
+        if (sameRow != null) {
+            for (int nei : sameRow) {
+                if (!visited[nei]) {
+                    dfs(nei, stones, visited, rowMap, colMap);
+                }
+            }
+        }
+
+        // Visit all stones in same column
+        List<Integer> sameCol = colMap.get(c);
+        if (sameCol != null) {
+            for (int nei : sameCol) {
+                if (!visited[nei]) {
+                    dfs(nei, stones, visited, rowMap, colMap);
+                }
+            }
+        }
     }
 }
