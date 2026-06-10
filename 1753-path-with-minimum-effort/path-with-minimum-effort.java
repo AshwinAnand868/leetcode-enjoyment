@@ -1,59 +1,52 @@
 class Solution {
-    class Tuple {
-        int effort;
-        int row;
-        int col;
-
-        Tuple(int effort, int row, int col) {
-            this.effort = effort;
-            this.row = row;
-            this.col = col;
-        }
-    }
     public int minimumEffortPath(int[][] heights) {
-        PriorityQueue<Tuple> queue = new PriorityQueue<>((a, b) -> a.effort - b.effort);
 
-        int n = heights.length;
-        int m = heights[0].length;
-        int[][] efforts = new int[n][m];
+        int[][] dirs = {{0,1}, {1,0}, {-1, 0}, {0, -1}};
 
-        for(int i = 0; i < n; ++i) {
-            for(int j = 0; j < m; ++j) {
-                efforts[i][j] = Integer.MAX_VALUE;
-            }
+        int m = heights.length;
+        int n = heights[0].length;
+
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+        minHeap.offer(new int[] {0,0,0});
+
+        int[][] efforts = new int[m][n];
+
+        for(int[] effort : efforts) {
+            Arrays.fill(effort, Integer.MAX_VALUE);
         }
 
-        efforts[0][0] = 0; // effort to reach top left cell is 0
-        queue.offer(new Tuple(0, 0, 0)); 
+        efforts[0][0] = 0;
 
-        int[] dx = {1, 0, -1, 0};
-        int[] dy = {0, -1, 0, 1};
-        while(!queue.isEmpty()) {
-            Tuple it = queue.poll(); 
+        while(!minHeap.isEmpty()) {
+            int[] curr = minHeap.poll();
 
-            int diff = it.effort; 
-            int row = it.row; 
-            int col = it.col;
+            int r = curr[0];
+            int c = curr[1];
+            int effort = curr[2];
 
-            if(row == n-1 && col == m-1) return diff; 
+            if(r == m - 1 && c == n - 1) {
+                return effort;
+            }
 
-            for(int i = 0;i<4;i++) {
-                int newr = row + dx[i]; 
-                int newc = col + dy[i];
+            if(effort > efforts[r][c]) continue;
 
-                if(newr>=0 && newc >=0 && newr < n && newc < m) {
+            for(int[] dir : dirs) {
+                int nRow = r + dir[0];
+                int nCol = c + dir[1];
 
-                    int newEffort = Math.max(
-                        Math.abs(heights[row][col] - heights[newr][newc]), diff); 
+                if(nRow >= m || nCol >= n || nRow < 0 || nCol < 0) continue;
 
-                    if(newEffort < efforts[newr][newc]) {
-                        efforts[newr][newc] = newEffort; 
-                        queue.add(new Tuple(newEffort, newr, newc)); 
-                    }
+                int edgeCost = Math.abs(heights[nRow][nCol] - heights[r][c]);
+                int newEffort = Math.max(effort, edgeCost); // max effort of this path
+
+
+                if(newEffort < efforts[nRow][nCol]) {
+                    efforts[nRow][nCol] = newEffort;
+                    minHeap.offer(new int[] {nRow, nCol, newEffort});
                 }
-            }
+            }          
         }
 
-        return 0;
+        return -1;
     }
 }
