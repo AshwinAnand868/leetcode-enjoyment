@@ -1,35 +1,26 @@
 class Solution {
-    public int search(int[] arr, int target) {
-        int n = arr.length;
-        int low = 0, high = n - 1;
+    public int search(int[] nums, int target) {
+        int n = nums.length;
+        int low = 0;
+        int high = n - 1;
 
         while(low <= high) {
-            int mid = (low + high) / 2;
+            int mid = low + (high - low) / 2;
 
-            if(arr[mid] == target) {
-                return mid;
-            }
+            if(nums[mid] == target) return mid;
 
-            // the left part is sorted
-            if(arr[mid] >= arr[low]) {
-                // the target is in the sorted half
-                if(arr[low] <= target && target <= arr[mid]) {
-                    // eliminate the unsorted part
-                    high = mid - 1;
+            if(nums[mid] >= nums[low]) {
+                if(target <= nums[mid] && target >= nums[low]) {
+                    high = mid;
                 } else {
-                    // the target is in the unsorted half
-                    // eliminate the sorted part
                     low = mid + 1;
                 }
-
             } else {
-                // the right part is sorted
-                if(target >= arr[mid] && target <= arr[high]) {
-                    // element is in the sorted part
+                // right is sorted
+                if(target >= nums[mid] && target <= nums[high]) {
                     low = mid + 1;
                 } else {
-                    // element is in the unsorted part
-                    high = mid - 1;
+                    high = mid;
                 }
             }
         }
