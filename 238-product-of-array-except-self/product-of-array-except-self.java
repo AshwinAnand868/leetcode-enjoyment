@@ -1,30 +1,20 @@
 class Solution {
-    public int[] productExceptSelf(int arr[]) {
-        int totalProdWithOutZero = 1;
-        int zeroes = 0;
-        int idx = -1;
-        int n = arr.length;
-        
-        int[] res = new int[arr.length];
-        
-        for(int i = 0; i < n; ++i) {
-            if(arr[i] == 0) {
-                zeroes++;
-                idx = i;
-            } else {
-                totalProdWithOutZero *= arr[i];
-            }
-        }
-        
-        Arrays.fill(res, 0);
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        ans[0] = 1;
 
-        if (zeroes == 0) {
-            for (int i = 0; i < n; i++) 
-                res[i] = totalProdWithOutZero / arr[i];
+        for(int i = 1; i < n; ++i) {
+            // product of elements except self
+            ans[i] = ans[i - 1] * nums[i - 1]; 
         }
-        else if (zeroes == 1)
-            res[idx] = totalProdWithOutZero;
-        
-        return res;
+
+        int suffix = 1;
+        for(int i = n - 1; i >= 0; i--) {
+            ans[i] *= suffix;
+            suffix *= nums[i];
+        }
+
+        return ans;
     }
 }
