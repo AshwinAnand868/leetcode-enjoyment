@@ -8,73 +8,49 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
+
+
 class Solution {
 
-    public ListNode reverseLinkedList(ListNode head) {
-        
-        if(head == null || head.next == null) {
-            return head;
+    private ListNode reverseLinkedList(ListNode head) {
+        ListNode prev = null;
+        ListNode next = null;
+        ListNode curr = head;
+
+        while(curr != null) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
-        ListNode newHead = reverseLinkedList(head.next);
-        head.next.next = head;
-        head.next = null;        
-        return newHead;
+        return prev;
     }
 
     public boolean isPalindrome(ListNode head) {
-
-        // an empty list or a list with one element is palindrome
-        if(head == null || head.next == null) {
-            return true;
-        }
-
+        // finding the mid element
         ListNode slow = head;
         ListNode fast = head;
 
         while(fast != null && fast.next != null) {
-            fast = fast.next.next;
             slow = slow.next;
+            fast = fast.next.next;
         }
 
-        ListNode newHead = reverseLinkedList(slow);
+        ListNode secondHalf = reverseLinkedList(slow);
+        ListNode firstHalf = head;
+        ListNode temp = secondHalf;
 
-        ListNode first = head;
-        ListNode second = newHead;
-
-        while(second != null) {
-            if(first.val != second.val) {
-                reverseLinkedList(newHead);
+        while(temp != null) {
+            if(firstHalf.val != temp.val) {
                 return false;
             }
 
-            first = first.next;
-            second = second.next;
+            firstHalf = firstHalf.next;
+            temp = temp.next;
         }
 
-        reverseLinkedList(newHead);
-
         return true;
-
-
-        // Stack<Integer> stack = new Stack<>();
-
-        // ListNode temp = head;
-
-        // while(temp != null) {
-        //     stack.push(temp.val);
-        //     temp = temp.next;
-        // }
-
-        // temp = head;
-
-        // while(temp != null) {
-        //     if(temp.val != stack.pop()) {
-        //         return false;
-        //     }
-        //     temp = temp.next;
-        // }
-
-        // return true;
     }
 }
