@@ -1,32 +1,23 @@
 class Solution {
-
-    public void backTrack(List<List<Integer>> result, List<Integer> temp, int index, int[] nums) {
-        result.add(new ArrayList<>(temp));
-
-        for(int i = index; i < nums.length; ++i) {
-            temp.add(nums[i]);
-            backTrack(result, temp, i + 1, nums);
-            temp.remove(temp.size() - 1);
+    public void fetchSubsets(List<List<Integer>> result, List<Integer> temp, int[] nums, int index) {
+        if(index >= nums.length) {
+            result.add(new ArrayList<>(temp));
+            return;
         }
-        // if(index >= nums.length) {
-        //     result.add(new ArrayList<>(temp));
-        //     return;
-        // }
 
-        // // take
-        // temp.add(nums[index]);
-        // backTrack(result, temp, index + 1, nums);
+        // take
+        temp.add(nums[index]);
+        fetchSubsets(result, temp, nums, index + 1);
+        temp.remove(temp.size() - 1);
 
-        // // skip
-        // temp.remove(temp.size() - 1);
-        // backTrack(result, temp, index + 1, nums);
-
+        // skip
+        fetchSubsets(result, temp, nums, index + 1);
     }
 
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
 
-        backTrack(result, new ArrayList<>(), 0, nums);
+        fetchSubsets(result, new ArrayList<>(), nums, 0);
 
         return result;
     }
