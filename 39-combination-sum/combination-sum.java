@@ -1,21 +1,29 @@
 class Solution {
-    public List<List<Integer>> combinationSum(int[] nums, int target) {
-        List<List<Integer>> list = new ArrayList<>();
-        backtrack(list, new ArrayList<>(), nums, target, 0);
-        return list;
+
+    private void collectTargetSumSubsets(List<List<Integer>> result, int[] candidates, int target, int index, int runningSum, List<Integer> temp) {
+        if(runningSum > target || index >= candidates.length) return;
+
+        if(runningSum == target) {
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+
+        // take
+        runningSum += candidates[index];
+        temp.add(candidates[index]);
+        collectTargetSumSubsets(result, candidates, target, index, runningSum, temp); // reuse the same element multiple times at the same index
+        runningSum -= candidates[index];
+        temp.remove(temp.size() - 1);
+
+        // skip
+        collectTargetSumSubsets(result, candidates, target, index + 1, runningSum, temp);
     }
 
-    private void backtrack(List<List<Integer>> list, List<Integer> tempList, int[] nums, int remain, int start) {
-        if (remain < 0)
-            return;
-        else if (remain == 0)
-            list.add(new ArrayList<>(tempList));
-        else {
-            for (int i = start; i < nums.length; i++) {
-                tempList.add(nums[i]);
-                backtrack(list, tempList, nums, remain - nums[i], i);
-                tempList.remove(tempList.size() - 1);
-            }
-        }
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        collectTargetSumSubsets(result, candidates, target, 0, 0, new ArrayList<>());
+
+        return result;
     }
 }
