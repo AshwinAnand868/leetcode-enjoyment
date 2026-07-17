@@ -1,29 +1,34 @@
 class Solution {
+    int[][] dirs = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
 
-    public void dfs(char[][] grid, int[][] dirs, int row, int col, int m, int n) {
-        grid[row][col] = '0';
-        
-        for(int[] dir : dirs) {
-            int newRow = dir[0] + row;
-            int newCol = dir[1] + col;
+    public void dfs(char[][] grid, boolean[][] vis, int i, int j, int m, int n) {
+        vis[i][j] = true;
 
-            if(newRow >= 0 && newCol >= 0 &&
-                newRow <= m - 1 && newCol <= n - 1 && grid[newRow][newCol] == '1') {
-                dfs(grid, dirs, newRow, newCol, m, n);
+        for (int[] dir : dirs) {
+            int newI = i + dir[0];
+            int newJ = j + dir[1];
+
+            if (newI >= 0 && newI < m &&
+                newJ >= 0 && newJ < n &&
+                grid[newI][newJ] == '1' &&
+                !vis[newI][newJ]) {
+
+                dfs(grid, vis, newI, newJ, m, n);
             }
         }
     }
 
     public int numIslands(char[][] grid) {
-        int count = 0;
         int m = grid.length;
         int n = grid[0].length;
-        int[][] dirs = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        int count = 0;
 
-        for(int i = 0; i < m; ++i) {
-            for(int j = 0; j < n; ++j) {
-                if(grid[i][j] == '1') {
-                    dfs(grid, dirs, i, j, m, n);
+        boolean[][] vis = new boolean[m][n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1' && !vis[i][j]) {
+                    dfs(grid, vis, i, j, m, n);
                     count++;
                 }
             }
