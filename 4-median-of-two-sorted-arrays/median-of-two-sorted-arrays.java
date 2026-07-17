@@ -1,41 +1,45 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // binary search on smaller array
+        if(nums1.length > nums2.length) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
         int n = nums1.length;
         int m = nums2.length;
-        int[] result = new int[n + m];
 
-        int i = 0;
-        int k = 0;
-        int j = 0;
+        int low = 0;
+        int high = n; // taking n because these are partition based
+        // we are not searching here for an element, we are searching
+        // for partition position
+
+        while(low <= high) {
+            int partition1 = low + (high - low) / 2;
+            int partition2 = (m + n + 1) / 2 - partition1;
+
+            int left1 = (partition1 == 0) ? Integer.MIN_VALUE : nums1[partition1 - 1];
+            int right1 = (partition1 == n) ? Integer.MAX_VALUE : nums1[partition1];
+
+            int left2 = (partition2 == 0) ? Integer.MIN_VALUE : nums2[partition2 - 1];
+            int right2 = (partition2 == m) ? Integer.MAX_VALUE : nums2[partition2];
+
+            if(left1 <= right2 && left2 <= right1) {
+                // Even number of elements
+                if ((n + m) % 2 == 0) {
+                    return (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0;
+                }
+
+                return Math.max(left1, left2);
+            }
 
 
-        // merge arrays without sorting
-        while(i < n && j < m) {
-            if(nums1[i] <= nums2[j]) {
-                result[k] = nums1[i];
-                i++;
-                k++;
+            if(left1 > right2) {
+                high = partition1 - 1;
             } else {
-                result[k] = nums2[j];
-                k++;
-                j++;
+                low = partition1 + 1;
             }
         }
 
-        while(i < n) {
-            result[k++] = nums1[i++];
-        }
-
-        while(j <  m) {
-            result[k++] = nums2[j++];
-        }
-        
-        int total = n + m;
-        if(total % 2 != 0) {
-            // odd
-            return result[total/ 2] * 1.0;
-        } else {
-            return (result[(total / 2)] + result[((total) / 2) - 1]) / 2.0;
-        }
+        return 0.0;
     }
 }
