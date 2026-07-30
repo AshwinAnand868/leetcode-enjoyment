@@ -1,25 +1,27 @@
 class Solution {
-    public int maxArea(int[] heights) {
+    public int maxArea(int[] height) {
+        // two pointer approach
 
-        int n = heights.length;
-        int i = 0;
-        int j = n - 1;
+        int n = height.length;
 
-        int maxArea = 0;
+        int left = 0;
+        int right = n - 1;
 
-        while(i < j){
-            int width = j - i;
-            int height = Math.min(heights[i], heights[j]);
+        int maxAreaCalc = Integer.MIN_VALUE;
 
-            maxArea = Math.max(maxArea, width * height);
+        while(left < right) {
+            int width = right - left;
+            int commonHeight = Math.min(height[left], height[right]);
 
-            if(heights[j] <= heights[i]) {
-                j--;
+            maxAreaCalc = Math.max(maxAreaCalc, commonHeight * width); 
+
+            if(height[left] <= height[right]) {
+                left++;
             } else {
-                i++;
+                right--;
             }
         }
 
-        return maxArea;
+        return maxAreaCalc;
     }
 }
