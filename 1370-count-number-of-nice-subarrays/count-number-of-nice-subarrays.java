@@ -1,56 +1,33 @@
 class Solution {
-    public int numberOfSubarrays(int[] nums, int k) {
 
-        int n = nums.length;
+    private int atMost(int[] nums, int k) {
+        if (k < 0) return 0;
+
+        int left = 0;
         int oddCount = 0;
-        int previousCount = 0;
+        int ans = 0;
 
-        int result = 0;
+        for (int right = 0; right < nums.length; right++) {
 
-        int i = 0, j = 0;
-
-        while(j < n) {
-            if(nums[j] % 2 != 0) {
+            if (nums[right] % 2 != 0) {
                 oddCount++;
-                previousCount = 0;
             }
 
-            while(oddCount == k) {
-                previousCount++;
-
-                if(i < n && nums[i] % 2 != 0) {
+            while (oddCount > k) {
+                if (nums[left] % 2 != 0) {
                     oddCount--;
                 }
-
-                ++i;
+                left++;
             }
 
-            result += previousCount;
-            ++j;
+            // our all valid subarrays ending at right
+            ans += right - left + 1;
         }
 
+        return ans;
+    }
 
-
-
-        // track the number of odd counts
-        // Map<Integer, Integer> map = new HashMap<>();
-        // int n = nums.length;
-        // int oddCount = 0;
-        // map.put(0, 1); // we have seen zeroes once initially
-        // int i = 0, j = 0;
-        // int result = 0;
-
-        // while(j < n) {
-        //     oddCount += (nums[j] % 2 == 0) ? 0 : 1;
-
-        //     if(map.containsKey(oddCount - k)) {
-        //         result += map.get(oddCount - k);
-        //     }
-
-        //     map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
-        //     j++;
-        // }
-
-        return result;
+    public int numberOfSubarrays(int[] nums, int k) {
+        return atMost(nums, k) - atMost(nums, k - 1);
     }
 }
