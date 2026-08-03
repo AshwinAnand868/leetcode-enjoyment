@@ -1,28 +1,29 @@
 class Solution {
-        public int countGoodSubstrings(String s) {
+    public int countGoodSubstrings(String s) {
+        int left = 0;
+        int ans = 0;
 
-        int nGoodSubstrings = 0;
-        char[] cArr = s.toCharArray();
-        List<Character> list = new ArrayList<>();
-        Set<Character> charSet = new HashSet<>();
+        Set<Character> set = new HashSet<>();
 
-        int k = 3; // length of a good string
+        for (int right = 0; right < s.length(); right++) {
 
-        for (int i = 0; i < cArr.length; i++) {
+            while (set.contains(s.charAt(right))) {
+                set.remove(s.charAt(left));
+                left++;
+            }
 
-            list.add(cArr[i]);
+            set.add(s.charAt(right));
 
-            if (i >= k - 1) {
-                charSet.addAll(list);
+            while (right - left + 1 > 3) {
+                set.remove(s.charAt(left));
+                left++;
+            }
 
-                if (charSet.size() == k) {
-                    nGoodSubstrings++;
-                }
-                charSet.clear();
-                list.remove(0);
+            if (right - left + 1 == 3) {
+                ans++;
             }
         }
 
-        return nGoodSubstrings;
+        return ans;
     }
 }
