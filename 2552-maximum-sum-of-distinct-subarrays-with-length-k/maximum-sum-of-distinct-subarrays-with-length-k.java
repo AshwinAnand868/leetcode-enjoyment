@@ -1,65 +1,38 @@
 class Solution {
     public long maximumSubarraySum(int[] nums, int k) {
-        int i = 0, j = 0;
-        int n = nums.length;
+        int left = 0, n = nums.length;
+        long sum = 0, maxSum = 0;
 
-        Set<Integer> subs = new HashSet<>(); // to avoid duplicates
-        long runningSum = 0;
-        long maxSum = 0;
+        Set<Integer> set = new HashSet<>();
 
-        while(j < n) {
-            
-            while(subs.contains(nums[j])) { // if current index value already present, remove it to move ahead
-                runningSum -= nums[i];
-                subs.remove(nums[i]);
-                i++;
-            }
+        for(int right = 0; right < n; ++right) {
+            int curr = nums[right];
+            int length = right - left + 1;
 
-            subs.add(nums[j]);
-            runningSum += nums[j];
-
-            if(j - i + 1 == k) {
-                maxSum = Math.max(maxSum, runningSum);
-                runningSum -= nums[i];
-                subs.remove(nums[i]);
-                i++;
+            // if current element is in set, then we shrink
+            while(set.contains(curr)) {
+                sum -= nums[left];
+                set.remove(nums[left]);
+                left++;
+                length = right - left + 1;
             }
             
+            sum += curr; // consider current element
 
-            ++j;
+            set.add(curr);
+           
+            while(length > k && left < n) {
+                sum -= nums[left];
+                set.remove(nums[left]);
+                left++;
+                length = right - left + 1;
+            }
+
+            if(length == k) {
+                maxSum = Math.max(sum, maxSum);
+            }
         }
 
         return maxSum;
     }
 }
-
-// class Solution {
-//     public long maximumSubarraySum(int[] nums, int k) {
-//         int i = 0, j = 0;
-//         int n = nums.length;
-
-//         Set<Integer> set = new HashSet<>();
-//         long maxSum = Integer.MIN_VALUE;
-
-//         while(j < n) {
-//             set.add(nums[j]);
-
-//             if(j - i + 1 == k) {
-//                 if(set.size() == k) {
-//                     long sum = 0;
-//                     for(int elem : set) {
-//                         sum += elem;
-//                     }
-//                     maxSum = Math.max(maxSum, sum);
-//                 }
-                
-//                 set.remove(nums[i]);
-//                 i++;
-//             }
-
-//             ++j;
-//         }
-
-//         return maxSum == Integer.MIN_VALUE ? 0 : maxSum;
-//     }
-// }
