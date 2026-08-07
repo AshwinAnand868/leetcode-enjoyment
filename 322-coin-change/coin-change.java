@@ -1,43 +1,50 @@
 class Solution {
 
-    private int helper(int[] coins, int target, int index, int[][] memo) {
+    private int helper(int[] coins, int amount, int index, int[][] memo) {
+        
+        if(index == coins.length || amount < 0) {
+            return Integer.MAX_VALUE;
+        }
 
-        if(target == 0)
+        if(amount == 0) {
             return 0;
-
-        if(index == 0) {
-
-            if(target % coins[0] == 0)
-                return memo[index][target] = target / coins[0];
-
-            return memo[index][target] = (int)1e9;
         }
 
-        if(memo[index][target] != -1)
-            return memo[index][target];
-
-        int take = (int)1e9;
-
-        if(target >= coins[index]) {
-            take = 1 + helper(coins, target - coins[index], index, memo);
+        if(memo[index][amount] != -1) {
+            return memo[index][amount];
         }
 
-        int skip = helper(coins, target, index - 1, memo);
+        // take this current coin
+        int take = helper(coins, amount - coins[index], index, memo);
 
-        return memo[index][target] = Math.min(take, skip);
+        if(take != Integer.MAX_VALUE) {
+            take += 1;
+        }
+
+        // skip this current coin
+        int skip = helper(coins, amount, index + 1, memo);
+
+        memo[index][amount] = Math.min(take, skip);
+
+        return memo[index][amount];
     }
 
     public int coinChange(int[] coins, int amount) {
-        int n = coins.length;
-        int m = amount;
-        int[][] memo = new int[n + 1][m + 1];
+
+        if(amount == 0) return 0;
+
+        if(coins.length == 0 && amount > 0) {
+            return -1;
+        }
+
+        int[][] memo = new int[coins.length][amount + 1];
 
         for(int[] arr : memo) {
             Arrays.fill(arr, -1);
         }
 
-        int result = helper(coins, amount, n - 1, memo);
-        return result == (int) 1e9 ? -1 : result;
+        int result = helper(coins, amount, 0, memo);
 
+        return result == Integer.MAX_VALUE ? -1 : result;
     }
 }
