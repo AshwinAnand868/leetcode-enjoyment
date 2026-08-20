@@ -1,36 +1,38 @@
 class Solution {
 
-    private boolean checkMidIsGood(int[] piles, int hours, int potentialSpeed) {
-
+    private boolean checkMidGood(int[] piles, int h, int potentialSpeed) {
         int currHours = 0;
 
-        for(int i = 0; i < piles.length && currHours <= hours; ++i){
+        for(int i = 0; i < piles.length; ++i) {
             if(piles[i] <= potentialSpeed) {
                 currHours++;
             } else {
-                int pile = piles[i];
-                currHours += Math.ceil((double) piles[i]/potentialSpeed);
+                currHours += Math.ceil((double) piles[i] / potentialSpeed);
+            }
+
+            if(currHours > h) {
+                return false;
             }
         }
 
-        return currHours > hours ? false : true;
+        return true;
     }
 
     public int minEatingSpeed(int[] piles, int h) {
-        int maxSpeed = Integer.MIN_VALUE;
+        int max = Integer.MIN_VALUE;
 
         for(int i = 0; i < piles.length; ++i) {
-            maxSpeed = Math.max(piles[i], maxSpeed);
+            max = Math.max(piles[i], max);
         }
-
-        int low = 1;
-        int high = maxSpeed;
+        
         int minSpeed = Integer.MAX_VALUE;
+        int low = 1;
+        int high = max;
 
         while(low <= high) {
             int mid = low + (high - low) / 2;
 
-            if(checkMidIsGood(piles, h, mid)) {
+            if(checkMidGood(piles, h, mid)) {
                 minSpeed = mid;
                 high = mid - 1;
             } else {
